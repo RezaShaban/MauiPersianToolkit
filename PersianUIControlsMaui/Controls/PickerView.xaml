@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="PersianUIControlsMaui.Controls.PickerView"
+             xmlns:conv="clr-namespace:PersianUIControlsMaui.Converters"
+             x:Name="ucPickerView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <conv:InverseBoolConverter x:Key="InversBool"/>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid CompressedLayout.IsHeadless="True">
+            <Grid HorizontalOptions="FillAndExpand" ColumnDefinitions="28,100*,Auto,24" RowDefinitions="42"
+              Padding="0,10" ColumnSpacing="0" RowSpacing="0"
+              IsVisible="{Binding ShowAsButton,Source={x:Reference ucPickerView},Converter={StaticResource InversBool}}">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                </Grid.GestureRecognizers>
+                <Rectangle Aspect="Fill" RadiusX="5" RadiusY="5" StrokeThickness="1" HeightRequest="50" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" Fill="#fdfdfd" x:Name="rectangle" WidthRequest="500" StrokeLineJoin="Round"/>
+                <Label StyleId="icon" Text="{Binding Icon,Source={x:Reference ucPickerView}}" FontSize="18" WidthRequest="28" Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucPickerView}}" InputTransparent="True" Padding="0,0,5,0" x:Name="lblIcon" FontFamily="FontAwesome"/>
+                <Entry HorizontalOptions="FillAndExpand" Text="{Binding .}" Grid.Column="1" InputTransparent="True"
+                   Grid.Row="0" Margin="0" FontSize="Small" Focused="Entry_Focused" x:Name="txtEntry"
+                   Unfocused="Entry_Unfocused" HeightRequest="42" VerticalOptions="End" VerticalTextAlignment="End"
+                   ReturnType="{Binding ReturnType,Source={x:Reference ucPickerView}}" IsReadOnly="True"
+                   ReturnCommand="{Binding ReturnCommand,Source={x:Reference ucPickerView}}"
+                   Keyboard="{Binding Keyboard,Source={x:Reference ucPickerView}}" TextChanged="txtEntry_TextChanged"
+                   TextColor="{Binding TextColor,Source={x:Reference ucPickerView}}"
+                   IsPassword="{Binding IsPassword,Source={x:Reference ucPickerView}}" TranslationX="4"
+                   BindingContext="{Binding SelectedItem,Source={x:Reference ucPickerView}}"/>
+                <Label Grid.Column="1" Text="{Binding PlaceHolder,Source={x:Reference ucPickerView}}"
+                   HorizontalOptions="StartAndExpand" VerticalTextAlignment="Center" x:Name="lblPlaceholder"
+                   Grid.Row="0" VerticalOptions="Center" InputTransparent="True"
+                   TextColor="{Binding PlaceHolderColor,Source={x:Reference ucPickerView}}"/>
+
+                <Label Text="{Binding ErrorMessage,Source={x:Reference ucPickerView}}" Grid.Column="0" Grid.ColumnSpan="2"
+                   HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" x:Name="lblMessage"
+                   Grid.Row="1" InputTransparent="True" VerticalOptions="Center" Margin="0,-10,0,-24"
+                   IsVisible="{Binding IsValid,Source={x:Reference ucPickerView}}"
+                   Style="{AppThemeBinding Dark={StaticResource ValidationErrorStyleDark},Light={StaticResource ValidationErrorStyle}}"/>
+                <Label Text="&#xf107;" Grid.Column="3" Grid.Row="0" StyleId="x" VerticalOptions="Center"
+                   HorizontalOptions="Center" FontSize="Medium" FontFamily="FontAwesome"/>
+            </Grid>
+            <Button IsVisible="{Binding ShowAsButton,Source={x:Reference ucPickerView}}" ContentLayout="Bottom,0"
+                    Text="{Binding PlaceHolder,Source={x:Reference ucPickerView}}" Clicked="TapGestureRecognizer_Tapped"
+                    CornerRadius="{Binding CornerRadius,Source={x:Reference ucPickerView}}"
+                    FontFamily="{Binding FontFamily,Source={x:Reference ucPickerView}}"
+                    BackgroundColor="{Binding ActivePlaceHolderColor,Source={x:Reference ucPickerView}}" Padding="0">
+                <Button.ImageSource>
+                    <FontImageSource Glyph="{Binding Icon,Source={x:Reference ucPickerView}}" FontFamily="FontAwesome" Size="20"
+                                     Color="{Binding PlaceHolderColor,Source={x:Reference ucPickerView}}"/>
+                </Button.ImageSource>
+            </Button>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

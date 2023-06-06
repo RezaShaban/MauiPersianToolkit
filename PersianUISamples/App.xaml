@@ -1,0 +1,32 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PersianUISamples"
+             x:Class="PersianUISamples.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--<ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>-->
+
+            <x:String x:Key="IranianSans">IranianSans</x:String>
+
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="WhiteSmoke"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontFamily" Value="{StaticResource IranianSans}"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontFamily" Value="{StaticResource IranianSans}"/>
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontFamily" Value="{StaticResource IranianSans}"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

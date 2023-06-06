@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="PersianUIControlsMaui.Controls.TabView">
+  <ContentView.Content>
+        <Grid RowDefinitions="100*,55" x:Name="tabPages" RowSpacing="0" ColumnSpacing="0">
+            <!--tab contents here-->
+            
+            <Frame CornerRadius="0" Padding="0" Grid.Row="1" Grid.Column="0" BackgroundColor="{AppThemeBinding Dark={StaticResource DarkLight}, Light=White}" Margin="0">
+                <Grid HorizontalOptions="FillAndExpand" RowDefinitions="55" ColumnDefinitions="20*,20*,20*,20*,20*" x:Name="tabButtons" RowSpacing="0" ColumnSpacing="0">
+                    <!--tab buttons here--> 
+                </Grid>
+            </Frame>
+        </Grid>
+    </ContentView.Content>
+</ContentView>
