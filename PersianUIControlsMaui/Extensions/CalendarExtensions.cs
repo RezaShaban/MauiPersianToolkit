@@ -76,6 +76,21 @@ public static class CalendarExtensions
             return ex.ToString();
         }
     }
+    public static string GetPersianEndingMonth(this DateTime date)
+    {
+        try
+        {
+            PersianCalendar pc = new PersianCalendar();
+            var year = pc.GetYear(date);
+            var month = pc.GetMonth(date);
+            int monthLength = !pc.IsLeapYear(year) && month == 12 ? 29 : 30;
+            return $"{year}/{month.ToString().PadLeft(2, '0')}/{(month < 7 ? 31 : monthLength)}";
+        }
+        catch (Exception ex)
+        {
+            return ex.ToString();
+        }
+    }
 
     public static DayOfWeek GetPersianDay(this DateTime date)
     {
@@ -90,17 +105,17 @@ public static class CalendarExtensions
         }
     }
 
-    public static string GetPersianYear(this DateTime date)
+    public static int GetPersianYear(this DateTime date)
     {
         try
         {
             PersianCalendar pc = new PersianCalendar();
             var year = pc.GetYear(date);
-            return $"{year}";
+            return year;
         }
         catch (Exception ex)
         {
-            return ex.ToString();
+            return 0;
         }
     }
 

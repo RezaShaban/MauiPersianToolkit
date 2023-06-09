@@ -1,4 +1,6 @@
-﻿namespace PersianUISamples
+﻿using PersianUISamples.ViewModels;
+
+namespace PersianUISamples
 {
     public partial class MainPage : ContentPage
     {
@@ -7,6 +9,8 @@
         public MainPage()
         {
             InitializeComponent();
+            var viewModel = new MainViewModel();
+            this.BindingContext = viewModel;
         }
 
         private void OnCounterClicked(object sender, EventArgs e)

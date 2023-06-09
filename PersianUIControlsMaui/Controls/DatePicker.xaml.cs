@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
+using PersianUIControlsMaui.Enums;
+using PersianUIControlsMaui.Models;
 using System.Runtime.CompilerServices;
 
 namespace PersianUIControlsMaui.Controls;
@@ -7,18 +9,18 @@ namespace PersianUIControlsMaui.Controls;
 public partial class DatePicker : ContentView
 {
     #region Field's
-    Color _color;
-    ContentPage parentPage;
-    DatePickerView view = null;
-    Task initedView;
+    private Color _color;
+    private ContentPage parentPage;
+    private DatePickerView view = null;
+    private Task initedView;
     #endregion
 
     #region Propertei's
-    public static readonly BindableProperty SelectDateModeProperty = BindableProperty.Create(nameof(SelectDateMode), typeof(SelectionDateMode), typeof(DatePicker), SelectionDateMode.Day, BindingMode.TwoWay);
-    public SelectionDateMode SelectDateMode
+    public static readonly BindableProperty CalendarOptionProperty = BindableProperty.Create(nameof(CalendarOption), typeof(CalendarOptions), typeof(DatePicker), new CalendarOptions(), BindingMode.TwoWay);
+    public CalendarOptions CalendarOption
     {
-        get { return (SelectionDateMode)GetValue(SelectDateModeProperty); }
-        set { SetValue(SelectDateModeProperty, value); }
+        get { return (CalendarOptions)GetValue(CalendarOptionProperty); }
+        set { SetValue(CalendarOptionProperty, value); }
     }
     public static readonly BindableProperty SelectedPersianDateProperty = BindableProperty.Create(nameof(SelectedPersianDate), typeof(object), typeof(DatePicker), default(string), BindingMode.TwoWay);
     public string SelectedPersianDate
@@ -26,30 +28,28 @@ public partial class DatePicker : ContentView
         get { return (string)GetValue(SelectedPersianDateProperty); }
         set { SetValue(SelectedPersianDateProperty, value); }
     }
+
     public static readonly BindableProperty FormattedDateProperty = BindableProperty.Create(nameof(FormattedDate), typeof(object), typeof(DatePicker), default(string), BindingMode.TwoWay);
     public string FormattedDate
     {
         get { return (string)GetValue(FormattedDateProperty); }
         set { SetValue(FormattedDateProperty, value); }
     }
+
     public static readonly BindableProperty DateSeparatorProperty = BindableProperty.Create(nameof(DateSeparator), typeof(char), typeof(DatePicker), '/', BindingMode.TwoWay);
     public char DateSeparator
     {
         get { return (char)GetValue(DateSeparatorProperty); }
         set { SetValue(DateSeparatorProperty, value); }
     }
+
     public static readonly BindableProperty DisplayFormatProperty = BindableProperty.Create(nameof(DisplayFormat), typeof(object), typeof(DatePicker), "yyyy/MM/dd", BindingMode.TwoWay);
     public string DisplayFormat
     {
         get { return (string)GetValue(DisplayFormatProperty); }
         set { SetValue(DisplayFormatProperty, value); }
     }
-    public static readonly BindableProperty SelectionModeProperty = BindableProperty.Create(nameof(SelectionMode), typeof(SelectionMode), typeof(DatePicker), SelectionMode.Single, BindingMode.TwoWay);
-    public SelectionMode SelectionMode
-    {
-        get { return (SelectionMode)GetValue(SelectionModeProperty); }
-        set { SetValue(SelectionModeProperty, value); }
-    }
+    
     public static readonly BindableProperty PlaceHolderColorProperty = BindableProperty.Create(nameof(PlaceHolderColor), typeof(Color), typeof(DatePicker), Colors.Gray, BindingMode.TwoWay);
     public Color PlaceHolderColor
     {
@@ -98,48 +98,49 @@ public partial class DatePicker : ContentView
         get { return (string)GetValue(IconProperty); }
         set { SetValue(IconProperty, value); }
     }
-    public static readonly BindableProperty AcceptCommandProperty = BindableProperty.Create(nameof(AcceptCommand), typeof(Command), typeof(DatePicker), default(Command), BindingMode.TwoWay);
-    public Command AcceptCommand
+
+    public static readonly BindableProperty OnChangeDateCommandProperty = BindableProperty.Create(nameof(OnChangeDateCommand), typeof(Command), typeof(DatePicker), default(Command), BindingMode.TwoWay);
+    public Command OnChangeDateCommand
     {
-        get { return (Command)GetValue(AcceptCommandProperty); }
-        set { SetValue(AcceptCommandProperty, value); }
+        get { return (Command)GetValue(OnChangeDateCommandProperty); }
+        set { SetValue(OnChangeDateCommandProperty, value); }
     }
-    public static readonly BindableProperty ChangeDateCommandProperty = BindableProperty.Create(nameof(ChangeDateCommand), typeof(Command), typeof(DatePicker), default(Command), BindingMode.TwoWay);
-    public Command ChangeDateCommand
+    public static readonly BindableProperty OnOpenedCommandProperty = BindableProperty.Create(nameof(OnOpenedCommand), typeof(Command), typeof(DatePicker), default(Command), BindingMode.TwoWay);
+    public Command OnOpenedCommand
     {
-        get { return (Command)GetValue(ChangeDateCommandProperty); }
-        set { SetValue(ChangeDateCommandProperty, value); }
-    }
-    public static readonly BindableProperty OnOpenCommandProperty = BindableProperty.Create(nameof(OnOpenCommand), typeof(Command), typeof(DatePicker), default(Command), BindingMode.TwoWay);
-    public Command OnOpenCommand
-    {
-        get { return (Command)GetValue(OnOpenCommandProperty); }
-        set { SetValue(OnOpenCommandProperty, value); }
+        get { return (Command)GetValue(OnOpenedCommandProperty); }
+        set { SetValue(OnOpenedCommandProperty, value); }
     }
     #endregion
 
     public DatePicker()
     {
         InitializeComponent();
-        this.initedView = this.InitPickerView();
     }
 
     private Task InitPickerView()
     {
+        if (initedView != null && initedView.Status == TaskStatus.Running)
+            return initedView;
+
         return Task.Run(() =>
         {
             this.IsLoading = true;
-            this.view = new DatePickerView(this.SelectedPersianDate)
+            this.CalendarOption.SelectedPersianDate = this.SelectedPersianDate ?? DateTime.Now.ToPersianDate();
+            this.view = new DatePickerView(this.CalendarOption);
+            this.view.SelectedDateChanged += (object sender, SelectedDateChangedEventArgs e) =>
             {
-                SelectDateMode = this.SelectDateMode,
-                SelectDateCommand = new Command((date) =>
-                {
-                    this.SelectedPersianDate = date.ToString();
-                    SetFormattedDate();
-                    if (ChangeDateCommand != null)
-                        ChangeDateCommand.Execute(SelectedPersianDate);
+                this.SelectedPersianDate = e.SelectedDate.PersianDate.ToString();
+                SetFormattedDate();
+
+                OnChangeDateCommand?.Execute(SelectedPersianDate);
+
+                if (CalendarOption.AutoCloseAfterSelectDate)
                     this.view.Close();
-                })
+            };
+            this.view.Opened += (object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e) =>
+            {
+                this.OnOpenedCommand?.Execute(e);
             };
             this.view.Closed += (object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e) =>
             {
@@ -166,7 +167,6 @@ public partial class DatePicker : ContentView
         this.IsLoading = false;
     }
 
-
     #region Event's
 
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -184,7 +184,10 @@ public partial class DatePicker : ContentView
         if (propertyName == SelectedPersianDateProperty.PropertyName)
         {
             if (!string.IsNullOrEmpty(SelectedPersianDate))
+            {
                 SetFormattedDate();
+                this.initedView = this.InitPickerView();
+            }
 
             if (string.IsNullOrEmpty(txtEntry.Text))
                 PullDownPlaceHolder();
@@ -200,6 +203,11 @@ public partial class DatePicker : ContentView
             rectangle.WidthRequest = this.Width;
             rectangle.Stroke = new SolidColorBrush(Color.FromArgb("#a4a6a9"));
         }
+    }
+
+    private void ucDatePicker_Loaded(object sender, EventArgs e)
+    {
+        this.initedView = this.InitPickerView();
     }
 
     private void Entry_Focused(object sender, FocusEventArgs e)
@@ -250,7 +258,7 @@ public partial class DatePicker : ContentView
             _color = PlaceHolderColor; //Application.Current.Resources[$"Primary{Application.Current.RequestedTheme}"];
         if (this.txtEntry.IsFocused)
         {
-            var activeColor = ((Color)Application.Current.Resources[$"Primary{Application.Current.RequestedTheme}"]);
+            var activeColor = this.ActivePlaceHolderColor;// ((Color)Application.Current.Resources[$"Primary{Application.Current.RequestedTheme}"]);
             this.PlaceHolderColor = activeColor; //this.ActivePlaceHolderColor;
             rectangle.Stroke = new SolidColorBrush(activeColor);
         }
