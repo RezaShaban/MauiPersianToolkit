@@ -20,6 +20,10 @@
 		<Authors>rezashaban</Authors>
 		<Description>Persian Calendar &amp; some other controls for .NET MAUI</Description>
 		<PackageTags>maui;calendar;persian calendar;persian calendar maui</PackageTags>
+		<PackageProjectUrl>https://www.nuget.org/packages/PersianUIControlsMaui/</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/RezaShaban/PersianUIControlsMaui.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -38,6 +42,13 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\IranianSans.ttf" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
