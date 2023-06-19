@@ -10,6 +10,7 @@ public class DayOfMonth : ObservableObject
     int dayNum;
     PersianDayOfWeek dayOfWeek;
     string persianDate;
+    int persianDateNo;
     DateTime gregorianDate;
     bool isHoliday;
     bool canSelect;
@@ -20,6 +21,7 @@ public class DayOfMonth : ObservableObject
     public bool CanSelect { get => canSelect; set => SetProperty(ref canSelect, value); }
     public bool IsSelected { get => isSelected; set => SetProperty(ref isSelected, value); }
     public string PersianDate { get => persianDate; set => SetProperty(ref persianDate, value); }
+    internal int PersianDateNo { get => persianDateNo; set => SetProperty(ref persianDateNo, value); }
     public DateTime GregorianDate { get => gregorianDate; set => SetProperty(ref gregorianDate, value); }
     public bool IsHoliday { get => isHoliday; set => SetProperty(ref isHoliday, value); }
 }

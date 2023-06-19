@@ -66,7 +66,7 @@ namespace PersianUIControlsMaui.Models
         /// <summary>
         /// invoke at accept selected date
         /// </summary>
-        public Action<DayOfMonth> OnAccept { get; set; }
+        public Action<object> OnAccept { get; set; }
 
         /// <summary>
         /// invoke at cancel selected date

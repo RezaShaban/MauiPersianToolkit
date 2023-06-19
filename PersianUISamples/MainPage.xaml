@@ -8,8 +8,17 @@
 
     <ScrollView>
         <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
-            <persian:DatePicker PlaceHolder="تاریخ شروع" SelectedPersianDate="{Binding PersianDate}" CalendarOption="{Binding CalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}"/>
+            <persian:DatePicker PlaceHolder="تاریخ شروع" SelectedPersianDate="{Binding PersianDate}" CalendarOption="{Binding CalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}" Icon="&#xf133;"/>
 
+            <persian:EntryView PlaceHolder="نام و فامیل" Icon="&#xf00c;" AppendText="@"/>
+
+            <persian:LabelView Text="برچسب تستی" Icon="&#xf067;"/>
+
+            <persian:ContainerView Title="باکس اطلاعات" Icon="&#xf00c;">
+                <persian:ContainerView.Contents>
+                    <persian:CheckBoxView Text="انتخاب اول"/>
+                </persian:ContainerView.Contents>
+            </persian:ContainerView>
             <Image
                 Source="dotnet_bot.png"
                 SemanticProperties.Description="Cute dot net bot waving hi to you!"

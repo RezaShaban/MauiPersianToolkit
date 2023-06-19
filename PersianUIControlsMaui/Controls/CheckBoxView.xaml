@@ -6,8 +6,8 @@
     <ContentView.Content>
         <Grid ColumnDefinitions="35,100*" RowDefinitions="28">
             <CheckBox Grid.Column="0" Grid.Row="0" Color="{Binding IconColor,Source={x:Reference checkView}}"
-                      VerticalOptions="Center" IsChecked="{Binding IsChecked,Source={x:Reference checkView}}"/>
-            <Label Text="{Binding Text,Source={x:Reference checkView}}" Grid.Column="1" Grid.Row="0"
+                      VerticalOptions="Center" IsChecked="{Binding IsChecked,Source={x:Reference checkView}}" />
+            <Label Text="{Binding Text,Source={x:Reference checkView}}" Grid.Column="1" Grid.Row="0" FontFamily="IranianSans"
                    TextColor="{Binding TextColor,Source={x:Reference checkView}}" VerticalOptions="Center">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="lblText_Tapped"/>

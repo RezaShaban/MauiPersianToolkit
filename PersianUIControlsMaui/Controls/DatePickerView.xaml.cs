@@ -34,18 +34,22 @@ public partial class DatePickerView : Popup
 
         selectedDate = _selectedDate;
 
-        if (SelectedDateChanged != null && selectedDate.CanSelect && viewModel.Options.AutoCloseAfterSelectDate)
+        if (SelectedDateChanged != null && viewModel.CanClose(selectedDate))
+        {
+            viewModel.Options.OnAccept?.Invoke(viewModel.SelectedDays);
             SelectedDateChanged.Invoke(sender, new SelectedDateChangedEventArgs()
             {
-                SelectedDate = selectedDate
+                SelectedDate = selectedDate,
+                SelectedDates = viewModel.SelectedDays
             });
+
+        }
     }
 
     private void btnAccept_Clicked(object sender, EventArgs e)
     {
-        if (selectedDate is null)
-            selectedDate = viewModel.DaysOfMonth.FirstOrDefault(x => x.IsSelected);
-        viewModel.Options.OnAccept?.Invoke(selectedDate);
+        var dates = viewModel.SelectedDays.Where(x => x.IsSelected).ToList();
+        viewModel.Options.OnAccept?.Invoke(dates);
         this.Close();
     }
 
@@ -59,4 +63,5 @@ public partial class DatePickerView : Popup
 public class SelectedDateChangedEventArgs : EventArgs
 {
     public DayOfMonth SelectedDate { get; set; }
+    public List<DayOfMonth> SelectedDates { get; set; }
 }

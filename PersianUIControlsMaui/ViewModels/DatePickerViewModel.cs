@@ -1,4 +1,5 @@
-﻿using PersianUIControlsMaui.Enums;
+﻿using Microsoft.Maui.Layouts;
+using PersianUIControlsMaui.Enums;
 using PersianUIControlsMaui.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -27,10 +28,12 @@ public class DatePickerViewModel : ObservableObject
     #region Field's
     private List<string> daysOfWeek;
     private List<DayOfMonth> daysOfMonth;
+    private List<DayOfMonth> selectedDays;
     #endregion
 
     public List<string> DaysOfWeek { get => daysOfWeek; set => SetProperty(ref daysOfWeek, value); }
     public List<DayOfMonth> DaysOfMonth { get => daysOfMonth; set => SetProperty(ref daysOfMonth, value); }
+    public List<DayOfMonth> SelectedDays { get => selectedDays; set => SetProperty(ref selectedDays, value); }
     #endregion
 
     #region Command's
@@ -54,6 +57,7 @@ public class DatePickerViewModel : ObservableObject
 
     public DatePickerViewModel(CalendarOptions options)
     {
+        SelectedDays = new List<DayOfMonth>();
         SelectDateMode = options.SelectDateMode;
         Options = options;
 
@@ -101,13 +105,12 @@ public class DatePickerViewModel : ObservableObject
                 DayNum = currentDate.GetPersianDayOfMonth(),
                 GregorianDate = currentDate,
                 PersianDate = currentDate.ToPersianDate(),
-                IsSelected = date.Date == currentDate.Date,
+                PersianDateNo = currentDate.ToPersianDate().Replace("/", "").ToInt(),
+                IsSelected = GetIsSelected(currentDate, date),
                 IsInCurrentMonth = x >= 0,
                 IsHoliday = isHoliday,
                 DayOfWeek = (PersianDayOfWeek)currentDate.GetPersianDay(),
-                CanSelect = (currentDate >= Options.MinDateCanSelect || Options.MinDateCanSelect is null)
-                && (currentDate <= Options.MaxDateCanSelect || Options.MaxDateCanSelect is null)
-                && (!isHoliday || Options.CanSelectHolidays)
+                CanSelect = GetCanSelect(currentDate),
             };
             return day;
         }).ToList();
@@ -117,9 +120,79 @@ public class DatePickerViewModel : ObservableObject
     {
         if (obj is not DayOfMonth dayOfMonth || !dayOfMonth.CanSelect)
             return;
+        if (Options.SelectionMode == Enums.SelectionMode.Single)
+            DaysOfMonth.ForEach(day => { day.IsSelected = day.PersianDate == dayOfMonth.PersianDate; });
+        else if (Options.SelectionMode == Enums.SelectionMode.Multiple)
+            ToggleMultipleDates(dayOfMonth);
+        else if (Options.SelectionMode == Enums.SelectionMode.Range)
+        {
+            if (dayOfMonth.PersianDateNo <= SelectedDays.FirstOrDefault(x => x.IsSelected)?.PersianDateNo)
+            {
+                DaysOfMonth.ForEach(x => { x.IsSelected = false; x.CanSelect = GetCanSelect(x.GregorianDate); });
+                SelectedDays.Clear();
+            }
+            ToggleRangeDates(dayOfMonth);
+        }
+    }
 
-        foreach (DayOfMonth day in DaysOfMonth)
-            day.IsSelected = day.PersianDate == dayOfMonth.PersianDate;
+    private void ToggleRangeDates(DayOfMonth dayOfMonth)
+    {
+        if (SelectedDays.Any())
+            DaysOfMonth.Where(x => x.PersianDateNo >= dayOfMonth.PersianDateNo).ToList().ForEach(x =>
+            {
+                x.IsSelected = x.PersianDate == dayOfMonth.PersianDate;
+                x.CanSelect = x.IsSelected;
+
+                if (x.IsSelected)
+                    SelectedDays.Add(x);
+                else if (SelectedDays.Exists(s => s.PersianDateNo == x.PersianDateNo))
+                    SelectedDays.Remove(x);
+            });
+
+        if (!SelectedDays.Any())
+            DaysOfMonth.Where(x => x.PersianDateNo == dayOfMonth.PersianDateNo).ToList().ForEach(x =>
+            {
+                x.IsSelected = x.PersianDateNo == dayOfMonth.PersianDateNo;
+                x.CanSelect = GetCanSelect(x.GregorianDate);
+
+                if (x.IsSelected)
+                    SelectedDays.Add(x);
+                else if (SelectedDays.Exists(s => s.PersianDateNo == x.PersianDateNo))
+                    SelectedDays.Remove(x);
+            });
+    }
+
+    private void ToggleMultipleDates(DayOfMonth dayOfMonth)
+    {
+        var selectedDate = DaysOfMonth.FirstOrDefault(x => x.PersianDateNo == dayOfMonth.PersianDateNo);
+        if (!selectedDate.IsSelected)
+        {
+            selectedDate.IsSelected = !selectedDate.IsSelected;
+            SelectedDays.Add(selectedDate);
+        }
+        else
+        {
+            SelectedDays.RemoveAll(x => x.PersianDateNo == selectedDate.PersianDateNo);
+            selectedDate.IsSelected = !selectedDate.IsSelected;
+        }
+    }
+
+    private bool GetCanSelect(DateTime currentDate)
+    {
+        bool isHoliday = currentDate.GetPersianDay() == DayOfWeek.Friday;
+        return (currentDate >= Options.MinDateCanSelect || Options.MinDateCanSelect is null)
+                && (currentDate <= Options.MaxDateCanSelect || Options.MaxDateCanSelect is null)
+                && (!isHoliday || Options.CanSelectHolidays);
+    }
+
+    private bool GetIsSelected(DateTime currentDate, DateTime date)
+    {
+        if (Options.SelectionMode == Enums.SelectionMode.Single)
+            return date.Date == currentDate.Date;
+        if (Options.SelectionMode == Enums.SelectionMode.Multiple || Options.SelectionMode == Enums.SelectionMode.Range)
+            return SelectedDays.Exists(x => x.GregorianDate.Date == currentDate.Date);
+
+        return false;
     }
 
     private void NextMonth(object obj)
@@ -140,5 +213,11 @@ public class DatePickerViewModel : ObservableObject
     private void PrevYear(object obj)
     {
         InitCalendarDays(DaysOfMonth.FirstOrDefault(x => x.IsSelected).GregorianDate.AddYears(-1));
+    }
+
+    public bool CanClose(DayOfMonth selectedDate)
+    {
+        return (Options.AutoCloseAfterSelectDate && Options.SelectionMode == Enums.SelectionMode.Range && SelectedDays.Count == 2)
+            || selectedDate.CanSelect && Options.AutoCloseAfterSelectDate && Options.SelectionMode == Enums.SelectionMode.Single;
     }
 }

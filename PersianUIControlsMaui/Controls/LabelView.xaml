@@ -13,7 +13,7 @@
                    HorizontalTextAlignment="Center" TextColor="{Binding TextColor,Source={x:Reference lblView}}"
                    FontSize="{Binding IconFontSize,Source={x:Reference lblView}}" InputTransparent="True" FontFamily="FontAwesome" />
             
-            <Label Text="{Binding Text,Source={x:Reference lblView}}" HorizontalOptions="FillAndExpand" FontSize="{Binding FontSize,Source={x:Reference lblView}}" TextColor="{Binding TextColor,Source={x:Reference lblView}}" Grid.Column="1" Grid.Row="0" FontAttributes="{Binding FontAttribute,Source={x:Reference lblView}}" HorizontalTextAlignment="{Binding HorizontalTextAlignment,Source={x:Reference lblView}}" InputTransparent="True" TextDecorations="{Binding TextDecoration,Source={x:Reference lblView}}" x:Name="lbl"/>
+            <Label Text="{Binding Text,Source={x:Reference lblView}}" HorizontalOptions="FillAndExpand" FontSize="{Binding FontSize,Source={x:Reference lblView}}" TextColor="{Binding TextColor,Source={x:Reference lblView}}" Grid.Column="1" Grid.Row="0" FontAttributes="{Binding FontAttribute,Source={x:Reference lblView}}" HorizontalTextAlignment="{Binding HorizontalTextAlignment,Source={x:Reference lblView}}" InputTransparent="True" TextDecorations="{Binding TextDecoration,Source={x:Reference lblView}}" x:Name="lbl" FontFamily="IranianSans"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

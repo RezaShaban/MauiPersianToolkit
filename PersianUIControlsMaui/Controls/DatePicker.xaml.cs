@@ -29,6 +29,8 @@ public partial class DatePicker : ContentView
         set { SetValue(SelectedPersianDateProperty, value); }
     }
 
+
+
     public static readonly BindableProperty FormattedDateProperty = BindableProperty.Create(nameof(FormattedDate), typeof(object), typeof(DatePicker), default(string), BindingMode.TwoWay);
     public string FormattedDate
     {
@@ -49,7 +51,7 @@ public partial class DatePicker : ContentView
         get { return (string)GetValue(DisplayFormatProperty); }
         set { SetValue(DisplayFormatProperty, value); }
     }
-    
+
     public static readonly BindableProperty PlaceHolderColorProperty = BindableProperty.Create(nameof(PlaceHolderColor), typeof(Color), typeof(DatePicker), Colors.Gray, BindingMode.TwoWay);
     public Color PlaceHolderColor
     {
@@ -127,15 +129,19 @@ public partial class DatePicker : ContentView
         {
             this.IsLoading = true;
             this.CalendarOption.SelectedPersianDate = this.SelectedPersianDate ?? DateTime.Now.ToPersianDate();
+            this.CalendarOption.AutoCloseAfterSelectDate = this.CalendarOption.SelectionMode != Enums.SelectionMode.Multiple ? this.CalendarOption.AutoCloseAfterSelectDate : false;
             this.view = new DatePickerView(this.CalendarOption);
             this.view.SelectedDateChanged += (object sender, SelectedDateChangedEventArgs e) =>
             {
-                this.SelectedPersianDate = e.SelectedDate.PersianDate.ToString();
-                SetFormattedDate();
+                if (this.CalendarOption.SelectionMode == Enums.SelectionMode.Single)
+                {
+                    this.SelectedPersianDate = e.SelectedDate.PersianDate.ToString();
+                    SetFormattedDate();
+                    OnChangeDateCommand?.Execute(SelectedPersianDate);
+                }
 
-                OnChangeDateCommand?.Execute(SelectedPersianDate);
-
-                if (CalendarOption.AutoCloseAfterSelectDate)
+                if ((CalendarOption.AutoCloseAfterSelectDate && this.CalendarOption.SelectionMode == Enums.SelectionMode.Single)
+                || (CalendarOption.AutoCloseAfterSelectDate && e.SelectedDates.Count == 2 && this.CalendarOption.SelectionMode == Enums.SelectionMode.Range))
                     this.view.Close();
             };
             this.view.Opened += (object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e) =>
@@ -177,9 +183,7 @@ public partial class DatePicker : ContentView
             PlaceHolderColor = this.IsEnabled ? PlaceHolderColor : Colors.Gray;
 
         if (propertyName == IconProperty.PropertyName)
-        {
             lblIcon.IsVisible = !string.IsNullOrEmpty(Icon);
-        }
 
         if (propertyName == SelectedPersianDateProperty.PropertyName)
         {
@@ -196,12 +200,6 @@ public partial class DatePicker : ContentView
                 SetFormattedDate();
                 PullUpPlaceHolder();
             }
-        }
-
-        if (propertyName == WidthProperty.PropertyName)
-        {
-            rectangle.WidthRequest = this.Width;
-            rectangle.Stroke = new SolidColorBrush(Color.FromArgb("#a4a6a9"));
         }
     }
 

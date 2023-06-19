@@ -140,21 +140,12 @@ public partial class EntryView : ContentView
             else if (lblState == 0)
                 PullUpPlaceHolder();
         }
-        if (propertyName == WidthProperty.PropertyName)
-        {
-            rectangle.WidthRequest = this.Width;
-            rectangle.Stroke = new SolidColorBrush(Color.FromArgb("#a4a6a9"));
-        }
 
         if (propertyName == AppendTextProperty.PropertyName)
-        {
             append.Text = AppendText;
-        }
 
         if (propertyName == IsValidProperty.PropertyName)
-        {
             this.entry.Focus();
-        }
     }
 
     private void Entry_Focused(object sender, FocusEventArgs e)
@@ -200,8 +191,6 @@ public partial class EntryView : ContentView
     private void SetColors(Color color)
     {
         this.SetValue(PlaceHolderColorProperty, color);
-        //PlaceHolderColor = color;
-        rectangle.Stroke = new SolidColorBrush(color);
     }
 
     private void entry_TextChanged(object sender, TextChangedEventArgs e)

@@ -19,20 +19,23 @@ namespace PersianUISamples.ViewModels
             CalendarOption = new CalendarOptions()
             {
                 SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
-                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Single,
+                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Multiple,
                 SelectDayColor = Colors.Orange,
-                AutoCloseAfterSelectDate = false,
+                AutoCloseAfterSelectDate = true,
                 OnAccept = OnAcceptDate,
                 OnCancel = new Action(() => { }),
-                MinDateCanSelect = DateTime.Now.AddDays(-3),
-                MaxDateCanSelect = DateTime.Now.AddDays(4),
+                MinDateCanSelect = DateTime.Now.AddDays(-10),
+                MaxDateCanSelect = DateTime.Now.AddDays(10),
                 CanSelectHolidays = false
             };
         }
 
-        private void OnAcceptDate(DayOfMonth obj)
+        private void OnAcceptDate(object obj)
         {
-            this.PersianDate = obj.PersianDate;
+            if (obj is not List<DayOfMonth> dates)
+                return;
+
+            this.PersianDate = dates.FirstOrDefault()?.PersianDate + " - " + dates.LastOrDefault()?.PersianDate;
         }
 
         private void OnDateChanged(object obj)

@@ -5,8 +5,18 @@
         public App()
         {
             InitializeComponent();
-
-            MainPage = new MainPage();
+            try
+            {
+                MainPage = new MainPage();
+            }
+            catch (Exception ex)
+            {
+                MainPage = new ContentPage()
+                {
+                    Background = Colors.White,
+                    Content = new Label() { Text = ex.ToString(), TextColor = Colors.Black },
+                };
+            }
         }
     }
 }

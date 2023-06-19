@@ -15,6 +15,7 @@ public static class AppBuilderExtensions
             {
                 //fonts.AddEmbeddedResourceFont(typeof(AppBuilderExtensions).Assembly, "materialdesignicons-webfont.ttf", "MDI");
                 fonts.AddEmbeddedResourceFont(typeof(AppBuilderExtensions).Assembly, "IranianSans.ttf", "IranianSans");
+                fonts.AddEmbeddedResourceFont(typeof(AppBuilderExtensions).Assembly, "FontAwesome.ttf", "FontAwesome");
             });
         Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("CustomEditor", (handler, view) =>
         {

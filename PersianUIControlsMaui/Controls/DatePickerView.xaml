@@ -49,8 +49,8 @@
                 <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Margin="-15,-10,-15,0" ColumnDefinitions="42,42,50*,50*,42,42" ColumnSpacing="0" BackgroundColor="Gainsboro">
                     <Button Text="«" Margin="0" x:Name="btnPrevYear" Command="{Binding PrevYearCommand}" TextColor="Black" FontSize="Title" Padding="15,0" Grid.Column="0" Grid.Row="0" BackgroundColor="Gainsboro"/>
                     <Button Text="&#x3c;" Margin="0" Padding="15,7" x:Name="btnPrevMonth" Command="{Binding PrevMonthCommand}" TextColor="Black" Grid.Column="1" Grid.Row="0" BackgroundColor="Gainsboro"/>
-                    <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentYear}" x:Name="btnCurrentYear" TextColor="Black" Padding="15,7" Grid.Column="2" Grid.Row="0" BackgroundColor="Gainsboro"/>
-                    <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentMonth}" x:Name="btnCurrentMonth" TextColor="Black" Padding="10,7" Grid.Column="3" Grid.Row="0" BackgroundColor="Gainsboro" FontSize="12"/>
+                    <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentYear}" x:Name="btnCurrentYear" TextColor="Black" Padding="15,7" Grid.Column="2" Grid.Row="0" BackgroundColor="Gainsboro" FontFamily="IranianSans"/>
+                    <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentMonth}" x:Name="btnCurrentMonth" FontSize="12" TextColor="Black" Padding="10,7" Grid.Column="3" Grid.Row="0" BackgroundColor="Gainsboro" FontFamily="IranianSans"/>
                     <Button Text=">" Margin="0" x:Name="btnNextMonth" Command="{Binding NextMonthCommand}" TextColor="Black" Padding="15,7" Grid.Row="0" Grid.Column="4" BackgroundColor="Gainsboro"/>
                     <Button Text="»" Margin="0" x:Name="btnNextYear" Command="{Binding NextYearCommand}" TextColor="Black" FontSize="Title" Padding="15,0" Grid.Column="5" Grid.Row="0" BackgroundColor="Gainsboro"/>
                 </Grid>
@@ -70,7 +70,7 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:DayOfMonth">
-                            <Button Padding="5,3" Text="{Binding DayNum}" WidthRequest="32" HeightRequest="32" HorizontalOptions="Center" VerticalOptions="Center" CommandParameter="{Binding .}" Clicked="btnDay_Clicked" IsVisible="{Binding IsInCurrentMonth}">
+                            <Button Padding="5,3" Text="{Binding DayNum}" WidthRequest="32" HeightRequest="32" HorizontalOptions="Center" VerticalOptions="Center" CommandParameter="{Binding .}" Clicked="btnDay_Clicked" FontFamily="IranianSans" IsVisible="{Binding IsInCurrentMonth}">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsHoliday}" Value="True">
                                         <Setter Property="TextColor" Value="Red"/>
@@ -78,6 +78,10 @@
                                     <DataTrigger TargetType="Button" Binding="{Binding CanSelect}" Value="False">
                                         <Setter Property="TextColor" Value="#999"/>
                                         <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding CanSelect}" Value="True">
+                                        <Setter Property="TextColor" Value="#333"/>
+                                        <Setter Property="IsEnabled" Value="True"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
                                         <Setter Property="Background" Value="{Binding Options.SelectDayColor,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}"/>
@@ -99,8 +103,8 @@
                             <Setter Property="IsVisible" Value="True"/>
                         </DataTrigger>
                     </Grid.Triggers>
-                    <Button Text="انصراف" Grid.Column="1" Grid.Row="0" Margin="0" BackgroundColor="Gainsboro" FontSize="12" x:Name="btnCancel" Clicked="btnCancel_Clicked"/>
-                    <Button Text="تایید" Grid.Row="0" Grid.Column="0" Margin="0" BackgroundColor="Gainsboro" FontSize="12" x:Name="btnAccept" Clicked="btnAccept_Clicked"/>
+                    <Button Text="انصراف" Grid.Column="1" Grid.Row="0" Margin="0" BackgroundColor="Gainsboro" FontSize="12" x:Name="btnCancel" Clicked="btnCancel_Clicked" FontFamily="IranianSans"/>
+                    <Button Text="تایید" Grid.Row="0" Grid.Column="0" Margin="0" BackgroundColor="Gainsboro" FontSize="12" x:Name="btnAccept" Clicked="btnAccept_Clicked" FontFamily="IranianSans"/>
                 </Grid>
             </Grid>
         </Grid>
