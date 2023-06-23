@@ -197,22 +197,36 @@ public class DatePickerViewModel : ObservableObject
 
     private void NextMonth(object obj)
     {
-        InitCalendarDays(DaysOfMonth.FirstOrDefault(x => x.IsSelected).GregorianDate.AddMonths(1));
+        var date = GetSelectedDate();
+        InitCalendarDays(date.AddMonths(1));
     }
 
     private void PrevMonth(object obj)
     {
-        InitCalendarDays(DaysOfMonth.FirstOrDefault(x => x.IsSelected).GregorianDate.AddMonths(-1));
+        var date = GetSelectedDate();
+        InitCalendarDays(date.AddMonths(-1));
     }
 
     private void NextYear(object obj)
     {
-        InitCalendarDays(DaysOfMonth.FirstOrDefault(x => x.IsSelected).GregorianDate.AddYears(1));
+        var date = GetSelectedDate();
+        InitCalendarDays(date.AddYears(1));
     }
 
     private void PrevYear(object obj)
     {
-        InitCalendarDays(DaysOfMonth.FirstOrDefault(x => x.IsSelected).GregorianDate.AddYears(-1));
+        var date = GetSelectedDate();
+        InitCalendarDays(date.AddYears(-1));
+    }
+
+    private DateTime GetSelectedDate()
+    {
+        DateTime date = DateTime.Now;
+        if (DaysOfMonth.Any(x => x.IsSelected))
+            date = DaysOfMonth.FirstOrDefault(x => x.IsSelected).GregorianDate;
+        else
+            date = DaysOfMonth.Skip(DaysOfMonth.Count/2).Take(1).FirstOrDefault().GregorianDate;
+        return date;
     }
 
     public bool CanClose(DayOfMonth selectedDate)
