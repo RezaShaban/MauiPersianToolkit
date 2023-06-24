@@ -78,7 +78,7 @@ namespace PersianUISamples.ViewModels
                 Title = "ثبت اطلاعات",
                 AcceptText = "ثبت",
                 CancelText = "انصراف",
-                Message = $"اطلاعات خود را در زیر وارد کنید{Environment.NewLine}اطلاعات خود را در زیر وارد کنید",
+                Message = $"اطلاعات خود را جهت بررسی در زیر وارد کنید",
                 BackgrounColor = Colors.DeepPink,
                 Placeholder = "اطلاعات",
                 Icon = MessageIcon.QUESTION,
