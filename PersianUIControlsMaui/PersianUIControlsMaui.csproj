@@ -90,6 +90,9 @@
 	  <MauiXaml Update="Dialogs\ConfirmPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Dialogs\PromptPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\PersianStyles.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

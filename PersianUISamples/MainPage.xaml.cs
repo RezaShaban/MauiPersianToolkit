@@ -8,6 +8,7 @@ namespace PersianUISamples
         {
             InitializeComponent();
             this.BindingContext = viewModel;
+
         }
     }
 }

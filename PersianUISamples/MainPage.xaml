@@ -33,7 +33,7 @@
                 FontSize="18"
                 HorizontalOptions="Center" />
 
-            <Grid ColumnDefinitions="50*,50*">
+            <Grid ColumnDefinitions="33*,33*,33*">
                 <Button Text="Alert me" TextColor="White" Grid.Column="0"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding ShowAlertCommand}"
@@ -42,6 +42,11 @@
                 <Button Text="Confirm me" TextColor="White" Grid.Column="1"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding ShowConfirmCommand}"
+                HorizontalOptions="Center" />
+                
+                <Button Text="Prompt me" TextColor="White" Grid.Column="2"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Command="{Binding ShowPromptCommand}"
                 HorizontalOptions="Center" />
             </Grid>
 

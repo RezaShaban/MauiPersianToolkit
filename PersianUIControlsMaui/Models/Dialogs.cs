@@ -50,11 +50,12 @@ public abstract class BaseConfig
             "#b32e91", //Message
         };
 
+    Color dialogColor = null;
     public string Title { get; set; }
     public string Message { get; set; }
     public MessageIcon Icon { get; set; }
     public string FontIcon { get { return Icons[((int)Icon)]; } }
-    public Color DialogColor { get { return Color.FromArgb(IconsColor[((int)Icon)]); } }
+    public Color DialogColor { get { return dialogColor ?? Color.FromArgb(IconsColor[((int)Icon)]); } set { dialogColor = value; } }
     public bool CloseWhenBackgroundIsClicked { get; set; } = true;
 }
 public class PromptResult

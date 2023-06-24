@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:uc="clr-namespace:PersianUIControlsMaui.Controls"
+               x:Class="PersianUIControlsMaui.Dialogs.PromptPage" Color="Transparent" HorizontalOptions="Fill">
+
+    <!-- Content -->
+    <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft">
+        <Grid Padding="20" HorizontalOptions="Fill">
+            <Frame HorizontalOptions="Fill" CornerRadius="7" Padding="0" Margin="0,32,0,0" HasShadow="True">
+                <StackLayout BackgroundColor="#f0f0f0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill">
+                    <Label Text="{Binding Title}" TextColor="#333" FontSize="Title" HorizontalOptions="Center" VerticalOptions="Center" Margin="20,45,20,0" FontFamily="IranianSans" LineBreakMode="WordWrap"/>
+                    <ScrollView>
+                        <StackLayout Padding="15,5" HorizontalOptions="Fill" VerticalOptions="Fill">
+                            <Label Text="{Binding Message}" FontSize="Body" Margin="0,0,0,10" LineHeight="1.25" x:Name="lblMessage" FontFamily="IranianSans" TextColor="#666" LineBreakMode="WordWrap" />
+
+                            <uc:EntryView Text="{Binding DefaultValue}" PlaceHolder="{Binding Placeholder}" Margin="10"
+                                  Icon="{Binding FontIcon}" AppendText="{Binding AppendText}"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <AbsoluteLayout BackgroundColor="#f5f5f5" VerticalOptions="End" HeightRequest="45" Margin="0,0,0,0">
+                        <uc:ButtonView Text="{Binding AcceptText}" Command="{Binding Command}" BtnMargin="0" TextColor="#1f883d" CornerRadius="0" BtnBgColor="#f5f5f5" Icon="{Binding AcceptFontIcon}" IconColor="#1f883d" Clicked="btnAccept_Clicked" AbsoluteLayout.LayoutBounds="0,0,.5,45" AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"/>
+                        <uc:ButtonView Text="{Binding CancelText}" Command="{Binding Command}" TextColor="OrangeRed" CornerRadius="0" BtnMargin="0" Icon="{Binding CancelFontIcon}" BtnBgColor="#f5f5f5" IconColor="OrangeRed" Clicked="btnCancel_Clicked" AbsoluteLayout.LayoutBounds="1,1,.5,45" AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"/>
+                    </AbsoluteLayout>
+                </StackLayout>
+            </Frame>
+            <Frame Padding="0" CornerRadius="100" BorderColor="Transparent" ZIndex="2" WidthRequest="72" HeightRequest="72" VerticalOptions="Start" HorizontalOptions="Center">
+                <Button WidthRequest="72" HeightRequest="72" FontSize="32" TextColor="White" Text="{Binding FontIcon}" BorderWidth="3" ZIndex="2" InputTransparent="True" BorderColor="White" Padding="0" CornerRadius="100" BackgroundColor="{Binding DialogColor}" FontFamily="FontAwesome"/>
+            </Frame>
+        </Grid>
+    </Grid>
+</toolkit:Popup>

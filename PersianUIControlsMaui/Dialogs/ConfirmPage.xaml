@@ -14,16 +14,8 @@
                     <Label Text="{Binding Message}" FontSize="Body" Margin="0,0,0,10" Padding="15,5" FontFamily="IranianSans" TextColor="#666"/>
 
                     <Grid BackgroundColor="#f5f5f5" VerticalOptions="End" RowDefinitions="45" RowSpacing="0" ColumnSpacing="0" Margin="0,0,0,0" ColumnDefinitions="50*,50*">
-                        <uc:ButtonView Text="{Binding AcceptText}" Command="{Binding Command}" BtnMargin="0"
-                                   CornerRadius="3"
-                                   BtnBgColor="#f5f5f5" Icon="{Binding AcceptFontIcon}"
-                                   Clicked="btnAccept_Clicked"
-                                   Grid.Column="0"/>
-                        <uc:ButtonView Text="{Binding CancelText}" Command="{Binding Command}"
-                                   CornerRadius="3" BtnMargin="0"
-                                   Icon="{Binding CancelFontIcon}" BtnBgColor="#f5f5f5"
-                                   Clicked="btnCancel_Clicked"
-                                   Grid.Column="1"/>
+                        <uc:ButtonView Text="{Binding AcceptText}" Command="{Binding Command}" BtnMargin="0" CornerRadius="3" BtnBgColor="#f5f5f5" Icon="{Binding AcceptFontIcon}" Clicked="btnAccept_Clicked" Grid.Column="0" IconColor="#1f883d" TextColor="#1f883d"/>
+                        <uc:ButtonView Text="{Binding CancelText}" Command="{Binding Command}" CornerRadius="3" BtnMargin="0" Icon="{Binding CancelFontIcon}" BtnBgColor="#f5f5f5" Clicked="btnCancel_Clicked" Grid.Column="1" IconColor="OrangeRed" TextColor="OrangeRed"/>
                     </Grid>
                 </StackLayout>
             </Frame>

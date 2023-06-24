@@ -31,7 +31,7 @@ public class DialogService : IDialogService
         MainThread.BeginInvokeOnMainThread(async () =>
         {
             SetMainPage();
-            var alertPage = new AlertPage(config);
+            var alertPage = new AlertPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseWhenBackgroundIsClicked };
             await mainPage.ShowPopupAsync(alertPage);
         });
     }
@@ -72,7 +72,7 @@ public class DialogService : IDialogService
     public async void Confirm(ConfirmConfig config)
     {
         SetMainPage();
-        var confirmPage = new ConfirmPage(config);
+        var confirmPage = new ConfirmPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseWhenBackgroundIsClicked };
         await mainPage.ShowPopupAsync(confirmPage);
     }
 
@@ -88,7 +88,10 @@ public class DialogService : IDialogService
     {
         MainThread.BeginInvokeOnMainThread(async () =>
         {
-            //await PopupNavigation.Instance.PushAsync(new PromptPage(config) { BackgroundColor = config.BackgrounColor, CloseWhenBackgroundIsClicked = config.CloseAfterAccept });
+            SetMainPage();
+            var confirmPage = new PromptPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseAfterAccept };
+            await mainPage.ShowPopupAsync(confirmPage);
+            //await PopupNavigation.Instance.PushAsync();
         });
     }
 }
