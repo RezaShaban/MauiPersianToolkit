@@ -14,16 +14,11 @@
 
             <persian:LabelView Text="برچسب تستی" Icon="&#xf067;"/>
 
-            <persian:ContainerView Title="باکس اطلاعات" Icon="&#xf00c;">
+            <persian:ContainerView Title=" باکس اطلاعات" Icon="&#xf00c;">
                 <persian:ContainerView.Contents>
-                    <persian:CheckBoxView Text="انتخاب اول"/>
+                    <persian:CheckBoxView Text="انتخاب اول" TextColor="Black"/>
                 </persian:ContainerView.Contents>
             </persian:ContainerView>
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
 
             <Label
                 Text="Hello, World!"
@@ -38,12 +33,22 @@
                 FontSize="18"
                 HorizontalOptions="Center" />
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me" TextColor="White"
+            <Grid ColumnDefinitions="33*,33*,33*">
+                <Button Text="Alert me" TextColor="White" Grid.Column="0"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
+                Command="{Binding ShowAlertCommand}"
                 HorizontalOptions="Center" />
+
+                <Button Text="Confirm me" TextColor="White" Grid.Column="1"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Command="{Binding ShowConfirmCommand}"
+                HorizontalOptions="Center" />
+                
+                <Button Text="Prompt me" TextColor="White" Grid.Column="2"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Command="{Binding ShowPromptCommand}"
+                HorizontalOptions="Center" />
+            </Grid>
 
         </VerticalStackLayout>
     </ScrollView>
