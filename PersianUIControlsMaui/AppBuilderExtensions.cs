@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Maui;
+﻿using PersianUIControlsMaui.Services.Dialog;
 #if ANDROID
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 #endif
@@ -16,13 +16,14 @@ public static class AppBuilderExtensions
                 //fonts.AddEmbeddedResourceFont(typeof(AppBuilderExtensions).Assembly, "materialdesignicons-webfont.ttf", "MDI");
                 fonts.AddEmbeddedResourceFont(typeof(AppBuilderExtensions).Assembly, "IranianSans.ttf", "IranianSans");
                 fonts.AddEmbeddedResourceFont(typeof(AppBuilderExtensions).Assembly, "FontAwesome.ttf", "FontAwesome");
-            });
+            })
+            .Services.AddSingleton<IDialogService, DialogService>();
         Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("CustomEditor", (handler, view) =>
         {
 #if ANDROID
             handler.PlatformView.Bottom = 0;
             Android.Graphics.Drawables.GradientDrawable gd = new Android.Graphics.Drawables.GradientDrawable();
-                gd.SetColor(global::Android.Graphics.Color.Transparent);
+            gd.SetColor(global::Android.Graphics.Color.Transparent);
             handler.PlatformView.SetBackgroundDrawable(gd);
 #endif
         });

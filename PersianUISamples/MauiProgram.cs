@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using PersianUIControlsMaui;
+using PersianUISamples.ViewModels;
 
 namespace PersianUISamples
 {
@@ -16,7 +17,8 @@ namespace PersianUISamples
                         fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     })
                 .UseMauiCommunityToolkit()
-                .UsePersianUIControls();
+                .UsePersianUIControls()
+                .Services.AddScoped<MainPage>().AddScoped<MainViewModel>();
             return builder.Build();
         }
     }

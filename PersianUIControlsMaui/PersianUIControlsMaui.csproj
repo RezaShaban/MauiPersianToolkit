@@ -84,6 +84,12 @@
 	  <MauiXaml Update="Controls\LabelView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Dialogs\AlertPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Dialogs\ConfirmPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\PersianStyles.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
