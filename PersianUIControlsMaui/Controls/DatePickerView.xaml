@@ -72,9 +72,6 @@
                         <DataTemplate x:DataType="models:DayOfMonth">
                             <Button Padding="5,3" Text="{Binding DayNum}" WidthRequest="32" HeightRequest="32" HorizontalOptions="Center" VerticalOptions="Center" CommandParameter="{Binding .}" Clicked="btnDay_Clicked" FontFamily="IranianSans" IsVisible="{Binding IsInCurrentMonth}">
                                 <Button.Triggers>
-                                    <DataTrigger TargetType="Button" Binding="{Binding IsHoliday}" Value="True">
-                                        <Setter Property="TextColor" Value="Red"/>
-                                    </DataTrigger>
                                     <DataTrigger TargetType="Button" Binding="{Binding CanSelect}" Value="False">
                                         <Setter Property="TextColor" Value="#999"/>
                                         <Setter Property="IsEnabled" Value="False"/>
@@ -82,6 +79,9 @@
                                     <DataTrigger TargetType="Button" Binding="{Binding CanSelect}" Value="True">
                                         <Setter Property="TextColor" Value="#333"/>
                                         <Setter Property="IsEnabled" Value="True"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsHoliday}" Value="True">
+                                        <Setter Property="TextColor" Value="Red"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
                                         <Setter Property="Background" Value="{Binding Options.SelectDayColor,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}"/>
