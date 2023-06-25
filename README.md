@@ -56,6 +56,24 @@ CalendarOption = new CalendarOptions()
                 CanSelectHolidays = false
             };
 ```
+
+Use Dialogs:
+```bash
+inject in constructor => IDialogService dialogService
+
+private void ShowConfirm(object obj)
+        {
+            dialogService.Confirm(new ConfirmConfig()
+            {
+                Title = "حذف کالا",
+                AcceptText = "آره",
+                CancelText = "نه",
+                Message = "نسبت به حذف آیتم انتخابی اطمینان دارید؟",
+                Icon = MessageIcon.QUESTION,
+                OnAction = new Action<bool>((arg) => { }),
+            });
+        }
+```
 ## Screenshots
 
 ![App Screenshot](https://raw.githubusercontent.com/RezaShaban/PersianUIControlsMaui/master/PersianUISamples/date-picker-demo.png)
