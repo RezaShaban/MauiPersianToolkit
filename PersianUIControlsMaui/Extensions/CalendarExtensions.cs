@@ -113,7 +113,7 @@ public static class CalendarExtensions
             var year = pc.GetYear(date);
             return year;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return 0;
         }

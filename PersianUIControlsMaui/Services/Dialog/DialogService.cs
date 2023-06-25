@@ -52,7 +52,7 @@ public class DialogService : IDialogService
 
     public void Toast(ToastConfig config)
     {
-        MainThread.BeginInvokeOnMainThread(async () =>
+        MainThread.BeginInvokeOnMainThread(() =>
         {
             //await PopupNavigation.Instance.PushAsync(new ToastPage(config)
             //{
@@ -78,7 +78,7 @@ public class DialogService : IDialogService
 
     public void CustomDialog(CustomDialogConfig config)
     {
-        MainThread.BeginInvokeOnMainThread(async () =>
+        MainThread.BeginInvokeOnMainThread(() =>
         {
             //await PopupNavigation.Instance.PushAsync(new CustomDialogPage(config) { BackgroundColor = config.BackgrounColor, CloseWhenBackgroundIsClicked = config.CloseAfterAccept });
         });
