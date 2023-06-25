@@ -19,7 +19,7 @@
 		<Title>Persian Calendar for .NET  MAUI</Title>
 		<Authors>rezashaban</Authors>
 		<Description>Persian Calendar &amp; some other controls for .NET MAUI</Description>
-		<PackageTags>maui;calendar;persian calendar;persian calendar maui</PackageTags>
+		<PackageTags>maui;calendar;datepicker;persian calendar;persian calendar maui;persian datepicker</PackageTags>
 		<PackageProjectUrl>https://www.nuget.org/packages/PersianUIControlsMaui/</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/RezaShaban/PersianUIControlsMaui.git</RepositoryUrl>

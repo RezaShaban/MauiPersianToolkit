@@ -30,12 +30,12 @@ namespace PersianUISamples.ViewModels
                 SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
                 SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Multiple,
                 SelectDayColor = Colors.Orange,
-                AutoCloseAfterSelectDate = true,
+                AutoCloseAfterSelectDate = false,
                 OnAccept = OnAcceptDate,
                 OnCancel = new Action(() => { }),
-                MinDateCanSelect = DateTime.Now.AddDays(-10),
-                MaxDateCanSelect = DateTime.Now.AddDays(10),
-                CanSelectHolidays = false
+                //MinDateCanSelect = DateTime.Now.AddDays(-10),
+                //MaxDateCanSelect = DateTime.Now.AddDays(10),
+                CanSelectHolidays = true
             };
             this.dialogService = dialogService;
         }
