@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using PersianUIControlsMaui.Controls;
 using PersianUIControlsMaui.Models;
 using PersianUIControlsMaui.Services.Dialog;
 using PersianUIControlsMaui.ViewModels;
@@ -13,6 +14,7 @@ namespace PersianUISamples.ViewModels
         private Command showAlertCommand;
         private Command showConfirmCommand;
         private Command showPromptCommand;
+        private Command showCustomCommand;
         private readonly IDialogService dialogService;
 
         public string PersianDate { get => persianDate; set => SetProperty(ref persianDate, value); }
@@ -22,6 +24,7 @@ namespace PersianUISamples.ViewModels
         public Command ShowAlertCommand { get { showAlertCommand ??= new Command(ShowAlert); return showAlertCommand; } }
         public Command ShowConfirmCommand { get { showConfirmCommand ??= new Command(ShowConfirm); return showConfirmCommand; } }
         public Command ShowPromptCommand { get { showPromptCommand ??= new Command(ShowPrompt); return showPromptCommand; } }
+        public Command ShowCustomCommand { get { showCustomCommand ??= new Command(ShowCustom); return showCustomCommand; } }
 
         public MainViewModel(IDialogService dialogService)
         {
@@ -79,10 +82,36 @@ namespace PersianUISamples.ViewModels
                 AcceptText = "ثبت",
                 CancelText = "انصراف",
                 Message = $"اطلاعات خود را جهت بررسی در زیر وارد کنید",
-                BackgrounColor = Colors.DeepPink,
                 Placeholder = "اطلاعات",
                 Icon = MessageIcon.QUESTION,
                 OnAction = new Action<PromptResult>((arg) => { }),
+            });
+        }
+
+        private void ShowCustom(object obj)
+        {
+            dialogService.CustomDialog(new CustomDialogConfig()
+            {
+                Title = "ثبت اطلاعات",
+                AcceptText = "ثبت",
+                CancelText = "انصراف",
+                Message = $"اطلاعات خود را جهت بررسی در زیر وارد کنید",
+                Icon = MessageIcon.QUESTION,
+                AcceptIcon = MessageIcon.QUESTION,
+                Cancelable = true,
+                CancelIcon = MessageIcon.ERROR,
+                DialogColor = Colors.DeepPink,
+                CloseWhenBackgroundIsClicked = true,
+                CloseAfterAccept = true,
+                OnAction = new Action<bool>((arg) => { }),
+                Content = new StackLayout()
+                {
+                    Children =
+                    {
+                        new EntryView(){ PlaceHolder = "نام" },
+                        new PersianUIControlsMaui.Controls.DatePicker(){ PlaceHolder = "تاریخ تولد" }
+                    }
+                }
             });
         }
     }

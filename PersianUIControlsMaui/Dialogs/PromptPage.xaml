@@ -8,8 +8,8 @@
     <!-- Content -->
     <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft">
         <Grid Padding="20" HorizontalOptions="Fill">
-            <Frame HorizontalOptions="Fill" CornerRadius="7" Padding="0" Margin="0,32,0,0" HasShadow="True">
-                <StackLayout BackgroundColor="#f0f0f0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill">
+            <Frame HorizontalOptions="Fill" CornerRadius="7" Padding="0" Margin="0,32,0,0" HasShadow="True" Background="{Binding BackgroundColor}">
+                <StackLayout Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill">
                     <Label Text="{Binding Title}" TextColor="#333" FontSize="Title" HorizontalOptions="Center" VerticalOptions="Center" Margin="20,45,20,0" FontFamily="IranianSans" LineBreakMode="WordWrap"/>
                     <ScrollView>
                         <StackLayout Padding="15,5" HorizontalOptions="Fill" VerticalOptions="Fill">
@@ -26,7 +26,7 @@
                 </StackLayout>
             </Frame>
             <Frame Padding="0" CornerRadius="100" BorderColor="Transparent" ZIndex="2" WidthRequest="72" HeightRequest="72" VerticalOptions="Start" HorizontalOptions="Center">
-                <Button WidthRequest="72" HeightRequest="72" FontSize="32" TextColor="White" Text="{Binding FontIcon}" BorderWidth="3" ZIndex="2" InputTransparent="True" BorderColor="White" Padding="0" CornerRadius="100" BackgroundColor="{Binding DialogColor}" FontFamily="FontAwesome"/>
+                <Button WidthRequest="72" HeightRequest="72" FontSize="32" TextColor="White" Text="{Binding FontIcon}" BorderWidth="3" ZIndex="2" InputTransparent="True" BorderColor="{Binding BackgroundColor}" Padding="0" CornerRadius="100" BackgroundColor="{Binding DialogColor}" FontFamily="FontAwesome"/>
             </Frame>
         </Grid>
     </Grid>

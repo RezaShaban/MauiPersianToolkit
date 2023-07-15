@@ -57,6 +57,7 @@ public abstract class BaseConfig
     public string FontIcon { get { return Icons[((int)Icon)]; } }
     public Color DialogColor { get { return dialogColor ?? Color.FromArgb(IconsColor[((int)Icon)]); } set { dialogColor = value; } }
     public bool CloseWhenBackgroundIsClicked { get; set; } = true;
+    public Color BackgroundColor { get; set; } = Colors.White;
 }
 public class PromptResult
 {
@@ -74,7 +75,6 @@ public class PromptConfig : BaseConfig
     public string AcceptText { get; set; } = "ثبت";
     public string CancelText { get; set; } = "انصراف";
     public Action<PromptResult> OnAction { get; set; }
-    public Color BackgrounColor { get; set; } = Color.FromRgba(0, 0, 0, .6);
     public string AppendText { get; set; }
     public bool CloseAfterAccept { get; set; } = true;
 }
@@ -87,7 +87,6 @@ public class CustomDialogConfig : BaseConfig
     public string AcceptText { get; set; } = "ثبت";
     public string CancelText { get; set; } = "انصراف";
     public Action<bool> OnAction { get; set; }
-    public Color BackgrounColor { get; set; } = Color.FromRgba(0, 0, 0, .6);
 
     /// <summary>
     /// default value is true

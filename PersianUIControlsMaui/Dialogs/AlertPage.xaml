@@ -7,8 +7,8 @@
     <!-- Content -->
     <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft">
         <Grid Padding="20" HorizontalOptions="Fill">
-            <Frame HorizontalOptions="FillAndExpand" CornerRadius="7" Padding="0" Margin="0,32,0,0" BorderColor="Transparent" HasShadow="True" ZIndex="1">
-                <Grid BackgroundColor="White" Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnDefinitions="100*" RowDefinitions="Auto,Auto,50">
+            <Frame HorizontalOptions="FillAndExpand" CornerRadius="7" Padding="0" Margin="0,32,0,0" BorderColor="Transparent" HasShadow="True" ZIndex="1" Background="{Binding BackgroundColor}">
+                <Grid Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnDefinitions="100*" RowDefinitions="Auto,Auto,50">
                     <Label Text="{Binding Title}" TextColor="Black" FontSize="Title" HorizontalOptions="CenterAndExpand" 
                        VerticalOptions="Center" Margin="20,45,20,0" Grid.Row="0" Grid.Column="0" FontFamily="IranianSans"/>
                     <ScrollView Grid.Row="1" Grid.Column="0">
@@ -20,7 +20,7 @@
             <Frame Padding="0" CornerRadius="100" BorderColor="Transparent" ZIndex="2" WidthRequest="72" HeightRequest="72" VerticalOptions="Start" HorizontalOptions="Center">
                 <Button WidthRequest="72" HeightRequest="72" FontSize="32" TextColor="White"
                 Text="{Binding FontIcon}" BorderWidth="3" ZIndex="2"
-                InputTransparent="True" BorderColor="White" Padding="0" CornerRadius="100"
+                InputTransparent="True" BorderColor="{Binding BackgroundColor}" Padding="0" CornerRadius="100"
                 BackgroundColor="{Binding DialogColor}" FontFamily="FontAwesome"/>
             </Frame>
         </Grid>
