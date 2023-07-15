@@ -78,9 +78,11 @@ public class DialogService : IDialogService
 
     public void CustomDialog(CustomDialogConfig config)
     {
-        MainThread.BeginInvokeOnMainThread(() =>
+        MainThread.BeginInvokeOnMainThread(async () =>
         {
-            //await PopupNavigation.Instance.PushAsync(new CustomDialogPage(config) { BackgroundColor = config.BackgrounColor, CloseWhenBackgroundIsClicked = config.CloseAfterAccept });
+            SetMainPage();
+            var customPage = new CustomDialogPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseWhenBackgroundIsClicked };
+            await mainPage.ShowPopupAsync(customPage);
         });
     }
 

@@ -88,7 +88,7 @@
                                         <Setter Property="CornerRadius" Value="100"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="False">
-                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="Background" Value="Transparent"/>
                                         <Setter Property="CornerRadius" Value="0"/>
                                     </DataTrigger>
                                 </Button.Triggers>

@@ -26,14 +26,7 @@
                 FontSize="32"
                 HorizontalOptions="Center" />
 
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Grid ColumnDefinitions="33*,33*,33*">
+            <Grid ColumnDefinitions="33*,33*,33*" RowDefinitions="40,40" RowSpacing="10">
                 <Button Text="Alert me" TextColor="White" Grid.Column="0"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding ShowAlertCommand}"
@@ -43,10 +36,15 @@
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding ShowConfirmCommand}"
                 HorizontalOptions="Center" />
-                
+
                 <Button Text="Prompt me" TextColor="White" Grid.Column="2"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding ShowPromptCommand}"
+                HorizontalOptions="Center" />
+
+                <Button Text="Custom..." TextColor="White" Grid.Column="0" Grid.Row="1"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Command="{Binding ShowCustomCommand}"
                 HorizontalOptions="Center" />
             </Grid>
 

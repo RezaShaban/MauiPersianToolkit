@@ -21,12 +21,9 @@
                 <Label StyleId="icon" Text="{Binding Icon,Source={x:Reference ucPickerView}}" FontSize="18" WidthRequest="28" Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucPickerView}}" InputTransparent="True" Padding="0,0,5,0" x:Name="lblIcon" FontFamily="FontAwesome"/>
                 <Entry HorizontalOptions="FillAndExpand" Text="{Binding .}" Grid.Column="1" InputTransparent="True"
                    Grid.Row="0" Margin="0" FontSize="Small" Focused="Entry_Focused" x:Name="txtEntry"
-                   Unfocused="Entry_Unfocused" HeightRequest="42" VerticalOptions="End" VerticalTextAlignment="End"
-                   ReturnType="{Binding ReturnType,Source={x:Reference ucPickerView}}" IsReadOnly="True"
-                   ReturnCommand="{Binding ReturnCommand,Source={x:Reference ucPickerView}}"
-                   Keyboard="{Binding Keyboard,Source={x:Reference ucPickerView}}" TextChanged="txtEntry_TextChanged"
-                   TextColor="{Binding TextColor,Source={x:Reference ucPickerView}}"
-                   IsPassword="{Binding IsPassword,Source={x:Reference ucPickerView}}" TranslationX="4"
+                   Unfocused="Entry_Unfocused" HeightRequest="42" VerticalOptions="End" VerticalTextAlignment="End" IsReadOnly="True"
+                   TextChanged="txtEntry_TextChanged"
+                   TextColor="{Binding TextColor,Source={x:Reference ucPickerView}}" TranslationX="4"
                    BindingContext="{Binding SelectedItem,Source={x:Reference ucPickerView}}"/>
                 <Label Grid.Column="1" Text="{Binding PlaceHolder,Source={x:Reference ucPickerView}}"
                    HorizontalOptions="StartAndExpand" VerticalTextAlignment="Center" x:Name="lblPlaceholder"

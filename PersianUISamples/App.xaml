@@ -2,6 +2,7 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:persian="clr-namespace:PersianUIControlsMaui.Resources;assembly=PersianUIControlsMaui"
+             xmlns:pctrl="clr-namespace:PersianUIControlsMaui.Controls;assembly=PersianUIControlsMaui"
              xmlns:local="clr-namespace:PersianUISamples"
              x:Class="PersianUISamples.App">
     <Application.Resources>

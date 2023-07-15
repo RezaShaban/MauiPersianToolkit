@@ -31,6 +31,7 @@
 	  <Compile Remove="Controls\TabItemView.xaml.cs" />
 	  <Compile Remove="Controls\TabView.xaml.cs" />
 	  <Compile Remove="Controls\TimePicker.xaml.cs" />
+	  <Compile Remove="ViewModels\PickerViewModel.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -88,6 +89,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Dialogs\ConfirmPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Dialogs\CustomDialogPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Dialogs\PromptPage.xaml">
