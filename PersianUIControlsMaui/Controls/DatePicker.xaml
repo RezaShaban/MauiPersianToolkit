@@ -39,8 +39,17 @@
             <Border.StrokeShape>
                 <RoundRectangle Fill="Transparent" CornerRadius="5" StrokeThickness="1" StrokeLineJoin="Round" Stroke="Gainsboro"/>
             </Border.StrokeShape>
-            <Entry HorizontalOptions="Fill" Text="{Binding FormattedDate,Source={x:Reference ucDatePicker}}"  InputTransparent="True" Margin="0" FontSize="Small" x:Name="txtEntry" HorizontalTextAlignment="Center" HeightRequest="42" VerticalOptions="End" VerticalTextAlignment="End" IsReadOnly="True" TextColor="{Binding TextColor,Source={x:Reference ucDatePicker}}" TranslationY="3" FontFamily="IranianSans"/>
+            <Label HorizontalOptions="Fill" Text="{Binding FormattedDate,Source={x:Reference ucDatePicker}}" Margin="0" FontSize="Small" x:Name="txtEntry" HorizontalTextAlignment="Center" HeightRequest="42" VerticalOptions="Center" VerticalTextAlignment="Center" TextColor="{Binding TextColor,Source={x:Reference ucDatePicker}}" TranslationY="3" FontFamily="IranianSans"/>
         </Border>
+        <ScrollView Grid.Column="1" Margin="0,0,0,-15" VerticalOptions="End">
+            <HorizontalStackLayout HorizontalOptions="Fill" BindableLayout.ItemsSource="{Binding BadgeDates,Source={x:Reference ucDatePicker}}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Button FontSize="Micro" Padding="4,0" Text="{Binding .}" Grid.Column="0" Background="Gray" VerticalOptions="End" HorizontalOptions="Start" Margin="1,0" TextColor="White"/>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </HorizontalStackLayout>
+        </ScrollView>
 
         <Label Grid.Column="1" Text="{Binding PlaceHolder,Source={x:Reference ucDatePicker}}"
                    HorizontalOptions="StartAndExpand" VerticalTextAlignment="Center" x:Name="lblPlaceholder"

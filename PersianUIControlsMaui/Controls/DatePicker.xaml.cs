@@ -29,13 +29,18 @@ public partial class DatePicker : ContentView
         set { SetValue(SelectedPersianDateProperty, value); }
     }
 
-
-
     public static readonly BindableProperty FormattedDateProperty = BindableProperty.Create(nameof(FormattedDate), typeof(object), typeof(DatePicker), default(string), BindingMode.TwoWay);
     public string FormattedDate
     {
         get { return (string)GetValue(FormattedDateProperty); }
         set { SetValue(FormattedDateProperty, value); }
+    }
+
+    public static readonly BindableProperty BadgeDatesProperty = BindableProperty.Create(nameof(BadgeDates), typeof(List<string>), typeof(DatePicker), default(List<string>), BindingMode.TwoWay);
+    public List<string> BadgeDates
+    {
+        get { return (List<string>)GetValue(BadgeDatesProperty); }
+        set { SetValue(BadgeDatesProperty, value); }
     }
 
     public static readonly BindableProperty DateSeparatorProperty = BindableProperty.Create(nameof(DateSeparator), typeof(char), typeof(DatePicker), '/', BindingMode.TwoWay);
@@ -242,7 +247,6 @@ public partial class DatePicker : ContentView
         if (dateParts.Length >= 2)
             FormattedDate = FormattedDate.Replace("MMM", Enum.GetName(typeof(PersianMonthNames), dateParts[1].ToInt() - 1))
                 .Replace("MM", dateParts[1]).Replace("M", dateParts[1].ToInt().ToString());
-
         //.Replace("dddd", App.NativeTools.GetPersianDay(miladiDate))
         if (dateParts.Length >= 3)
             FormattedDate = FormattedDate.Replace("dd", dateParts[2])

@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui.Alerts;
-using PersianUIControlsMaui.Controls;
+﻿using PersianUIControlsMaui.Controls;
 using PersianUIControlsMaui.Models;
 using PersianUIControlsMaui.Services.Dialog;
 using PersianUIControlsMaui.ViewModels;
@@ -9,7 +8,13 @@ namespace PersianUISamples.ViewModels
     public class MainViewModel : ObservableObject
     {
         private string persianDate;
+        private string persianDateRange;
+        private string persianDateMultiple;
+        private List<string> badgeDates;
+        private List<string> multipleBadgeDates;
         private CalendarOptions calendarOption;
+        private CalendarOptions rangeCalendarOption;
+        private CalendarOptions multipleCalendarOption;
         private Command onChangeDateCommand;
         private Command showAlertCommand;
         private Command showConfirmCommand;
@@ -18,7 +23,13 @@ namespace PersianUISamples.ViewModels
         private readonly IDialogService dialogService;
 
         public string PersianDate { get => persianDate; set => SetProperty(ref persianDate, value); }
+        public string PersianDateRange { get => persianDateRange; set => SetProperty(ref persianDateRange, value); }
+        public string PersianDateMultiple { get => persianDateMultiple; set => SetProperty(ref persianDateMultiple, value); }
+        public List<string> BadgeDates { get => badgeDates; set => SetProperty(ref badgeDates, value); }
+        public List<string> MultipleBadgeDates { get => multipleBadgeDates; set => SetProperty(ref multipleBadgeDates, value); }
         public CalendarOptions CalendarOption { get => calendarOption; set => SetProperty(ref calendarOption, value); }
+        public CalendarOptions RangeCalendarOption { get => rangeCalendarOption; set => SetProperty(ref rangeCalendarOption, value); }
+        public CalendarOptions MultipleCalendarOption { get => multipleCalendarOption; set => SetProperty(ref multipleCalendarOption, value); }
 
         public Command OnChangeDateCommand { get { onChangeDateCommand ??= new Command(OnDateChanged); return onChangeDateCommand; } }
         public Command ShowAlertCommand { get { showAlertCommand ??= new Command(ShowAlert); return showAlertCommand; } }
@@ -31,13 +42,27 @@ namespace PersianUISamples.ViewModels
             CalendarOption = new CalendarOptions()
             {
                 SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
-                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Multiple,
+                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Single,
                 SelectDayColor = Colors.Orange,
+                MinDateCanSelect = DateTime.Now.AddDays(-10),
+                MaxDateCanSelect = DateTime.Now.AddDays(10),
+            };
+            RangeCalendarOption = new CalendarOptions()
+            {
+                SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
+                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Range,
                 AutoCloseAfterSelectDate = false,
                 OnAccept = OnAcceptDate,
                 OnCancel = new Action(() => { }),
-                //MinDateCanSelect = DateTime.Now.AddDays(-10),
-                //MaxDateCanSelect = DateTime.Now.AddDays(10),
+                CanSelectHolidays = true
+            };
+            MultipleCalendarOption = new CalendarOptions()
+            {
+                SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
+                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Multiple,
+                AutoCloseAfterSelectDate = false,
+                OnAccept = OnAcceptDateMultiple,
+                OnCancel = new Action(() => { }),
                 CanSelectHolidays = true
             };
             this.dialogService = dialogService;
@@ -47,8 +72,16 @@ namespace PersianUISamples.ViewModels
         {
             if (obj is not List<DayOfMonth> dates)
                 return;
+            BadgeDates = dates.Select(x => x.PersianDate).ToList();
+            this.PersianDateRange = dates.FirstOrDefault()?.PersianDate;
+        }
 
-            this.PersianDate = dates.FirstOrDefault()?.PersianDate + " - " + dates.LastOrDefault()?.PersianDate;
+        private void OnAcceptDateMultiple(object obj)
+        {
+            if (obj is not List<DayOfMonth> dates)
+                return;
+            MultipleBadgeDates = dates.Select(x => x.PersianDate).ToList();
+            this.PersianDateMultiple = dates.FirstOrDefault()?.PersianDate;
         }
 
         private void OnDateChanged(object obj)

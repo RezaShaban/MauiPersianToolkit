@@ -1,30 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:persian="clr-namespace:PersianUIControlsMaui.Controls;assembly=PersianUIControlsMaui"
-             x:Class="PersianUISamples.MainPage" FlowDirection="RightToLeft" BackgroundColor="White"
+             xmlns:pui="clr-namespace:PersianUIControlsMaui.Controls;assembly=PersianUIControlsMaui"
+             x:Class="PersianUISamples.MainPage" FlowDirection="RightToLeft" BackgroundColor="WhiteSmoke"
              xmlns:vm="clr-namespace:PersianUISamples.ViewModels"
              x:DataType="vm:MainViewModel">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
-            <persian:DatePicker PlaceHolder="تاریخ شروع" SelectedPersianDate="{Binding PersianDate}" CalendarOption="{Binding CalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}" Icon="&#xf133;"/>
+        <VerticalStackLayout Spacing="25" Padding="0" VerticalOptions="Fill">
+            <VerticalStackLayout>
+                <pui:CircleImageView ImageSource="dotnet_bot.svg" Margin="25,25,25,0" ImageHeight="96" ImageWidth="96" BorderThickness="2" BorderColor="BlueViolet" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+            <pui:ContainerView Title=" انتخاب تاریخ" Icon="&#xf00c;">
+                <pui:ContainerView.Contents>
+                    <Grid RowDefinitions="85,85,85">
+                        <pui:DatePicker PlaceHolder="تاریخ" DisplayFormat="yyyy/MM/dd" Icon="&#xf133;" />
+                        
+                        <pui:DatePicker PlaceHolder="بازه تاریخی" SelectedPersianDate="{Binding PersianDateRange}" CalendarOption="{Binding RangeCalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}" Icon="&#xf133;" BadgeDates="{Binding BadgeDates}" Grid.Row="1"/>
 
-            <persian:EntryView PlaceHolder="نام و فامیل" Icon="&#xf00c;" AppendText="@"/>
+                        <pui:DatePicker PlaceHolder="تاریخ ها" SelectedPersianDate="{Binding PersianDateMultiple}" CalendarOption="{Binding MultipleCalendarOption}" DisplayFormat="yyyy/MM/dd" Icon="&#xf133;" BadgeDates="{Binding MultipleBadgeDates}" Grid.Row="2"/>
+                    </Grid>
+                </pui:ContainerView.Contents>
+            </pui:ContainerView>
 
-            <persian:LabelView Text="برچسب تستی" Icon="&#xf067;"/>
+            <pui:ContainerView Title=" کنترل ها" Icon="&#xf00c;" IsExpanded="False">
+                <pui:ContainerView.Contents>
+                    <Grid RowDefinitions="80,50,50,Auto">
+                        <pui:EntryView PlaceHolder="نام و فامیل" Icon="&#xf007;" AppendText="@" Grid.Row="0"/>
 
-            <persian:ContainerView Title=" باکس اطلاعات" Icon="&#xf00c;">
-                <persian:ContainerView.Contents>
-                    <persian:CheckBoxView Text="انتخاب اول" TextColor="Black"/>
-                </persian:ContainerView.Contents>
-            </persian:ContainerView>
+                        <pui:LabelView Text="برچسب تستی" Icon="&#xf075;" Grid.Row="1"/>
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
+                        <pui:CheckBoxView Text="انتخاب اول" TextColor="Black" Grid.Row="2"/>
+
+                        <pui:EditorView PlaceHolder="نام و فامیل" Title="نام و فامیل" Icon="&#xf007;" Grid.Row="3"/>
+
+                    </Grid>
+                </pui:ContainerView.Contents>
+            </pui:ContainerView>
 
             <Grid ColumnDefinitions="33*,33*,33*" RowDefinitions="40,40" RowSpacing="10">
                 <Button Text="Alert me" TextColor="White" Grid.Column="0"
