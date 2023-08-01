@@ -17,11 +17,7 @@
             </Style>
         </ResourceDictionary>
     </ContentView.Resources>
-    <Grid HorizontalOptions="FillAndExpand" ColumnDefinitions="28,100*,Auto,24" RowDefinitions="50" Padding="0,10" ColumnSpacing="0" RowSpacing="0">
-        <Grid.GestureRecognizers>
-            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
-        </Grid.GestureRecognizers>
-
+    <Grid HorizontalOptions="FillAndExpand" ColumnDefinitions="28,100*,Auto,24" RowDefinitions="50" Padding="0,10" ColumnSpacing="0" RowSpacing="0" x:Name="container">
         <Label Text="{Binding Icon,Source={x:Reference ucDatePicker}}" FontSize="18" WidthRequest="28" Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucDatePicker}}" InputTransparent="True" Padding="0,0,5,0" x:Name="lblIcon" FontFamily="FontAwesome">
             <Label.Triggers>
                 <DataTrigger TargetType="Label" Binding="{Binding Icon,Source={x:Reference ucDatePicker}}" Value="">

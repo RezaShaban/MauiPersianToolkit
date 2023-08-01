@@ -27,6 +27,13 @@ public partial class CustomDialogPage : Popup
                 });
             }
         }
+        SetDialogProperties();
+    }
+
+    private void SetDialogProperties()
+    {
+        double width = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+        container.MaximumWidthRequest = width;
     }
 
     private void btnCancel_Clicked(object sender, EventArgs e)
