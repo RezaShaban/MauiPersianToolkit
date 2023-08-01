@@ -10,6 +10,13 @@ public partial class AlertPage : Popup
     {
         InitializeComponent();
         BindingContext = config;
+        SetDialogProperties();
+    }
+
+    private void SetDialogProperties()
+    {
+        double width = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+        container.MaximumWidthRequest = width;
     }
 
     private async void btnAccept_Clicked(object sender, EventArgs e)

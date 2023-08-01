@@ -6,7 +6,7 @@
                xmlns:conv="clr-namespace:PersianUIControlsMaui.Converters"
                x:Class="PersianUIControlsMaui.Dialogs.CustomDialogPage" Color="Transparent" HorizontalOptions="Fill">
     <!-- Content -->
-    <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft">
+    <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft" x:Name="container">
         <Grid VerticalOptions="Fill" Margin="20">
             <Frame HorizontalOptions="FillAndExpand" CornerRadius="7" Padding="0" Margin="0,32,0,0"
                BorderColor="Transparent" HasShadow="True" Background="{Binding BackgroundColor}">
@@ -14,7 +14,7 @@
                     <Label Text="{Binding Title}" TextColor="Black" FontSize="Title" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" Margin="20,45,20,0" FontFamily="IranianSans"/>
                     <ScrollView>
                         <StackLayout Padding="15,5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                            <Label Text="{Binding Message}" FontSize="Body" Margin="0,0,0,10" LineHeight="1.25" x:Name="lblMessage" IsVisible="True" FontFamily="IranianSans">
+                            <Label Text="{Binding Message}" FontSize="Body" Margin="0,0,0,10" LineHeight="1.25" x:Name="lblMessage" IsVisible="True" FontFamily="IranianSans" TextColor="Black">
                                 <Label.Triggers>
                                     <DataTrigger Binding="{Binding Message}" Value="" TargetType="Label">
                                         <Setter Property="IsVisible" Value="False"/>

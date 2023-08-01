@@ -5,7 +5,7 @@
                xmlns:uc="clr-namespace:PersianUIControlsMaui.Controls"
                x:Class="PersianUIControlsMaui.Dialogs.ConfirmPage" Color="Transparent" HorizontalOptions="Fill">
     <!-- Content -->
-    <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft">
+    <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft" x:Name="container">
         <Grid Padding="20" HorizontalOptions="Fill">
             <Frame HorizontalOptions="Fill" CornerRadius="7" Padding="0" Margin="0,32,0,0" BorderColor="Transparent" HasShadow="True" ZIndex="1" Background="{Binding BackgroundColor}">
                 <StackLayout Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill">
