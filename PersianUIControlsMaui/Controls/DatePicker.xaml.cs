@@ -123,6 +123,10 @@ public partial class DatePicker : ContentView
     public DatePicker()
     {
         InitializeComponent();
+
+        var gestureRecognizer = new TapGestureRecognizer();
+        gestureRecognizer.Command = new Command(TapGestureRecognizer_Tapped);
+        container.GestureRecognizers.Add(gestureRecognizer);
     }
 
     private Task InitPickerView()
@@ -162,7 +166,7 @@ public partial class DatePicker : ContentView
         });
     }
 
-    private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+    private async void TapGestureRecognizer_Tapped(object sender)
     {
         if (this.view == null)
             this.initedView.GetAwaiter().GetResult();
