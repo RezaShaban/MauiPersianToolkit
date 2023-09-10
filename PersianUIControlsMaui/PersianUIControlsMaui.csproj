@@ -8,7 +8,7 @@
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
-    <VersionPrefix>1.0.4.1</VersionPrefix>
+    <VersionPrefix>1.0.4.2</VersionPrefix>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
@@ -28,16 +28,12 @@
 
 	<ItemGroup>
 	  <Compile Remove="Controls\PickerView.xaml.cs" />
-	  <Compile Remove="Controls\TabItemView.xaml.cs" />
-	  <Compile Remove="Controls\TabView.xaml.cs" />
 	  <Compile Remove="Controls\TimePicker.xaml.cs" />
 	  <Compile Remove="ViewModels\PickerViewModel.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Remove="Controls\PickerView.xaml" />
-	  <MauiXaml Remove="Controls\TabItemView.xaml" />
-	  <MauiXaml Remove="Controls\TabView.xaml" />
 	  <MauiXaml Remove="Controls\TimePicker.xaml" />
 	</ItemGroup>
 
@@ -83,6 +79,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\LabelView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\TabItemView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\TabView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Dialogs\AlertPage.xaml">

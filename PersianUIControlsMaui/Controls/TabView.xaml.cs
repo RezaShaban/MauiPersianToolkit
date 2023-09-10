@@ -80,13 +80,13 @@ public partial class TabView : ContentView
                     IsEnabled = item.IsEnabled,
                     Text = item.Icon,
                     StyleId = "icon",
-                    FontFamily = "FontAwesome.ttf#FontAwesome",
+                    FontFamily = "FontAwesome",
                     FontSize = 24,
                     Padding = new Thickness(0, 5, 0, (AnimateCaptions ? 5 : 23)),
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalOptions = LayoutOptions.Fill,
                     TextColor = UnSelectedTabColor,
-                    BackgroundColor = App.Current.RequestedTheme == AppTheme.Dark ? GetFromResource("DarkLight") : Colors.White
+                    BackgroundColor = Colors.White
                 };
                 var label = new Label()
                 {
@@ -97,10 +97,11 @@ public partial class TabView : ContentView
                     HorizontalOptions = LayoutOptions.Center,
                     InputTransparent = true,
                     TextColor = UnSelectedTabColor,
-                    Margin = new Thickness(0, 0, 5, 0)
+                    Margin = new Thickness(0, 0, 5, 0),
+                    Scale = AnimateCaptions ? 0 : 1
                 };
-                if (AnimateCaptions)
-                    label.ScaleTo(0);
+                //if (AnimateCaptions)
+                //    label.ScaleTo(0);
                 tabButton.Command = new Command(() => ExecuteChangeTabCommand(item, tabButton, label));
                 this.tabButtons.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100 / ItemsSource.Count, GridUnitType.Star) });
                 this.tabButtons.Add(tabButton, ItemsSource.IndexOf(item), 0);
@@ -111,14 +112,16 @@ public partial class TabView : ContentView
             if (currentTab != null && currentTab.Command != null)
                 currentTab.Command.Execute(null);
         }
-        catch (Exception) { }
+        catch (Exception ex)
+        {
+        }
     }
 
     private Color GetFromResource(string key)
     {
         try
         {
-            return (Color)App.Current.Resources[key];
+            return Colors.Black; //(Color)App.Current.Resources[key];
         }
         catch (Exception)
         {
@@ -127,7 +130,7 @@ public partial class TabView : ContentView
     }
     private void ExecuteChangeTabCommand(object control, object button, object label)
     {
-        if (!(control is TabItemView tab))
+        if (control is not TabItemView tab)
             return;
 
         foreach (var item in this.tabPages.Children)
@@ -151,11 +154,11 @@ public partial class TabView : ContentView
         }
 
         var currentBtn = ((Button)button);
-        currentBtn.TextColor = App.Current.RequestedTheme == AppTheme.Light ? GetFromResource("BackgroundPageDark") : SelectedTabColor;
+        currentBtn.TextColor = SelectedTabColor;
         if (AnimateCaptions)
             currentBtn.Padding = new Thickness(0, 5, 0, 23);
         var currentLabel = ((Label)label);
-        currentLabel.TextColor = App.Current.RequestedTheme == AppTheme.Light ? GetFromResource("BackgroundPageDark") : SelectedTabColor;
+        currentLabel.TextColor = SelectedTabColor;
         if (AnimateCaptions)
             currentLabel.ScaleTo(1);// = 0;
         tab.IsVisible = true;

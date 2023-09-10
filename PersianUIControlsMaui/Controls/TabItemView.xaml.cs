@@ -1,8 +1,8 @@
 ﻿namespace PersianUIControlsMaui.Controls;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class TabItemView : ContentView
-	{
+public partial class TabItemView : ContentView
+{
     #region Propertie's
     public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(TabItemView), default(string), BindingMode.TwoWay);
     public string Title
@@ -23,8 +23,8 @@
         set { SetValue(KeyProperty, value); }
     }
     #endregion
-    public TabItemView ()
-		{
-			InitializeComponent ();
-		}
-	}
+    public TabItemView()
+    {
+        InitializeComponent();
+    }
+}

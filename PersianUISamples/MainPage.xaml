@@ -6,61 +6,66 @@
              xmlns:vm="clr-namespace:PersianUISamples.ViewModels"
              x:DataType="vm:MainViewModel">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="25" Padding="0" VerticalOptions="Fill">
-            <VerticalStackLayout>
-                <pui:CircleImageView ImageSource="dotnet_bot.svg" Margin="25,25,25,0" ImageHeight="96" ImageWidth="96" BorderThickness="2" BorderColor="BlueViolet" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </VerticalStackLayout>
-            <pui:ContainerView Title=" انتخاب تاریخ" Icon="&#xf00c;">
-                <pui:ContainerView.Contents>
-                    <Grid RowDefinitions="85,85,85">
-                        <pui:DatePicker PlaceHolder="تاریخ" DisplayFormat="yyyy/MM/dd" Icon="&#xf133;" />
-                        
-                        <pui:DatePicker PlaceHolder="بازه تاریخی" SelectedPersianDate="{Binding PersianDateRange}" CalendarOption="{Binding RangeCalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}" Icon="&#xf133;" BadgeDates="{Binding BadgeDates}" Grid.Row="1"/>
+    <pui:TabView SelectedTabColor="OrangeRed" UnSelectedTabColor="Gray" SelectedTab="1" AnimateCaptions="True">
+        <pui:TabView.ItemsSource>
+            <pui:TabItemView Title="تاریخ" Icon="&#xf133;" Padding="15">
+                <VerticalStackLayout Spacing="25" Padding="0" VerticalOptions="Fill">
+                    <VerticalStackLayout>
+                        <pui:CircleImageView ImageSource="dotnet_bot.svg" Margin="25,25,25,0" ImageHeight="96" ImageWidth="96" BorderThickness="2" BorderColor="BlueViolet" VerticalOptions="Center" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                    <pui:ContainerView Title=" انتخاب تاریخ" Icon="&#xf00c;">
+                        <pui:ContainerView.Contents>
+                            <Grid RowDefinitions="85,85,85">
+                                <pui:DatePicker PlaceHolder="تاریخ" DisplayFormat="yyyy/MM/dd" Icon="&#xf133;" />
 
-                        <pui:DatePicker PlaceHolder="تاریخ ها" SelectedPersianDate="{Binding PersianDateMultiple}" CalendarOption="{Binding MultipleCalendarOption}" DisplayFormat="yyyy/MM/dd" Icon="&#xf133;" BadgeDates="{Binding MultipleBadgeDates}" Grid.Row="2"/>
-                    </Grid>
-                </pui:ContainerView.Contents>
-            </pui:ContainerView>
+                                <pui:DatePicker PlaceHolder="بازه تاریخی" SelectedPersianDate="{Binding PersianDateRange}" CalendarOption="{Binding RangeCalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}" Icon="&#xf133;" BadgeDates="{Binding BadgeDates}" Grid.Row="1"/>
 
-            <pui:ContainerView Title=" کنترل ها" Icon="&#xf00c;" IsExpanded="False">
-                <pui:ContainerView.Contents>
-                    <Grid RowDefinitions="80,50,50,Auto">
-                        <pui:EntryView PlaceHolder="نام و فامیل" Icon="&#xf007;" AppendText="@" Grid.Row="0"/>
+                                <pui:DatePicker PlaceHolder="تاریخ ها" SelectedPersianDate="{Binding PersianDateMultiple}" CalendarOption="{Binding MultipleCalendarOption}" DisplayFormat="yyyy/MM/dd" Icon="&#xf133;" BadgeDates="{Binding MultipleBadgeDates}" Grid.Row="2"/>
+                            </Grid>
+                        </pui:ContainerView.Contents>
+                    </pui:ContainerView>
+                </VerticalStackLayout>
+            </pui:TabItemView>
+            <pui:TabItemView Title="کنترل" Icon="&#xf00c;" Padding="15">
+                <pui:ContainerView Title=" کنترل ها" Icon="&#xf00c;" IsExpanded="True">
+                    <pui:ContainerView.Contents>
+                        <Grid RowDefinitions="80,50,50,Auto">
+                            <pui:EntryView PlaceHolder="نام و فامیل" Icon="&#xf007;" AppendText="@" Grid.Row="0"/>
 
-                        <pui:LabelView Text="برچسب تستی" Icon="&#xf075;" Grid.Row="1"/>
+                            <pui:LabelView Text="برچسب تستی" Icon="&#xf075;" Grid.Row="1"/>
 
-                        <pui:CheckBoxView Text="انتخاب اول" TextColor="Black" Grid.Row="2"/>
+                            <pui:CheckBoxView Text="انتخاب اول" TextColor="Black" Grid.Row="2"/>
 
-                        <pui:EditorView PlaceHolder="نام و فامیل" Title="نام و فامیل" Icon="&#xf007;" Grid.Row="3"/>
+                            <pui:EditorView PlaceHolder="نام و فامیل" Title="نام و فامیل" Icon="&#xf007;" Grid.Row="3"/>
 
-                    </Grid>
-                </pui:ContainerView.Contents>
-            </pui:ContainerView>
-
-            <Grid ColumnDefinitions="33*,33*,33*" RowDefinitions="40,40" RowSpacing="10">
-                <Button Text="Alert me" TextColor="White" Grid.Column="0"
+                        </Grid>
+                    </pui:ContainerView.Contents>
+                </pui:ContainerView>
+            </pui:TabItemView>
+            <pui:TabItemView Padding="15" Title="Dialogs" Icon="&#xf00d;">
+                <Grid ColumnDefinitions="33*,33*,33*" RowDefinitions="40,40" RowSpacing="10">
+                    <Button Text="Alert me" TextColor="White" Grid.Column="0"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding ShowAlertCommand}"
                 HorizontalOptions="Center" />
 
-                <Button Text="Confirm me" TextColor="White" Grid.Column="1"
+                    <Button Text="Confirm me" TextColor="White" Grid.Column="1"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding ShowConfirmCommand}"
                 HorizontalOptions="Center" />
 
-                <Button Text="Prompt me" TextColor="White" Grid.Column="2"
+                    <Button Text="Prompt me" TextColor="White" Grid.Column="2"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding ShowPromptCommand}"
                 HorizontalOptions="Center" />
 
-                <Button Text="Custom..." TextColor="White" Grid.Column="0" Grid.Row="1"
+                    <Button Text="Custom..." TextColor="White" Grid.Column="0" Grid.Row="1"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Command="{Binding ShowCustomCommand}"
                 HorizontalOptions="Center" />
-            </Grid>
-
-        </VerticalStackLayout>
-    </ScrollView>
+                </Grid>
+            </pui:TabItemView>
+        </pui:TabView.ItemsSource>
+    </pui:TabView>
 
 </ContentPage>
