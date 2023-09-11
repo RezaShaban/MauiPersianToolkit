@@ -15,12 +15,12 @@
                     </VerticalStackLayout>
                     <pui:ContainerView Title=" انتخاب تاریخ" Icon="&#xf00c;">
                         <pui:ContainerView.Contents>
-                            <Grid RowDefinitions="85,85,85">
-                                <pui:DatePicker PlaceHolder="تاریخ" DisplayFormat="yyyy/MM/dd" Icon="&#xf133;" />
+                            <Grid RowDefinitions="Auto,Auto,Auto">
+                                <pui:DatePicker PlaceHolder="تاریخ" DisplayFormat="yyyy/MM/dd" Icon="&#xf073;" />
 
-                                <pui:DatePicker PlaceHolder="بازه تاریخی" SelectedPersianDate="{Binding PersianDateRange}" CalendarOption="{Binding RangeCalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}" Icon="&#xf133;" BadgeDates="{Binding BadgeDates}" Grid.Row="1"/>
+                                <pui:DatePicker PlaceHolder="بازه تاریخی" SelectedPersianDate="{Binding PersianDateRange}" CalendarOption="{Binding RangeCalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}" Icon="&#xf073;" BadgeDates="{Binding BadgeDates}" Grid.Row="1"/>
 
-                                <pui:DatePicker PlaceHolder="تاریخ ها" SelectedPersianDate="{Binding PersianDateMultiple}" CalendarOption="{Binding MultipleCalendarOption}" DisplayFormat="yyyy/MM/dd" Icon="&#xf133;" BadgeDates="{Binding MultipleBadgeDates}" Grid.Row="2"/>
+                                <pui:DatePicker PlaceHolder="تاریخ ها" SelectedPersianDate="{Binding PersianDateMultiple}" CalendarOption="{Binding MultipleCalendarOption}" DisplayFormat="yyyy/MM/dd" Icon="&#xf073;" BadgeDates="{Binding MultipleBadgeDates}" Grid.Row="2"/>
                             </Grid>
                         </pui:ContainerView.Contents>
                     </pui:ContainerView>

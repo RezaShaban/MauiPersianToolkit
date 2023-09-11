@@ -148,7 +148,7 @@ public partial class TabView : ContentView
             if (item is Label lbl)
             {
                 if (AnimateCaptions)
-                    lbl.ScaleTo(0);
+                    lbl.Scale = (0);
                 lbl.TextColor = UnSelectedTabColor;
             }
         }
@@ -160,7 +160,7 @@ public partial class TabView : ContentView
         var currentLabel = ((Label)label);
         currentLabel.TextColor = SelectedTabColor;
         if (AnimateCaptions)
-            currentLabel.ScaleTo(1);// = 0;
+            currentLabel.Scale = (1);// = 0;
         tab.IsVisible = true;
 
         if (ChangedTabCommand != null)

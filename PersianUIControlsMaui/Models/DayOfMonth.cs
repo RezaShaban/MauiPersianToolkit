@@ -13,6 +13,8 @@ public class DayOfMonth : ObservableObject
     int persianDateNo;
     DateTime gregorianDate;
     bool isHoliday;
+    bool isToday;
+    bool isInRange;
     bool canSelect;
 
     public PersianDayOfWeek DayOfWeek { get => dayOfWeek; set => SetProperty(ref dayOfWeek, value); }
@@ -24,4 +26,6 @@ public class DayOfMonth : ObservableObject
     internal int PersianDateNo { get => persianDateNo; set => SetProperty(ref persianDateNo, value); }
     public DateTime GregorianDate { get => gregorianDate; set => SetProperty(ref gregorianDate, value); }
     public bool IsHoliday { get => isHoliday; set => SetProperty(ref isHoliday, value); }
+    public bool IsToday { get => isToday; set => SetProperty(ref isToday, value); }
+    public bool IsInRange { get => isInRange; set => SetProperty(ref isInRange, value); }
 }

@@ -40,7 +40,7 @@ public partial class DatePickerView : Popup
             SelectedDateChanged.Invoke(sender, new SelectedDateChangedEventArgs()
             {
                 SelectedDate = selectedDate,
-                SelectedDates = viewModel.SelectedDays
+                SelectedDates = viewModel.SelectedDays.ToList()
             });
 
         }

@@ -1,6 +1,7 @@
-﻿using Microsoft.Maui.Layouts;
-using PersianUIControlsMaui.Enums;
+﻿using PersianUIControlsMaui.Enums;
 using PersianUIControlsMaui.Models;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -28,12 +29,12 @@ public class DatePickerViewModel : ObservableObject
     #region Field's
     private List<string> daysOfWeek;
     private List<DayOfMonth> daysOfMonth;
-    private List<DayOfMonth> selectedDays;
+    private ObservableCollection<DayOfMonth> selectedDays;
     #endregion
 
     public List<string> DaysOfWeek { get => daysOfWeek; set => SetProperty(ref daysOfWeek, value); }
     public List<DayOfMonth> DaysOfMonth { get => daysOfMonth; set => SetProperty(ref daysOfMonth, value); }
-    public List<DayOfMonth> SelectedDays { get => selectedDays; set => SetProperty(ref selectedDays, value); }
+    public ObservableCollection<DayOfMonth> SelectedDays { get => selectedDays; set => SetProperty(ref selectedDays, value); }
     #endregion
 
     #region Command's
@@ -45,21 +46,23 @@ public class DatePickerViewModel : ObservableObject
     private Command prevYearCommand;
     private Command initCalendarDaysCommand;
     private Command selectDateCommand;
+    private Command gotoTodayCommand;
     #endregion
 
     public Command NextMonthCommand { get { nextMonthCommand ??= new Command(NextMonth); return nextMonthCommand; } }
     public Command PrevMonthCommand { get { prevMonthCommand ??= new Command(PrevMonth); return prevMonthCommand; } }
     public Command NextYearCommand { get { nextYearCommand ??= new Command(NextYear); return nextYearCommand; } }
     public Command PrevYearCommand { get { prevYearCommand ??= new Command(PrevYear); return prevYearCommand; } }
+    public Command GotoTodayCommand { get { gotoTodayCommand ??= new Command(GotoToday); return gotoTodayCommand; } }
     public Command InitCalendarDaysCommand { get { initCalendarDaysCommand ??= new Command(InitCalendarDays); return initCalendarDaysCommand; } }
     public Command SelectDateCommand { get { selectDateCommand ??= new Command(SelectDate); return selectDateCommand; } }
     #endregion
 
     public DatePickerViewModel(CalendarOptions options)
     {
-        SelectedDays = new List<DayOfMonth>();
-        SelectDateMode = options.SelectDateMode;
         Options = options;
+        SelectedDays = new ObservableCollection<DayOfMonth>(GetSelectedDates(options.SelectedPersianDates));
+        SelectDateMode = options.SelectDateMode;
 
         if (this.DaysOfWeek == null)
             FillDaysOfWeek();
@@ -67,11 +70,35 @@ public class DatePickerViewModel : ObservableObject
         InitCalendarDays(options.SelectedPersianDate.ToDateTime());
     }
 
+    private IEnumerable<DayOfMonth> GetSelectedDates(List<string> selectedPersianDates)
+    {
+        return (selectedPersianDates ?? new List<string>()).Select(x =>
+        {
+            var currentDate = x.ToDateTime();
+            bool isHoliday = currentDate.GetPersianDay() == DayOfWeek.Friday;
+            var day = new DayOfMonth()
+            {
+                DayNum = currentDate.GetPersianDayOfMonth(),
+                GregorianDate = currentDate,
+                PersianDate = currentDate.ToPersianDate(),
+                PersianDateNo = currentDate.ToPersianDate().Replace("/", "").ToInt(),
+                IsSelected = true,
+                IsInRange = false,
+                IsInCurrentMonth = false,
+                IsHoliday = isHoliday,
+                IsToday = currentDate.Date == DateTime.Now.Date,
+                DayOfWeek = (PersianDayOfWeek)currentDate.GetPersianDay(),
+                CanSelect = GetCanSelect(currentDate),
+            };
+            return day;
+        }).ToList();
+    }
+
     private void FillDaysOfWeek()
     {
         this.DaysOfWeek = typeof(PersianDayOfWeek).GetMembers()
             .Where(x => x.MemberType == MemberTypes.Field)
-            .Select(x => ((DisplayAttribute)x.GetCustomAttribute(typeof(DisplayAttribute)))?.Name)
+            .Select(x => ((DisplayAttribute)x.GetCustomAttribute(typeof(DisplayAttribute)))?.Name.ToCharArray().FirstOrDefault().ToString())
             .Where(x => !string.IsNullOrEmpty(x)).ToList();
     }
 
@@ -107,8 +134,10 @@ public class DatePickerViewModel : ObservableObject
                 PersianDate = currentDate.ToPersianDate(),
                 PersianDateNo = currentDate.ToPersianDate().Replace("/", "").ToInt(),
                 IsSelected = GetIsSelected(currentDate, date),
+                IsInRange = GetIsInRange(currentDate),
                 IsInCurrentMonth = x >= 0,
                 IsHoliday = isHoliday,
+                IsToday = currentDate.Date == DateTime.Now.Date,
                 DayOfWeek = (PersianDayOfWeek)currentDate.GetPersianDay(),
                 CanSelect = GetCanSelect(currentDate),
             };
@@ -137,29 +166,37 @@ public class DatePickerViewModel : ObservableObject
 
     private void ToggleRangeDates(DayOfMonth dayOfMonth)
     {
-        if (SelectedDays.Any())
-            DaysOfMonth.Where(x => x.PersianDateNo >= dayOfMonth.PersianDateNo).ToList().ForEach(x =>
-            {
-                x.IsSelected = x.PersianDate == dayOfMonth.PersianDate;
-                x.CanSelect = x.IsSelected;
+        if (SelectedDays.Count == 2)
+        {
+            SelectedDays.Clear();
+            DaysOfMonth.ForEach(x => { x.IsSelected = false; x.IsInRange = false; });
+        }
 
-                if (x.IsSelected)
-                    SelectedDays.Add(x);
-                else if (SelectedDays.Exists(s => s.PersianDateNo == x.PersianDateNo))
-                    SelectedDays.Remove(x);
-            });
+        if (SelectedDays.Any())
+        {
+            var selectedDate = DaysOfMonth.FirstOrDefault(x => x.PersianDateNo == dayOfMonth.PersianDateNo);
+            {
+                selectedDate.IsSelected = selectedDate.PersianDate == dayOfMonth.PersianDate;
+
+                if (selectedDate.IsSelected)
+                    SelectedDays.Add(selectedDate);
+            }
+            DaysOfMonth.Where(x => x.PersianDateNo > SelectedDays.FirstOrDefault().PersianDateNo
+                                    && x.PersianDateNo < SelectedDays.LastOrDefault().PersianDateNo).ToList()
+                        .ForEach(x => x.IsInRange = true);
+        }
 
         if (!SelectedDays.Any())
-            DaysOfMonth.Where(x => x.PersianDateNo == dayOfMonth.PersianDateNo).ToList().ForEach(x =>
+        {
+            var selectedDate = DaysOfMonth.FirstOrDefault(x => x.PersianDateNo == dayOfMonth.PersianDateNo);
             {
-                x.IsSelected = x.PersianDateNo == dayOfMonth.PersianDateNo;
-                x.CanSelect = GetCanSelect(x.GregorianDate);
+                selectedDate.IsSelected = selectedDate.PersianDateNo == dayOfMonth.PersianDateNo;
+                selectedDate.CanSelect = GetCanSelect(selectedDate.GregorianDate);
 
-                if (x.IsSelected)
-                    SelectedDays.Add(x);
-                else if (SelectedDays.Exists(s => s.PersianDateNo == x.PersianDateNo))
-                    SelectedDays.Remove(x);
-            });
+                if (selectedDate.IsSelected)
+                    SelectedDays.Add(selectedDate);
+            }
+        }
     }
 
     private void ToggleMultipleDates(DayOfMonth dayOfMonth)
@@ -172,7 +209,7 @@ public class DatePickerViewModel : ObservableObject
         }
         else
         {
-            SelectedDays.RemoveAll(x => x.PersianDateNo == selectedDate.PersianDateNo);
+            SelectedDays.Remove(selectedDate);
             selectedDate.IsSelected = !selectedDate.IsSelected;
         }
     }
@@ -190,7 +227,15 @@ public class DatePickerViewModel : ObservableObject
         if (Options.SelectionMode == Enums.SelectionMode.Single)
             return date.Date == currentDate.Date;
         if (Options.SelectionMode == Enums.SelectionMode.Multiple || Options.SelectionMode == Enums.SelectionMode.Range)
-            return SelectedDays.Exists(x => x.GregorianDate.Date == currentDate.Date);
+            return SelectedDays.Any(x => x.GregorianDate.Date == currentDate.Date);
+
+        return false;
+    }
+
+    private bool GetIsInRange(DateTime currentDate)
+    {
+        if (Options.SelectionMode == Enums.SelectionMode.Range && SelectedDays.Count > 0)
+            return SelectedDays.FirstOrDefault().GregorianDate.Date < currentDate.Date && SelectedDays.LastOrDefault().GregorianDate.Date > currentDate.Date;
 
         return false;
     }
@@ -218,6 +263,11 @@ public class DatePickerViewModel : ObservableObject
         var date = GetSelectedDate();
         InitCalendarDays(date.AddYears(-1));
     }
+    private void GotoToday(object obj)
+    {
+        var date = DateTime.Now.Date;
+        InitCalendarDays(date);
+    }
 
     private DateTime GetSelectedDate()
     {
@@ -225,7 +275,7 @@ public class DatePickerViewModel : ObservableObject
         if (DaysOfMonth.Any(x => x.IsSelected))
             date = DaysOfMonth.FirstOrDefault(x => x.IsSelected).GregorianDate;
         else
-            date = DaysOfMonth.Skip(DaysOfMonth.Count/2).Take(1).FirstOrDefault().GregorianDate;
+            date = DaysOfMonth.Skip(DaysOfMonth.Count / 2).Take(1).FirstOrDefault().GregorianDate;
         return date;
     }
 

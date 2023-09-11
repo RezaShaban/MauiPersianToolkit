@@ -8,6 +8,7 @@ namespace PersianUIControlsMaui.Models
         private SelectionDateMode selectDateMode;
         private Enums.SelectionMode selectionMode;
         private string selectedPersianDate;
+        private List<string> selectedPersianDates;
         private DateTime? minDateCanSelect;
         private DateTime? maxDateCanSelect;
         private bool canSelectHolidays;
@@ -19,6 +20,7 @@ namespace PersianUIControlsMaui.Models
             selectDateMode = SelectionDateMode.Day;
             selectionMode = Enums.SelectionMode.Single;
             selectedPersianDate = DateTime.Now.ToPersianDate();
+            selectedPersianDates = new List<string>();
             canSelectHolidays = true;
             selectDayColor = Colors.DeepSkyBlue;
             autoCloseAfterSelectDate = true;
@@ -39,6 +41,11 @@ namespace PersianUIControlsMaui.Models
         internal string SelectedPersianDate { get => selectedPersianDate; set => SetProperty(ref selectedPersianDate, value); }
 
         /// <summary>
+        /// default is Now
+        /// </summary>
+        internal List<string> SelectedPersianDates { get => selectedPersianDates; set => SetProperty(ref selectedPersianDates, value); }
+
+        /// <summary>
         /// default is null
         /// </summary>
         public DateTime? MinDateCanSelect { get => minDateCanSelect; set => SetProperty(ref minDateCanSelect, value); }
@@ -56,7 +63,8 @@ namespace PersianUIControlsMaui.Models
         /// <summary>
         /// default is DeepSkyBlue
         /// </summary>
-        public Color SelectDayColor { get => selectDayColor; set => SetProperty(ref selectDayColor, value); }
+        public Color SelectDayColor { get => selectDayColor; set { SetProperty(ref selectDayColor, value); OnPropertyChanged(nameof(InRangeDayColor)); } }
+        public Color InRangeDayColor { get => selectDayColor.MultiplyAlpha(0.3f); }
 
         /// <summary>
         /// default is true

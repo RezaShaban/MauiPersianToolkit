@@ -7,7 +7,7 @@
                x:Class="PersianUIControlsMaui.Controls.DatePickerView" x:DataType="vm:DatePickerViewModel"
                x:Name="ucDatePicker" Color="Transparent" HorizontalOptions="Fill">
     
-    <Frame CornerRadius="10" Padding="0" FlowDirection="RightToLeft" HorizontalOptions="Fill" Margin="0">
+    <Frame CornerRadius="7" Padding="0" FlowDirection="RightToLeft" HorizontalOptions="Fill" Margin="0" HasShadow="True">
         <Grid>
             <Grid ColumnDefinitions="100,100,100" RowDefinitions="32,50,50,50,50" Padding="15,10" IsVisible="False">
                 <Grid.Triggers>
@@ -39,27 +39,41 @@
                 <Button Grid.Column="1" Grid.Row="4" BackgroundColor="White" Padding="5,3" CornerRadius="0" Text="بهمن" Clicked="btnMonth_Clicked" ClassId="11"/>
                 <Button Grid.Column="2" Grid.Row="4" BackgroundColor="White" Padding="5,3" CornerRadius="0" Text="اسفند" Clicked="btnMonth_Clicked" ClassId="12"/>
             </Grid>
-            <Grid HorizontalOptions="FillAndExpand" ColumnDefinitions="48,48,48,48,48,48,48" Padding="15,10" RowDefinitions="32,32,32,32,32,32,32,32,Auto" RowSpacing="0" ColumnSpacing="0" IsVisible="False">
+
+            <Grid HorizontalOptions="FillAndExpand" ColumnDefinitions="38,38,38,38,38,38,38" Padding="15" RowDefinitions="48,48,38,38,38,38,38,38,Auto,Auto,Auto" RowSpacing="0" ColumnSpacing="0" IsVisible="False">
                 <Grid.Triggers>
                     <DataTrigger TargetType="Grid" Binding="{Binding SelectDateMode}" Value="1">
                         <Setter Property="IsVisible" Value="True"/>
                     </DataTrigger>
                 </Grid.Triggers>
                 
-                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Margin="-15,-10,-15,0" ColumnDefinitions="42,42,50*,50*,42,42" ColumnSpacing="0" BackgroundColor="WhiteSmoke">
-                    <Button Text="&#xf324;" Margin="0" x:Name="btnPrevYear" Command="{Binding PrevYearCommand}" TextColor="Black" Padding="15,0" Grid.Column="0" Grid.Row="0" BackgroundColor="WhiteSmoke" FontFamily="FontAwesome"/>
-                    <Button Text="&#xf054;" Margin="0" Padding="15,7" x:Name="btnPrevMonth" Command="{Binding PrevMonthCommand}" TextColor="Black" Grid.Column="1" Grid.Row="0" BackgroundColor="WhiteSmoke" FontFamily="FontAwesome"/>
-                    <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentYear}" x:Name="btnCurrentYear" TextColor="Black" Padding="15,7" Grid.Column="2" Grid.Row="0" BackgroundColor="WhiteSmoke" FontFamily="IranianSans"/>
-                    <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentMonth}" x:Name="btnCurrentMonth" FontSize="12" TextColor="Black" Padding="10,7" Grid.Column="3" Grid.Row="0" BackgroundColor="WhiteSmoke" FontFamily="IranianSans"/>
-                    <Button Text="&#xf053;" Margin="0" x:Name="btnNextMonth" Command="{Binding NextMonthCommand}" TextColor="Black" Padding="15,7" Grid.Row="0" Grid.Column="4" BackgroundColor="WhiteSmoke" FontFamily="FontAwesome"/>
-                    <Button Text="&#xf323;" Margin="0" x:Name="btnNextYear" Command="{Binding NextYearCommand}" TextColor="Black" Padding="15,0" Grid.Column="5" Grid.Row="0" BackgroundColor="WhiteSmoke" FontFamily="FontAwesome"/>
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" ColumnDefinitions="42,42,50*,50*,42,42" ColumnSpacing="0"
+                      RowDefinitions="36" VerticalOptions="Start">
+                    <Button Text="&#xf054;" Margin="0" x:Name="btnPrevYear" Command="{Binding PrevMonthCommand}" TextColor="Black" Padding="5,0" Grid.Column="0" Grid.Row="0" BackgroundColor="White" FontFamily="FontAwesome" BorderWidth="1" BorderColor="Gray" FontSize="Micro" HeightRequest="28" WidthRequest="28" VerticalOptions="Center" HorizontalOptions="Start" CornerRadius="7"/>
+
+                    <Button Text="&#xf324;" Margin="0" Padding="15,7" x:Name="btnPrevMonth" Command="{Binding PrevYearCommand}" TextColor="Black" Grid.Column="1" Grid.Row="0" BackgroundColor="White" FontFamily="FontAwesome" IsVisible="False"/>
+
+                    <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentMonth}" x:Name="btnCurrentMonth" FontSize="12" TextColor="Black" Padding="10,7" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" BackgroundColor="White" FontFamily="IranianSans" FontAutoScalingEnabled="True">
+                        <Button.ImageSource>
+                            <FontImageSource Glyph="&#xf078;" FontFamily="FontAwesome" Color="Black" Size="14"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                    <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentYear}" x:Name="btnCurrentYear" TextColor="Black" Padding="15,7" Grid.Column="3" Grid.Row="0" BackgroundColor="White" FontFamily="IranianSans" FontAutoScalingEnabled="True" Grid.ColumnSpan="2">
+                        <Button.ImageSource>
+                            <FontImageSource Glyph="&#xf078;" FontFamily="FontAwesome" Color="Black" Size="14"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                    <Button Text="&#xf323;" Margin="0" x:Name="btnNextMonth" Command="{Binding NextYearCommand}" TextColor="Black" Padding="15,7" Grid.Row="0" Grid.Column="4" BackgroundColor="White" FontFamily="FontAwesome" IsVisible="false"/>
+
+                    <Button Text="&#xf053;" Margin="0" x:Name="btnNextYear" Command="{Binding NextMonthCommand}" TextColor="Black" Padding="5,0" Grid.Column="5" Grid.Row="0" BackgroundColor="White" FontFamily="FontAwesome" BorderWidth="1" BorderColor="Gray" FontSize="Micro" HeightRequest="28" WidthRequest="28" VerticalOptions="Center" HorizontalOptions="End" CornerRadius="7"/>
                 </Grid>
 
-                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding DaysOfWeek}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" HeightRequest="32">
+                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding DaysOfWeek}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" HeightRequest="48">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
-                            <Label Grid.Row="1" FontSize="11" HorizontalOptions="Center" Text="{Binding}"
-                       TextColor="Black" VerticalOptions="End" WidthRequest="48" HorizontalTextAlignment="Center" FontFamily="IranianSans"/>
+                            <Label Grid.Row="1" FontSize="11" HorizontalOptions="Center" Text="{Binding}" HeightRequest="36" TextColor="Black" VerticalOptions="Start" VerticalTextAlignment="Center" WidthRequest="38" HorizontalTextAlignment="Center" FontFamily="IranianSans"/>
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </HorizontalStackLayout>
@@ -70,7 +84,7 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:DayOfMonth">
-                            <Button Padding="5,3" Text="{Binding DayNum}" WidthRequest="32" HeightRequest="32" HorizontalOptions="Center" VerticalOptions="Center" CommandParameter="{Binding .}" Clicked="btnDay_Clicked" FontFamily="IranianSans" IsVisible="{Binding IsInCurrentMonth}">
+                            <Button Padding="5,3" Text="{Binding DayNum}" WidthRequest="36" HeightRequest="36" HorizontalOptions="Center" VerticalOptions="Center" CommandParameter="{Binding .}" Clicked="btnDay_Clicked" FontFamily="IranianSans" IsVisible="{Binding IsInCurrentMonth}" BackgroundColor="White" FontAutoScalingEnabled="True" CornerRadius="7" Margin="0,2,0,0">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button" Binding="{Binding CanSelect}" Value="False">
                                         <Setter Property="TextColor" Value="#999"/>
@@ -80,16 +94,30 @@
                                         <Setter Property="TextColor" Value="#333"/>
                                         <Setter Property="IsEnabled" Value="True"/>
                                     </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="False">
+                                        <Setter Property="Background" Value="White"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsInRange}" Value="True">
+                                        <Setter Property="Background" Value="{Binding Options.InRangeDayColor,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}"/>
+                                        <Setter Property="TextColor" Value="{Binding Options.SelectDayColor,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsInRange}" Value="False">
+                                        <Setter Property="Background" Value="White"/>
+                                    </DataTrigger>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsHoliday}" Value="True">
                                         <Setter Property="TextColor" Value="Red"/>
                                     </DataTrigger>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
                                         <Setter Property="Background" Value="{Binding Options.SelectDayColor,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}"/>
-                                        <Setter Property="CornerRadius" Value="100"/>
+                                        <Setter Property="TextColor" Value="White"/>
                                     </DataTrigger>
-                                    <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="False">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Setter Property="CornerRadius" Value="0"/>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsToday}" Value="True">
+                                        <Setter Property="BorderColor" Value="{Binding Options.SelectDayColor,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}"/>
+                                        <Setter Property="BorderWidth" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsToday}" Value="False">
+                                        <Setter Property="BorderColor" Value="Transparent"/>
+                                        <Setter Property="BorderWidth" Value="0"/>
                                     </DataTrigger>
                                 </Button.Triggers>
                             </Button>
@@ -97,14 +125,30 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
-                <Grid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="7" Margin="-15,0,-15,-10" ColumnDefinitions="50*,50*" ColumnSpacing="0" RowSpacing="0" BackgroundColor="WhiteSmoke" IsVisible="False">
+                <Line HeightRequest="1" Fill="Gainsboro" HorizontalOptions="Fill" VerticalOptions="Start" Grid.Row="8" Grid.ColumnSpan="7" Background="Gainsboro" IsVisible="False"/>
+
+                <Button Text="امروز" Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="9" Margin="0,0,0,7" BackgroundColor="White" FontSize="12" x:Name="btnToday" Command="{Binding GotoTodayCommand}" FontFamily="IranianSans" TextColor="{Binding Options.SelectDayColor}" BorderColor="{Binding Options.SelectDayColor}" BorderWidth="1"/>
+                
+                <Grid Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="7" ColumnDefinitions="50*,50*" ColumnSpacing="15" RowSpacing="10" BackgroundColor="WhiteSmoke" IsVisible="False" RowDefinitions="Auto">
                     <Grid.Triggers>
                         <DataTrigger TargetType="Grid" Binding="{Binding Options.AutoCloseAfterSelectDate}" Value="False">
                             <Setter Property="IsVisible" Value="True"/>
                         </DataTrigger>
                     </Grid.Triggers>
-                    <Button Text="انصراف" Grid.Column="1" Grid.Row="0" Margin="0" BackgroundColor="WhiteSmoke" FontSize="12" x:Name="btnCancel" Clicked="btnCancel_Clicked" FontFamily="IranianSans" TextColor="Black"/>
-                    <Button Text="تایید" Grid.Row="0" Grid.Column="0" Margin="0" BackgroundColor="WhiteSmoke" FontSize="12" x:Name="btnAccept" Clicked="btnAccept_Clicked" FontFamily="IranianSans" TextColor="Black"/>
+
+                    <Button Text="انصراف" Grid.Column="1" Grid.Row="0" Margin="0" BackgroundColor="White" BorderColor="Gray" FontSize="12" x:Name="btnCancel" Clicked="btnCancel_Clicked" FontFamily="IranianSans" TextColor="{Binding Options.SelectDayColor}" BorderWidth="1"/>
+                    <Button Text="تایید" Grid.Row="0" Grid.Column="0" Margin="0" BackgroundColor="{Binding Options.SelectDayColor}" FontSize="12" x:Name="btnAccept" Clicked="btnAccept_Clicked" FontFamily="IranianSans" TextColor="White" IsEnabled="True">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedDays.Count}" Value="0">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding SelectedDays.Count}" Value="1">
+                                <Setter Property="IsEnabled" Value="True"/>
+                                <Setter Property="Opacity" Value="1"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>

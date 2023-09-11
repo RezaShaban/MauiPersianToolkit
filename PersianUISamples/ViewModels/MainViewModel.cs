@@ -43,14 +43,15 @@ namespace PersianUISamples.ViewModels
             {
                 SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
                 SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Single,
-                SelectDayColor = Colors.Orange,
+                SelectDayColor = Color.FromArgb("#5B2BDF"),
                 MinDateCanSelect = DateTime.Now.AddDays(-10),
-                MaxDateCanSelect = DateTime.Now.AddDays(10),
+                MaxDateCanSelect = DateTime.Now.AddDays(10)
             };
             RangeCalendarOption = new CalendarOptions()
             {
                 SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
                 SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Range,
+                SelectDayColor = Color.FromArgb("#5B2BDF"),
                 AutoCloseAfterSelectDate = false,
                 OnAccept = OnAcceptDate,
                 OnCancel = new Action(() => { }),
@@ -60,6 +61,7 @@ namespace PersianUISamples.ViewModels
             {
                 SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
                 SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Multiple,
+                SelectDayColor = Color.FromArgb("#5B2BDF"),
                 AutoCloseAfterSelectDate = false,
                 OnAccept = OnAcceptDateMultiple,
                 OnCancel = new Action(() => { }),

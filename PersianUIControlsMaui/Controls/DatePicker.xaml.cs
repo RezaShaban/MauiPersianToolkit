@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 using PersianUIControlsMaui.Enums;
 using PersianUIControlsMaui.Models;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
 namespace PersianUIControlsMaui.Controls;
@@ -136,33 +137,40 @@ public partial class DatePicker : ContentView
 
         return Task.Run(() =>
         {
-            this.IsLoading = true;
-            this.CalendarOption.SelectedPersianDate = this.SelectedPersianDate ?? DateTime.Now.ToPersianDate();
-            this.CalendarOption.AutoCloseAfterSelectDate = this.CalendarOption.SelectionMode != Enums.SelectionMode.Multiple ? this.CalendarOption.AutoCloseAfterSelectDate : false;
-            this.view = new DatePickerView(this.CalendarOption);
-            this.view.SelectedDateChanged += (object sender, SelectedDateChangedEventArgs e) =>
+            try
             {
-                if (this.CalendarOption.SelectionMode == Enums.SelectionMode.Single)
+                this.IsLoading = true;
+                this.CalendarOption.SelectedPersianDate = this.SelectedPersianDate ?? DateTime.Now.ToPersianDate();
+                this.CalendarOption.SelectedPersianDates = this.BadgeDates;
+                this.CalendarOption.AutoCloseAfterSelectDate = this.CalendarOption.SelectionMode != Enums.SelectionMode.Multiple ? this.CalendarOption.AutoCloseAfterSelectDate : false;
+                this.view = new DatePickerView(this.CalendarOption);
+                this.view.SelectedDateChanged += (object sender, SelectedDateChangedEventArgs e) =>
                 {
-                    this.SelectedPersianDate = e.SelectedDate.PersianDate.ToString();
-                    SetFormattedDate();
-                    OnChangeDateCommand?.Execute(SelectedPersianDate);
-                }
+                    if (this.CalendarOption.SelectionMode == Enums.SelectionMode.Single)
+                    {
+                        this.SelectedPersianDate = e.SelectedDate.PersianDate.ToString();
+                        SetFormattedDate();
+                        OnChangeDateCommand?.Execute(SelectedPersianDate);
+                    }
 
-                if ((CalendarOption.AutoCloseAfterSelectDate && this.CalendarOption.SelectionMode == Enums.SelectionMode.Single)
-                || (CalendarOption.AutoCloseAfterSelectDate && e.SelectedDates.Count == 2 && this.CalendarOption.SelectionMode == Enums.SelectionMode.Range))
-                    this.view.Close();
-            };
-            this.view.Opened += (object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e) =>
+                    if ((CalendarOption.AutoCloseAfterSelectDate && this.CalendarOption.SelectionMode == Enums.SelectionMode.Single)
+                    || (CalendarOption.AutoCloseAfterSelectDate && e.SelectedDates.Count == 2 && this.CalendarOption.SelectionMode == Enums.SelectionMode.Range))
+                        this.view.Close();
+                };
+                this.view.Opened += (object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e) =>
+                {
+                    this.OnOpenedCommand?.Execute(e);
+                };
+                this.view.Closed += (object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e) =>
+                {
+                    this.view = null;
+                    initedView = InitPickerView();
+                };
+                this.IsLoading = false;
+            }
+            catch (Exception ex)
             {
-                this.OnOpenedCommand?.Execute(e);
-            };
-            this.view.Closed += (object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e) =>
-            {
-                this.view = null;
-                initedView = InitPickerView();
-            };
-            this.IsLoading = false;
+            }
         });
     }
 
@@ -201,39 +209,12 @@ public partial class DatePicker : ContentView
                 SetFormattedDate();
                 this.initedView = this.InitPickerView();
             }
-
-            if (string.IsNullOrEmpty(txtEntry.Text))
-                PullDownPlaceHolder();
-            else
-            {
-                SetFormattedDate();
-                PullUpPlaceHolder();
-            }
         }
     }
 
     private void ucDatePicker_Loaded(object sender, EventArgs e)
     {
         this.initedView = this.InitPickerView();
-    }
-
-    private void Entry_Focused(object sender, FocusEventArgs e)
-    {
-        PullUpPlaceHolder();
-    }
-
-    private void Entry_Unfocused(object sender, FocusEventArgs e)
-    {
-        if (string.IsNullOrEmpty(txtEntry.Text))
-            PullDownPlaceHolder();
-    }
-
-    private void txtEntry_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        if (string.IsNullOrEmpty(txtEntry.Text))
-            PullDownPlaceHolder();
-        else
-            PullUpPlaceHolder();
     }
 
     #endregion
@@ -256,37 +237,6 @@ public partial class DatePicker : ContentView
             FormattedDate = FormattedDate.Replace("dd", dateParts[2])
                 .Replace("d", dateParts[2].ToInt().ToString())
                 .Replace("DD", dateParts[2]);
-    }
-    void PullUpPlaceHolder()
-    {
-        lblPlaceholder.TranslateTo(0, -28);
-        if (PlaceHolderColor != ActivePlaceHolderColor)
-            _color = PlaceHolderColor; //Application.Current.Resources[$"Primary{Application.Current.RequestedTheme}"];
-        if (this.txtEntry.IsFocused)
-        {
-            var activeColor = this.ActivePlaceHolderColor;// ((Color)Application.Current.Resources[$"Primary{Application.Current.RequestedTheme}"]);
-            this.PlaceHolderColor = activeColor; //this.ActivePlaceHolderColor;
-            rectangle.Stroke = new SolidColorBrush(activeColor);
-        }
-        else
-        {
-            this.PlaceHolderColor = Color.FromArgb("#a4a6a9");
-            rectangle.Stroke = new SolidColorBrush(Color.FromArgb("#a4a6a9"));
-        }
-        lblPlaceholder.BackgroundColor = Colors.White;
-        //PlaceHolderColor = ActivePlaceHolderColor;
-    }
-    void PullDownPlaceHolder()
-    {
-        lblPlaceholder.TranslateTo(0, 0);
-        ActivePlaceHolderColor = PlaceHolderColor;
-        PlaceHolderColor = _color;
-        if (!this.txtEntry.IsFocused)
-        {
-            rectangle.Stroke = new SolidColorBrush(Color.FromArgb("#a4a6a9"));
-            ActivePlaceHolderColor = Color.FromArgb("#a4a6a9");// PlaceHolderColor;
-            PlaceHolderColor = Color.FromArgb("#a4a6a9");// _color;
-        }
     }
 
     #endregion
