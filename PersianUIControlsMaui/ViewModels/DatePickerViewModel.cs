@@ -47,12 +47,14 @@ public class DatePickerViewModel : ObservableObject
     private Command initCalendarDaysCommand;
     private Command selectDateCommand;
     private Command gotoTodayCommand;
+    private Command selectMonthCommand;
     #endregion
 
     public Command NextMonthCommand { get { nextMonthCommand ??= new Command(NextMonth); return nextMonthCommand; } }
     public Command PrevMonthCommand { get { prevMonthCommand ??= new Command(PrevMonth); return prevMonthCommand; } }
     public Command NextYearCommand { get { nextYearCommand ??= new Command(NextYear); return nextYearCommand; } }
     public Command PrevYearCommand { get { prevYearCommand ??= new Command(PrevYear); return prevYearCommand; } }
+    public Command SelectMonthCommand { get { selectMonthCommand ??= new Command(SelectMonth); return selectMonthCommand; } }
     public Command GotoTodayCommand { get { gotoTodayCommand ??= new Command(GotoToday); return gotoTodayCommand; } }
     public Command InitCalendarDaysCommand { get { initCalendarDaysCommand ??= new Command(InitCalendarDays); return initCalendarDaysCommand; } }
     public Command SelectDateCommand { get { selectDateCommand ??= new Command(SelectDate); return selectDateCommand; } }
@@ -263,11 +265,15 @@ public class DatePickerViewModel : ObservableObject
         var date = GetSelectedDate();
         InitCalendarDays(date.AddYears(-1));
     }
+
     private void GotoToday(object obj)
     {
         var date = DateTime.Now.Date;
         InitCalendarDays(date);
     }
+
+    private void SelectMonth(object obj) =>
+        SelectDateMode = SelectionDateMode.Month;
 
     private DateTime GetSelectedDate()
     {

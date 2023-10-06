@@ -29,15 +29,28 @@
             <pui:TabItemView Title="کنترل" Icon="&#xf00c;" Padding="15">
                 <pui:ContainerView Title=" کنترل ها" Icon="&#xf00c;" IsExpanded="True">
                     <pui:ContainerView.Contents>
-                        <Grid RowDefinitions="80,50,50,Auto">
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
                             <pui:EntryView PlaceHolder="نام و فامیل" Icon="&#xf007;" AppendText="@" Grid.Row="0"/>
 
-                            <pui:LabelView Text="برچسب تستی" Icon="&#xf075;" Grid.Row="1"/>
+                            <pui:EditorView PlaceHolder="شرح کامل بنویس" Title="شرح کامل" Icon="&#xf075;" Grid.Row="1"/>
 
-                            <pui:CheckBoxView Text="انتخاب اول" TextColor="Black" Grid.Row="2"/>
+                            <pui:PickerView PlaceHolder="انتخاب تکی" Title="یکی رو انتخاب کن" Grid.Row="2" Icon="&#xf007;" ItemsSource="{Binding PickerItems}" DisplayProperty="Title" ValueMember="Id" SelectionMode="Single" AdditionButtons="{Binding PickerAdditionButtons,Mode=OneWay}" RowIconProperty="Icon"/>
 
-                            <pui:EditorView PlaceHolder="نام و فامیل" Title="نام و فامیل" Icon="&#xf007;" Grid.Row="3"/>
+                            <pui:PickerView PlaceHolder="انتخاب چندتایی" Title="چندتا رو انتخاب کن" Grid.Row="3" Icon="&#xf007;" ItemsSource="{Binding PickerMultipleItems}" DisplayProperty="Title" ValueMember="Id" ActivePlaceHolderColor="{Binding CalendarOption.SelectDayColor}" SelectionMode="Multiple" x:Name="picker_2" AdditionButtons="{Binding PickerAdditionButtons,Mode=OneWay}">
+                                <pui:PickerView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Orientation="Horizontal" Padding="15,10" FlowDirection="RightToLeft">
+                                            <Label Text="{Binding Icon}" FontFamily="FontAwesome" WidthRequest="32" HeightRequest="32" VerticalOptions="Center" Margin="0,-10" FontSize="Medium"/>
+                                            <Label Text="{Binding Title}" TextColor="Black" FontFamily="IranianSans" HorizontalOptions="Start"/>
+                                            <Button Text="{Binding Id}" TextColor="Black" Padding="0" Background="Orange" WidthRequest="24" HeightRequest="24" CornerRadius="100" FontFamily="IranianSans"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </pui:PickerView.ItemTemplate>
+                            </pui:PickerView>
 
+                            <pui:LabelView Text="برچسب تستی" Icon="&#xf075;" Grid.Row="4"/>
+
+                            <pui:CheckBoxView Text="انتخاب اول" TextColor="Black" Grid.Row="5"/>
                         </Grid>
                     </pui:ContainerView.Contents>
                 </pui:ContainerView>

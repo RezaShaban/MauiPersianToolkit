@@ -27,13 +27,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Controls\PickerView.xaml.cs" />
 	  <Compile Remove="Controls\TimePicker.xaml.cs" />
 	  <Compile Remove="ViewModels\PickerViewModel.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Remove="Controls\PickerView.xaml" />
 	  <MauiXaml Remove="Controls\TimePicker.xaml" />
 	</ItemGroup>
 
@@ -79,6 +77,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\LabelView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\PickerView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\TabItemView.xaml">
