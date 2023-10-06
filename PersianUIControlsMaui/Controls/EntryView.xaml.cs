@@ -133,13 +133,13 @@ public partial class EntryView : ContentView
         if (propertyName == IsEnabledProperty.PropertyName)
             PlaceHolderColor = this.IsEnabled ? PlaceHolderColor : Colors.Gray;
 
-        if (propertyName == TextProperty.PropertyName)
-        {
-            if (string.IsNullOrEmpty(entry.Text) && lblState == 1)
-                PullDownPlaceHolder();
-            else if (lblState == 0)
-                PullUpPlaceHolder();
-        }
+        //if (propertyName == TextProperty.PropertyName)
+        //{
+        //    if (string.IsNullOrEmpty(entry.Text) && lblState == 1)
+        //        PullDownPlaceHolder();
+        //    else if (lblState == 0)
+        //        PullUpPlaceHolder();
+        //}
 
         if (propertyName == AppendTextProperty.PropertyName)
             append.Text = AppendText;
@@ -150,12 +150,12 @@ public partial class EntryView : ContentView
 
     private void Entry_Focused(object sender, FocusEventArgs e)
     {
-        PullUpPlaceHolder();
+        //PullUpPlaceHolder();
     }
 
     private void Entry_Unfocused(object sender, FocusEventArgs e)
     {
-        PullDownPlaceHolder();
+        //PullDownPlaceHolder();
     }
 
     void PullUpPlaceHolder()

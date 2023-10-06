@@ -2,6 +2,7 @@
 using PersianUIControlsMaui.Models;
 using PersianUIControlsMaui.Services.Dialog;
 using PersianUIControlsMaui.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace PersianUISamples.ViewModels
 {
@@ -15,6 +16,8 @@ namespace PersianUISamples.ViewModels
         private CalendarOptions calendarOption;
         private CalendarOptions rangeCalendarOption;
         private CalendarOptions multipleCalendarOption;
+        ObservableCollection<PickerItem> pickerItems;
+        ObservableCollection<PickerItem> pickerMultipleItems;
         private Command onChangeDateCommand;
         private Command showAlertCommand;
         private Command showConfirmCommand;
@@ -30,7 +33,9 @@ namespace PersianUISamples.ViewModels
         public CalendarOptions CalendarOption { get => calendarOption; set => SetProperty(ref calendarOption, value); }
         public CalendarOptions RangeCalendarOption { get => rangeCalendarOption; set => SetProperty(ref rangeCalendarOption, value); }
         public CalendarOptions MultipleCalendarOption { get => multipleCalendarOption; set => SetProperty(ref multipleCalendarOption, value); }
-
+        public ObservableCollection<PickerItem> PickerItems { get => pickerItems; set => SetProperty(ref pickerItems, value); }
+        public ObservableCollection<PickerItem> PickerMultipleItems { get => pickerMultipleItems; set => SetProperty(ref pickerMultipleItems, value); }
+        public ObservableCollection<PickerButton> PickerAdditionButtons { get; set; }
         public Command OnChangeDateCommand { get { onChangeDateCommand ??= new Command(OnDateChanged); return onChangeDateCommand; } }
         public Command ShowAlertCommand { get { showAlertCommand ??= new Command(ShowAlert); return showAlertCommand; } }
         public Command ShowConfirmCommand { get { showConfirmCommand ??= new Command(ShowConfirm); return showConfirmCommand; } }
@@ -38,6 +43,12 @@ namespace PersianUISamples.ViewModels
         public Command ShowCustomCommand { get { showCustomCommand ??= new Command(ShowCustom); return showCustomCommand; } }
 
         public MainViewModel(IDialogService dialogService)
+        {
+            this.dialogService = dialogService;
+            InitData();
+        }
+
+        private void InitData()
         {
             CalendarOption = new CalendarOptions()
             {
@@ -67,7 +78,23 @@ namespace PersianUISamples.ViewModels
                 OnCancel = new Action(() => { }),
                 CanSelectHolidays = true
             };
-            this.dialogService = dialogService;
+            PickerMultipleItems = new ObservableCollection<PickerItem>
+            {
+                new PickerItem() { Id = 1, Title = "انتخاب اول", Icon = "\uf027"},
+                new PickerItem() { Id = 2, Title = "انتخاب دوم", Icon = "\uf037"},
+                new PickerItem() { Id = 3, Title = "انتخاب سوم", Icon = "\uf047"},
+                new PickerItem() { Id = 4, Title = "انتخاب چهارم", Icon = "\uf057"}
+            };
+            PickerItems = new ObservableCollection<PickerItem>
+            {
+                new PickerItem() { Id = 1, Title = "گزینه اول", Icon = "\uf027" },
+                new PickerItem() { Id = 2, Title = "گزینه دوم", Icon = "\uf037" },
+                new PickerItem() { Id = 3, Title = "گزینه سوم", Icon = "\uf047" }
+            };
+            PickerAdditionButtons = new ObservableCollection<PickerButton>() {
+                new PickerButton() { Text = "\uf067" },
+                new PickerButton() { Text = "\uf057" }
+            };
         }
 
         private void OnAcceptDate(object obj)
@@ -149,5 +176,12 @@ namespace PersianUISamples.ViewModels
                 }
             });
         }
+    }
+
+    public class PickerItem
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Icon { get; set; } = "\uf064";
     }
 }
