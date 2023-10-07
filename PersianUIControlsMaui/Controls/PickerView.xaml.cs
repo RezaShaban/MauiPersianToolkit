@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
+using static Microsoft.Maui.Controls.VisualStateManager;
 
 namespace PersianUIControlsMaui.Controls;
 
@@ -17,12 +18,12 @@ public partial class PickerView : ContentView
         set { SetValue(TitleProperty, value); }
     }
 
-    //public static readonly BindableProperty HasSearchbarProperty = BindableProperty.Create(nameof(HasSearchbar), typeof(bool), typeof(PickerView), default(bool), BindingMode.TwoWay);
-    //public bool HasSearchbar
-    //{
-    //    get { return (bool)GetValue(HasSearchbarProperty); }
-    //    set { SetValue(HasSearchbarProperty, value); }
-    //}
+    public static readonly BindableProperty SelectedItemColorProperty = BindableProperty.Create(nameof(SelectedItemColor), typeof(Color), typeof(PickerView), Colors.Orange, BindingMode.TwoWay);
+    public Color SelectedItemColor
+    {
+        get { return (Color)GetValue(SelectedItemColorProperty); }
+        set { SetValue(SelectedItemColorProperty, value); }
+    }
 
     public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(PickerView), default(string), BindingMode.TwoWay);
     public string Text
@@ -369,7 +370,7 @@ public partial class PickerView : ContentView
     private HorizontalStackLayout TitleLayout() => new HorizontalStackLayout()
     {
         HorizontalOptions = LayoutOptions.Fill,
-        Padding = new Thickness(0,0,0,5),
+        Padding = new Thickness(0, 0, 0, 5),
         FlowDirection = FlowDirection.RightToLeft,
         Children =
         {
@@ -437,6 +438,20 @@ public partial class PickerView : ContentView
                 }
             };
 
+            if (!list.Resources.Any(x => x.Key == "Microsoft.Maui.Controls.StackLayout"))
+            {
+                Setter backgroundColorSetter = new() { Property = BackgroundColorProperty, Value = SelectedItemColor };
+                VisualState stateSelected = new() { Name = CommonStates.Selected, Setters = { backgroundColorSetter } };
+                VisualState stateNormal = new() { Name = CommonStates.Normal };
+                VisualStateGroup visualStateGroup = new() { Name = nameof(CommonStates), States = { stateSelected, stateNormal } };
+                VisualStateGroupList visualStateGroupList = new() { visualStateGroup };
+                Setter vsgSetter = new() { Property = VisualStateGroupsProperty, Value = visualStateGroupList };
+                Style style = new(typeof(StackLayout)) { Setters = { vsgSetter }, BaseResourceKey = "collectionItem" };
+
+                // Add the style to the resource dictionary
+                list.Resources.Add(style);
+            }
+
             return list;
         }
         catch (Exception)
@@ -452,6 +467,7 @@ public partial class PickerView : ContentView
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Center,
             FontSize = 14,
+            IconFontSize = 16,
             TextColor = Colors.Black,
             InputTransparent = true
         };

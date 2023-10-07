@@ -98,7 +98,8 @@ public partial class TabView : ContentView
                     InputTransparent = true,
                     TextColor = UnSelectedTabColor,
                     Margin = new Thickness(0, 0, 5, 0),
-                    Scale = AnimateCaptions ? 0 : 1
+                    Scale = AnimateCaptions ? 0 : 1,
+                    FontFamily = "IranianSans"
                 };
                 //if (AnimateCaptions)
                 //    label.ScaleTo(0);
