@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
 using PersianUIControlsMaui.Enums;
 using PersianUIControlsMaui.Models;
-using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
 namespace PersianUIControlsMaui.Controls;

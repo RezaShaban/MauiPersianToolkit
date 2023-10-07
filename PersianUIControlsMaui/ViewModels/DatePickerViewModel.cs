@@ -29,12 +29,14 @@ public class DatePickerViewModel : ObservableObject
     #region Field's
     private List<string> daysOfWeek;
     private List<DayOfMonth> daysOfMonth;
+    private List<string> persianMonths;
     private ObservableCollection<DayOfMonth> selectedDays;
     #endregion
 
     public List<string> DaysOfWeek { get => daysOfWeek; set => SetProperty(ref daysOfWeek, value); }
     public List<DayOfMonth> DaysOfMonth { get => daysOfMonth; set => SetProperty(ref daysOfMonth, value); }
     public ObservableCollection<DayOfMonth> SelectedDays { get => selectedDays; set => SetProperty(ref selectedDays, value); }
+    public List<string> PersianMonths { get => persianMonths; set => SetProperty(ref persianMonths, value); }
     #endregion
 
     #region Command's
@@ -47,6 +49,7 @@ public class DatePickerViewModel : ObservableObject
     private Command initCalendarDaysCommand;
     private Command selectDateCommand;
     private Command gotoTodayCommand;
+    private Command switchModeCommand;
     private Command selectMonthCommand;
     #endregion
 
@@ -54,6 +57,7 @@ public class DatePickerViewModel : ObservableObject
     public Command PrevMonthCommand { get { prevMonthCommand ??= new Command(PrevMonth); return prevMonthCommand; } }
     public Command NextYearCommand { get { nextYearCommand ??= new Command(NextYear); return nextYearCommand; } }
     public Command PrevYearCommand { get { prevYearCommand ??= new Command(PrevYear); return prevYearCommand; } }
+    public Command SwitchModeCommand { get { switchModeCommand ??= new Command(SwitchMode); return switchModeCommand; } }
     public Command SelectMonthCommand { get { selectMonthCommand ??= new Command(SelectMonth); return selectMonthCommand; } }
     public Command GotoTodayCommand { get { gotoTodayCommand ??= new Command(GotoToday); return gotoTodayCommand; } }
     public Command InitCalendarDaysCommand { get { initCalendarDaysCommand ??= new Command(InitCalendarDays); return initCalendarDaysCommand; } }
@@ -64,6 +68,7 @@ public class DatePickerViewModel : ObservableObject
     {
         Options = options;
         SelectedDays = new ObservableCollection<DayOfMonth>(GetSelectedDates(options.SelectedPersianDates));
+        PersianMonths = new List<string>();
         SelectDateMode = options.SelectDateMode;
 
         if (this.DaysOfWeek == null)
@@ -110,6 +115,7 @@ public class DatePickerViewModel : ObservableObject
             return;
 
         CurrentMonth = Enum.GetNames(typeof(PersianMonthNames))[date.GetPersianMonth() - 1];
+        PersianMonths = Enum.GetNames(typeof(PersianMonthNames)).ToList();
         CurrentYear = date.GetPersianYear();
 
         var firstDayOfMonth = date.GetPersianBeginningMonth().ToDateTime();
@@ -272,8 +278,18 @@ public class DatePickerViewModel : ObservableObject
         InitCalendarDays(date);
     }
 
-    private void SelectMonth(object obj) =>
+    private void SwitchMode(object obj) =>
         SelectDateMode = SelectionDateMode.Month;
+
+    private void SelectMonth(object obj)
+    {
+        var month = Enum.Parse<PersianMonthNames>(obj.ToString());
+        var date = $"{CurrentYear}/{(int)month+1}/01".ToDateTime();
+        SelectDateMode = SelectionDateMode.Day;
+        InitCalendarDays(date);
+    }
+
+
 
     private DateTime GetSelectedDate()
     {
