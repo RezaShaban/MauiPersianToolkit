@@ -10,19 +10,17 @@ public partial class DatePickerView : Popup
     DayOfMonth selectedDate;
     DatePickerViewModel viewModel;
 
-
     public event EventHandler<SelectedDateChangedEventArgs> SelectedDateChanged;
 
-    public DatePickerView(CalendarOptions options)
+    public DatePickerView()
     {
         InitializeComponent();
-        viewModel = new DatePickerViewModel(options);
-        this.BindingContext = viewModel;
     }
 
-    private void btnMonth_Clicked(object sender, EventArgs e)
+    public DatePickerView(CalendarOptions options): this()
     {
-        
+        viewModel = new DatePickerViewModel(options);
+        this.BindingContext = viewModel;
     }
 
     private void btnDay_Clicked(object sender, EventArgs e)

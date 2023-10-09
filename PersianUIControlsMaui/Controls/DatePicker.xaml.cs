@@ -222,7 +222,6 @@ public partial class DatePicker : ContentView
 
     void SetFormattedDate()
     {
-        var miladiDate = SelectedPersianDate.ToDateTime();
         var dateParts = SelectedPersianDate.Replace('/', DateSeparator).Split(DateSeparator);
 
         if (dateParts.Length > 0)

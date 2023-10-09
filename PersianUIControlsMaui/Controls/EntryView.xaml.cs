@@ -133,64 +133,11 @@ public partial class EntryView : ContentView
         if (propertyName == IsEnabledProperty.PropertyName)
             PlaceHolderColor = this.IsEnabled ? PlaceHolderColor : Colors.Gray;
 
-        //if (propertyName == TextProperty.PropertyName)
-        //{
-        //    if (string.IsNullOrEmpty(entry.Text) && lblState == 1)
-        //        PullDownPlaceHolder();
-        //    else if (lblState == 0)
-        //        PullUpPlaceHolder();
-        //}
-
         if (propertyName == AppendTextProperty.PropertyName)
             append.Text = AppendText;
 
         if (propertyName == IsValidProperty.PropertyName)
             this.entry.Focus();
-    }
-
-    private void Entry_Focused(object sender, FocusEventArgs e)
-    {
-        //PullUpPlaceHolder();
-    }
-
-    private void Entry_Unfocused(object sender, FocusEventArgs e)
-    {
-        //PullDownPlaceHolder();
-    }
-
-    void PullUpPlaceHolder()
-    {
-        lblPlaceholder.TranslateTo(15, -25);
-        lblState = 1;
-        if (this.entry.IsFocused)
-        {
-            SetColors(this.ActivePlaceHolderColor);
-        }
-        else if (this._color != null)
-        {
-            SetColors(this._color);
-        }
-        lblPlaceholder.BackgroundColor = Colors.White;
-    }
-
-    void PullDownPlaceHolder()
-    {
-        if (!this.entry.IsFocused)
-        {
-            if (string.IsNullOrEmpty(entry.Text))
-            {
-                lblPlaceholder.TranslateTo(0, 0);
-                lblState = 0;
-                lblPlaceholder.BackgroundColor = Colors.Transparent;
-            }
-            SetColors(this._color);
-            lblPlaceholder.ScaleTo(1);
-        }
-    }
-
-    private void SetColors(Color color)
-    {
-        this.SetValue(PlaceHolderColorProperty, color);
     }
 
     private void entry_TextChanged(object sender, TextChangedEventArgs e)

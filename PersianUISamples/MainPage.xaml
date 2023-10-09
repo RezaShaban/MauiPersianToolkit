@@ -29,7 +29,7 @@
             <pui:TabItemView Title="کنترل" Icon="&#xf00c;" Padding="15">
                 <pui:ContainerView Title=" کنترل ها" Icon="&#xf00c;" IsExpanded="True">
                     <pui:ContainerView.Contents>
-                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                             <pui:EntryView PlaceHolder="نام و فامیل" Icon="&#xf007;" AppendText="@" Grid.Row="0"/>
 
                             <pui:EditorView PlaceHolder="شرح کامل بنویس" Title="شرح کامل" Icon="&#xf075;" Grid.Row="1"/>

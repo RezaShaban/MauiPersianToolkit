@@ -75,17 +75,6 @@ public partial class EditorView : ContentView
         InitializeComponent();
     }
 
-    //protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    //{
-    //    base.OnPropertyChanged(propertyName);
-
-    //    if (propertyName == WidthProperty.PropertyName)
-    //    {
-    //        rectangle.WidthRequest = this.Width;
-    //        rectangle.Stroke = new SolidColorBrush(Color.FromArgb("#a4a6a9"));
-    //    }
-    //}
-
     private void Editor_Focused(object sender, FocusEventArgs e)
     {
         var activeColor = this.ActivePlaceHolderColor; // (Color)Application.Current.Resources[$"Primary{Application.Current.RequestedTheme}"];
@@ -97,16 +86,7 @@ public partial class EditorView : ContentView
 
     private void Editor_Unfocused(object sender, FocusEventArgs e)
     {
-        PlaceHolderColor = this.placeholderColor;// _color;
-        //this.ActivePlaceHolderColor = Color.FromArgb("#a4a6a9");
+        PlaceHolderColor = this.placeholderColor;
         rectangle.Stroke = new SolidColorBrush(Color.FromArgb("#a4a6a9"));
-    }
-
-    private void txtEditor_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        //rectangle.Aspect = Stretch.None;
-        //double height = txtEditor.Height + lblHolder.Height;
-        //rectangle.SetValue(HeightRequestProperty, txtEditor.Height < 50 ? 50 : height);
-        //rectangle.Aspect = Stretch.Fill;
     }
 }

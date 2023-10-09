@@ -118,17 +118,6 @@ public partial class TabView : ContentView
         }
     }
 
-    private Color GetFromResource(string key)
-    {
-        try
-        {
-            return Colors.Black; //(Color)App.Current.Resources[key];
-        }
-        catch (Exception)
-        {
-            return Colors.Red;
-        }
-    }
     private void ExecuteChangeTabCommand(object control, object button, object label)
     {
         if (control is not TabItemView tab)

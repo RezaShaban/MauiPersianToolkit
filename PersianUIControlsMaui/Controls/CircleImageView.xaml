@@ -3,18 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="PersianUIControlsMaui.Controls.CircleImageView"
              x:Name="circleView">
-    <ContentView.Content>
-        <Grid x:Name="grid" HorizontalOptions="Center" HeightRequest="{Binding ContainerHeight,Source={x:Reference circleView}}" WidthRequest="{Binding ContainerWidth,Source={x:Reference circleView}}" >
-            <Ellipse Grid.Row="0" Grid.Column="0" x:Name="ellipse" HorizontalOptions="Center"
+    <Grid x:Name="grid" HorizontalOptions="Center" HeightRequest="{Binding ContainerHeight,Source={x:Reference circleView}}" WidthRequest="{Binding ContainerWidth,Source={x:Reference circleView}}" >
+        <Ellipse Grid.Row="0" Grid.Column="0" x:Name="ellipse" HorizontalOptions="Center"
                      HeightRequest="{Binding ContainerHeight,Source={x:Reference circleView}}"
                      WidthRequest="{Binding ContainerWidth,Source={x:Reference circleView}}"
                      VerticalOptions="Center" Stroke="{Binding BorderColor,Source={x:Reference circleView}}"
                      StrokeThickness="{Binding BorderThickness,Source={x:Reference circleView}}"/>
-            <Image Source="{Binding ImageSource,Source={x:Reference circleView}}" WidthRequest="{Binding ImageWidth,Source={x:Reference circleView}}" HeightRequest="{Binding ImageHeight,Source={x:Reference circleView}}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="0" Grid.Column="0" Margin="{Binding BorderThickness,Source={x:Reference circleView}}" IsOpaque="True">
-                <Image.Clip>
-                    <EllipseGeometry x:Name="imgClip" RadiusX="5" Center="0,0" RadiusY="5"/>
-                </Image.Clip>
-            </Image>
-        </Grid>
-    </ContentView.Content>
+        <Image Source="{Binding ImageSource,Source={x:Reference circleView}}" WidthRequest="{Binding ImageWidth,Source={x:Reference circleView}}" HeightRequest="{Binding ImageHeight,Source={x:Reference circleView}}" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="0" Grid.Column="0" Margin="{Binding BorderThickness,Source={x:Reference circleView}}" IsOpaque="True">
+            <Image.Clip>
+                <EllipseGeometry x:Name="imgClip" RadiusX="5" Center="0,0" RadiusY="5"/>
+            </Image.Clip>
+        </Image>
+    </Grid>
 </ContentView>
