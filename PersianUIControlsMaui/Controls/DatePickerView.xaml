@@ -4,6 +4,7 @@
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                xmlns:vm="clr-namespace:PersianUIControlsMaui.ViewModels"
                xmlns:models="clr-namespace:PersianUIControlsMaui.Models"
+               xmlns:core="clr-namespace:System.Collections.Generic;assembly=System.Core"
                x:Class="PersianUIControlsMaui.Controls.DatePickerView" x:DataType="vm:DatePickerViewModel"
                x:Name="ucDatePicker" Color="Transparent" HorizontalOptions="Fill">
 
@@ -45,8 +46,8 @@
                     </DataTrigger>
                 </FlexLayout.Triggers>
                 <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="x:String">
-                        <Button Text="{Binding}" Margin="0" BackgroundColor="White" BorderColor="Gray" FontSize="12" FontFamily="IranianSans" FlexLayout.Basis="25%" FlexLayout.Grow="1" Command="{Binding SelectMonthCommand,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}" CommandParameter="{Binding}">
+                    <DataTemplate x:DataType="models:PuiTuple">
+                        <Button Text="{Binding Item2}" Margin="0" BackgroundColor="White" BorderColor="Gray" FontSize="12" FontFamily="IranianSans" FlexLayout.Basis="25%" FlexLayout.Grow="1" Command="{Binding SelectMonthCommand,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}" CommandParameter="{Binding}">
                             <Button.Triggers>
                                 <DataTrigger TargetType="Button" Binding="{Binding .}" Value="{Binding Text,Source={x:Reference btnCurrentMonth}}">
                                     <Setter Property="TextColor" Value="{Binding Options.SelectDayColor,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}"/>

@@ -6,9 +6,9 @@
              xmlns:vm="clr-namespace:PersianUISamples.ViewModels"
              x:DataType="vm:MainViewModel">
 
-    <pui:TabView SelectedTabColor="OrangeRed" UnSelectedTabColor="Gray" SelectedTab="1" AnimateCaptions="True">
+    <pui:TabView SelectedTabColor="{Binding CalendarOption.SelectDayColor}" UnSelectedTabColor="Gray" SelectedTab="0">
         <pui:TabView.ItemsSource>
-            <pui:TabItemView Title="تاریخ" Icon="&#xf133;" Padding="15">
+            <pui:TabItemView Title="تقویم" Icon="&#xf133;" Padding="15">
                 <VerticalStackLayout Spacing="25" Padding="0" VerticalOptions="Fill">
                     <VerticalStackLayout>
                         <pui:CircleImageView ImageSource="dotnet_bot.svg" Margin="25,25,25,0" ImageHeight="96" ImageWidth="96" BorderThickness="2" BorderColor="BlueViolet" VerticalOptions="Center" HorizontalOptions="Center"/>
@@ -26,7 +26,7 @@
                     </pui:ContainerView>
                 </VerticalStackLayout>
             </pui:TabItemView>
-            <pui:TabItemView Title="کنترل" Icon="&#xf00c;" Padding="15">
+            <pui:TabItemView Title="کنترل ها" Icon="&#xf00c;" Padding="15">
                 <pui:ContainerView Title=" کنترل ها" Icon="&#xf00c;" IsExpanded="True">
                     <pui:ContainerView.Contents>
                         <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -55,7 +55,7 @@
                     </pui:ContainerView.Contents>
                 </pui:ContainerView>
             </pui:TabItemView>
-            <pui:TabItemView Padding="15" Title="Dialogs" Icon="&#xf00d;">
+            <pui:TabItemView Padding="15" Title="ناتیف ها" Icon="&#xf00d;">
                 <Grid ColumnDefinitions="33*,33*,33*" RowDefinitions="40,40" RowSpacing="10">
                     <Button Text="Alert me" TextColor="White" Grid.Column="0"
                 SemanticProperties.Hint="Counts the number of times you click"

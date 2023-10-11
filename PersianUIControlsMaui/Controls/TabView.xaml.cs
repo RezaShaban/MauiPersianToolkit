@@ -1,9 +1,12 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Microsoft.Maui.Controls.Shapes;
+using Microsoft.Maui.Platform;
+using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace PersianUIControlsMaui.Controls;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class TabView : ContentView
+public partial class TabView : Microsoft.Maui.Controls.ContentView
 {
     #region Field's
     private bool IsGeneratedTabs = false;
@@ -79,33 +82,52 @@ public partial class TabView : ContentView
                 {
                     IsEnabled = item.IsEnabled,
                     Text = item.Icon,
-                    StyleId = "icon",
                     FontFamily = "FontAwesome",
                     FontSize = 24,
-                    Padding = new Thickness(0, 5, 0, (AnimateCaptions ? 5 : 23)),
+                    Padding = new Thickness(0, 10, 0, (AnimateCaptions ? 5 : 24)),
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalOptions = LayoutOptions.Fill,
                     TextColor = UnSelectedTabColor,
-                    BackgroundColor = Colors.White
+                    BackgroundColor = Colors.White,
+                    HeightRequest = 64
                 };
+
                 var label = new Label()
                 {
                     IsEnabled = item.IsEnabled,
                     Text = item.Title,
-                    FontSize = 13,
+                    FontSize = 12,
                     VerticalOptions = LayoutOptions.End,
                     HorizontalOptions = LayoutOptions.Center,
                     InputTransparent = true,
                     TextColor = UnSelectedTabColor,
-                    Margin = new Thickness(0, 0, 5, 0),
+                    Margin = new Thickness(0, 0, 5, 5),
                     Scale = AnimateCaptions ? 0 : 1,
-                    FontFamily = "IranianSans"
+                    FontFamily = "IranianSans",
                 };
+
+                var shape = new Microsoft.Maui.Controls.Shapes.Path()
+                {
+                    ClassId = ItemsSource.IndexOf(item).ToString(),
+                    Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString("M53.5 12H16.5C16.5 14.2091 18.2909 16 20.5 16H49.5C51.7091 16 53.5 14.2091 53.5 12ZM33.3257 19.3366C33.8419 20.2986 36.1581 20.2986 36.6743 19.3366C37.6164 17.5805 38.9944 16 40.9025 16L29.0975 16C31.0056 16 32.3835 17.5805 33.3257 19.3366Z"),
+                    VerticalOptions = LayoutOptions.Start,
+                    Fill = new SolidColorBrush(Colors.Transparent),
+                    HorizontalOptions = LayoutOptions.Fill,
+                    IsVisible = true,
+                    InputTransparent = true,
+                    HeightRequest = 8,
+                    TranslationY = 0,
+                };
+                double width = DeviceDisplay.Current.MainDisplayInfo.Orientation == DisplayOrientation.Portrait ?
+                    DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density :
+                    DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
+                shape.TranslationX = ((width / ItemsSource.Count) / 2) - (37 / 2);
                 //if (AnimateCaptions)
                 //    label.ScaleTo(0);
-                tabButton.Command = new Command(() => ExecuteChangeTabCommand(item, tabButton, label));
+                tabButton.Command = new Command(() => ExecuteChangeTabCommand(item, tabButton, label, shape));
                 this.tabButtons.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100 / ItemsSource.Count, GridUnitType.Star) });
                 this.tabButtons.Add(tabButton, ItemsSource.IndexOf(item), 0);
+                this.tabButtons.Add(shape, ItemsSource.IndexOf(item), 0);
                 this.tabButtons.Add(label, ItemsSource.IndexOf(item), 0);
                 if (ItemsSource.IndexOf(item) == SelectedTab)
                     currentTab = tabButton;
@@ -118,7 +140,7 @@ public partial class TabView : ContentView
         }
     }
 
-    private void ExecuteChangeTabCommand(object control, object button, object label)
+    private void ExecuteChangeTabCommand(object control, Button currentBtn, Label currentLabel, Microsoft.Maui.Controls.Shapes.Path shape)
     {
         if (control is not TabItemView tab)
             return;
@@ -133,24 +155,41 @@ public partial class TabView : ContentView
             {
                 if (AnimateCaptions)
                     btn.Padding = new Thickness(0, 5);
-                btn.TextColor = UnSelectedTabColor;
+                btn.TextColor = this.UnSelectedTabColor;
             }
             if (item is Label lbl)
             {
                 if (AnimateCaptions)
                     lbl.Scale = (0);
-                lbl.TextColor = UnSelectedTabColor;
+                lbl.TextColor = this.UnSelectedTabColor;
+            }
+            if (item is Microsoft.Maui.Controls.Shapes.Path _shape)
+            {
+                if (AnimateCaptions)
+                    _shape.Scale = (0);
+                _shape.Fill = new SolidColorBrush(Colors.Transparent);
+                _shape.Shadow = new Shadow()
+                {
+                    Brush = new SolidColorBrush(Colors.Black),
+                    Offset = new Point(0, 10),
+                    Radius = 80,
+                };
+                //_shape.IsVisible = _shape.ClassId == shape.ClassId;
             }
         }
 
-        var currentBtn = ((Button)button);
         currentBtn.TextColor = SelectedTabColor;
         if (AnimateCaptions)
             currentBtn.Padding = new Thickness(0, 5, 0, 23);
-        var currentLabel = ((Label)label);
+
         currentLabel.TextColor = SelectedTabColor;
         if (AnimateCaptions)
             currentLabel.Scale = (1);// = 0;
+
+        shape.Fill = new SolidColorBrush(SelectedTabColor);
+        if (AnimateCaptions)
+            shape.Scale = (1);// = 0;
+
         tab.IsVisible = true;
 
         if (ChangedTabCommand != null)

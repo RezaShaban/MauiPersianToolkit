@@ -9,7 +9,6 @@ namespace PersianUIControlsMaui.Controls;
 public partial class DatePicker : ContentView
 {
     #region Field's
-    private Color _color;
     private ContentPage parentPage;
     private DatePickerView view = null;
     private Task initedView;

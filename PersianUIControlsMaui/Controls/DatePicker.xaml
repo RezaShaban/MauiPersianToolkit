@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </ContentView.Resources>
     <Grid HorizontalOptions="FillAndExpand" ColumnDefinitions="38,100*,Auto,38" RowDefinitions="30,50,15" Padding="0,10" ColumnSpacing="0" RowSpacing="0" x:Name="container">
-        <Label Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding PlaceHolder,Source={x:Reference ucDatePicker}}" HorizontalOptions="StartAndExpand" VerticalTextAlignment="Center" x:Name="lblPlaceholder" Grid.Row="0" VerticalOptions="Center" InputTransparent="True" FontFamily="IranianSans" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucDatePicker}}" Margin="5,0,0,0"/>
+        <Label Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding PlaceHolder,Source={x:Reference ucDatePicker}}" HorizontalOptions="StartAndExpand" VerticalTextAlignment="Center" x:Name="lblPlaceholder" Grid.Row="0" VerticalOptions="Center" InputTransparent="True" FontFamily="IranianSans" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucDatePicker}}" Margin="5,0,0,0" FontAttributes="Bold"/>
 
         <Label Text="{Binding Icon,Source={x:Reference ucDatePicker}}" FontSize="18" WidthRequest="38" Grid.Column="0" Grid.Row="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucDatePicker}}" InputTransparent="True" Padding="0,0,15,0" x:Name="lblIcon" FontFamily="FontAwesome">
             <Label.Triggers>

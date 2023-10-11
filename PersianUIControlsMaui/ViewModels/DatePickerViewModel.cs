@@ -1,9 +1,9 @@
 ﻿using PersianUIControlsMaui.Enums;
 using PersianUIControlsMaui.Models;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using PersianUIControlsMaui.Extensions;
 
 namespace PersianUIControlsMaui.ViewModels;
 
@@ -29,14 +29,14 @@ public class DatePickerViewModel : ObservableObject
     #region Field's
     private List<string> daysOfWeek;
     private List<DayOfMonth> daysOfMonth;
-    private List<string> persianMonths;
+    private List<PuiTuple> persianMonths;
     private ObservableCollection<DayOfMonth> selectedDays;
     #endregion
 
     public List<string> DaysOfWeek { get => daysOfWeek; set => SetProperty(ref daysOfWeek, value); }
     public List<DayOfMonth> DaysOfMonth { get => daysOfMonth; set => SetProperty(ref daysOfMonth, value); }
     public ObservableCollection<DayOfMonth> SelectedDays { get => selectedDays; set => SetProperty(ref selectedDays, value); }
-    public List<string> PersianMonths { get => persianMonths; set => SetProperty(ref persianMonths, value); }
+    public List<PuiTuple> PersianMonths { get => persianMonths; set => SetProperty(ref persianMonths, value); }
     #endregion
 
     #region Command's
@@ -68,7 +68,7 @@ public class DatePickerViewModel : ObservableObject
     {
         Options = options;
         SelectedDays = new ObservableCollection<DayOfMonth>(GetSelectedDates(options.SelectedPersianDates));
-        PersianMonths = new List<string>();
+        PersianMonths = new List<PuiTuple>();
         SelectDateMode = options.SelectDateMode;
 
         if (this.DaysOfWeek == null)
@@ -114,8 +114,8 @@ public class DatePickerViewModel : ObservableObject
         if (obj is not DateTime date)
             return;
 
-        CurrentMonth = Enum.GetNames(typeof(PersianMonthNames))[date.GetPersianMonth() - 1];
-        PersianMonths = Enum.GetNames(typeof(PersianMonthNames)).ToList();
+        CurrentMonth = typeof(PersianMonthNames).GetDisplay(date.GetPersianMonth() - 1);
+        PersianMonths = GetMonths();
         CurrentYear = date.GetPersianYear();
 
         var firstDayOfMonth = date.GetPersianBeginningMonth().ToDateTime();
@@ -151,6 +151,13 @@ public class DatePickerViewModel : ObservableObject
             };
             return day;
         }).ToList();
+    }
+
+    private List<PuiTuple> GetMonths()
+    {
+        var members = typeof(PersianMonthNames).GetFields(BindingFlags.Static | BindingFlags.Public);
+        var items = members.Select(x => new PuiTuple(x.Name, x.GetCustomAttribute<DisplayAttribute>().Name)).ToList();
+        return items;
     }
 
     private void SelectDate(object obj)
@@ -283,13 +290,14 @@ public class DatePickerViewModel : ObservableObject
 
     private void SelectMonth(object obj)
     {
-        var month = Enum.Parse<PersianMonthNames>(obj.ToString());
+        if (obj is not PuiTuple value)
+            return;
+
+        var month = Enum.Parse<PersianMonthNames>(value.Item1);
         var date = $"{CurrentYear}/{(int)month+1}/01".ToDateTime();
         SelectDateMode = SelectionDateMode.Day;
         InitCalendarDays(date);
     }
-
-
 
     private DateTime GetSelectedDate()
     {
