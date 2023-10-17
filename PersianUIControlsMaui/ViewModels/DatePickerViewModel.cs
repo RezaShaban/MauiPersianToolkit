@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using PersianUIControlsMaui.Extensions;
+using CommunityToolkit.Maui.Core.Extensions;
 
 namespace PersianUIControlsMaui.ViewModels;
 
@@ -29,14 +30,14 @@ public class DatePickerViewModel : ObservableObject
     #region Field's
     private List<string> daysOfWeek;
     private List<DayOfMonth> daysOfMonth;
-    private List<PuiTuple> persianMonths;
+    private ObservableCollection<PuiTuple> persianMonths;
     private ObservableCollection<DayOfMonth> selectedDays;
     #endregion
 
     public List<string> DaysOfWeek { get => daysOfWeek; set => SetProperty(ref daysOfWeek, value); }
     public List<DayOfMonth> DaysOfMonth { get => daysOfMonth; set => SetProperty(ref daysOfMonth, value); }
     public ObservableCollection<DayOfMonth> SelectedDays { get => selectedDays; set => SetProperty(ref selectedDays, value); }
-    public List<PuiTuple> PersianMonths { get => persianMonths; set => SetProperty(ref persianMonths, value); }
+    public ObservableCollection<PuiTuple> PersianMonths { get => persianMonths; set => SetProperty(ref persianMonths, value); }
     #endregion
 
     #region Command's
@@ -68,7 +69,7 @@ public class DatePickerViewModel : ObservableObject
     {
         Options = options;
         SelectedDays = new ObservableCollection<DayOfMonth>(GetSelectedDates(options.SelectedPersianDates));
-        PersianMonths = new List<PuiTuple>();
+        PersianMonths = new ObservableCollection<PuiTuple>();
         SelectDateMode = options.SelectDateMode;
 
         if (this.DaysOfWeek == null)
@@ -153,10 +154,10 @@ public class DatePickerViewModel : ObservableObject
         }).ToList();
     }
 
-    private List<PuiTuple> GetMonths()
+    private ObservableCollection<PuiTuple> GetMonths()
     {
         var members = typeof(PersianMonthNames).GetFields(BindingFlags.Static | BindingFlags.Public);
-        var items = members.Select(x => new PuiTuple(x.Name, x.GetCustomAttribute<DisplayAttribute>().Name)).ToList();
+        var items = members.Select(x => new PuiTuple(x.Name, x.GetCustomAttribute<DisplayAttribute>().Name)).ToObservableCollection();
         return items;
     }
 
@@ -172,7 +173,11 @@ public class DatePickerViewModel : ObservableObject
         {
             if (dayOfMonth.PersianDateNo <= SelectedDays.FirstOrDefault(x => x.IsSelected)?.PersianDateNo)
             {
-                DaysOfMonth.ForEach(x => { x.IsSelected = false; x.CanSelect = GetCanSelect(x.GregorianDate); });
+                DaysOfMonth.ForEach(x =>
+                {
+                    x.IsSelected = false; x.IsInRange = false;
+                    x.CanSelect = GetCanSelect(x.GregorianDate);
+                });
                 SelectedDays.Clear();
             }
             ToggleRangeDates(dayOfMonth);
@@ -224,7 +229,8 @@ public class DatePickerViewModel : ObservableObject
         }
         else
         {
-            SelectedDays.Remove(selectedDate);
+            if (SelectedDays.Count > 0)
+                SelectedDays.Remove(selectedDate);
             selectedDate.IsSelected = !selectedDate.IsSelected;
         }
     }
@@ -293,8 +299,8 @@ public class DatePickerViewModel : ObservableObject
         if (obj is not PuiTuple value)
             return;
 
-        var month = Enum.Parse<PersianMonthNames>(value.Item1);
-        var date = $"{CurrentYear}/{(int)month+1}/01".ToDateTime();
+        var month = Enum.Parse<PersianMonthNames>(value.Key);
+        var date = $"{CurrentYear}/{(int)month + 1}/01".ToDateTime();
         SelectDateMode = SelectionDateMode.Day;
         InitCalendarDays(date);
     }

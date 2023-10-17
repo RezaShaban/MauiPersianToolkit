@@ -4,11 +4,11 @@
              x:Class="PersianUIControlsMaui.Controls.EntryView"
              x:Name="entryView">
     <Grid HorizontalOptions="Fill" ColumnDefinitions="Auto,100*,Auto" RowDefinitions="Auto,50" Padding="0,10" ColumnSpacing="0">
-        <Label Text="{Binding Icon,Source={x:Reference entryView}}" FontSize="18" WidthRequest="32" Grid.Column="0" Grid.Row="1" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Fill" TextColor="{Binding PlaceHolderColor,Source={x:Reference entryView},Mode=OneWay}" HorizontalTextAlignment="Center" FontFamily="FontAwesome"/>
+        <Label Text="{Binding Icon,Source={x:Reference entryView}}" FontSize="18" WidthRequest="48" Grid.Column="0" Grid.Row="1" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Fill" TextColor="{Binding PlaceHolderColor,Source={x:Reference entryView},Mode=OneWay}" HorizontalTextAlignment="Center" FontFamily="FontAwesome"/>
 
         <Label Grid.Column="0" Text="{Binding PlaceHolder,Source={x:Reference entryView}}" Padding="0" HorizontalOptions="Start" VerticalTextAlignment="Center" x:Name="lblPlaceholder" Grid.Row="0" InputTransparent="True" VerticalOptions="Center" TextColor="{Binding PlaceHolderColor,Source={x:Reference entryView},Mode=OneWay}" Grid.ColumnSpan="2" FontFamily="IranianSans" FontAttributes="Bold"/>
 
-        <Border Stroke="Gainsboro" Grid.Row="1" Grid.Column="0" Background="Transparent" HorizontalOptions="Fill" Grid.ColumnSpan="4" Padding="0,0,24,0">
+        <Border Stroke="Gainsboro" Grid.Row="1" Grid.Column="0" Background="Transparent" HorizontalOptions="Fill" Grid.ColumnSpan="4" Padding="0,0,42,0">
             <Border.StrokeShape>
                 <RoundRectangle Fill="#fdfdfd" CornerRadius="5" StrokeThickness="1" StrokeLineJoin="Round" Stroke="Gainsboro"/>
             </Border.StrokeShape>

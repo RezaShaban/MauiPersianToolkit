@@ -33,6 +33,14 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
 	  <AndroidPackageFormat>apk</AndroidPackageFormat>
 	  <RunAOTCompilation>False</RunAOTCompilation>
+	  <Debugger>Xamarin</Debugger>
+	  <AndroidUseAapt2>True</AndroidUseAapt2>
+	  <AndroidLinkTool>r8</AndroidLinkTool>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+	  <Debugger>Xamarin</Debugger>
+	  <AndroidUseAapt2>True</AndroidUseAapt2>
 	</PropertyGroup>
 
 	<ItemGroup>

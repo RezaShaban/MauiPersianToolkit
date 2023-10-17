@@ -25,8 +25,8 @@
                     </AbsoluteLayout>
                 </StackLayout>
             </Frame>
-            <Frame Padding="0" CornerRadius="100" BorderColor="Transparent" ZIndex="2" WidthRequest="72" HeightRequest="72" VerticalOptions="Start" HorizontalOptions="Center">
-                <Button WidthRequest="72" HeightRequest="72" FontSize="32" TextColor="White" Text="{Binding FontIcon}" BorderWidth="3" ZIndex="2" InputTransparent="True" BorderColor="{Binding BackgroundColor}" Padding="0" CornerRadius="100" BackgroundColor="{Binding DialogColor}" FontFamily="FontAwesome"/>
+            <Frame Padding="0" CornerRadius="100" BorderColor="Transparent" WidthRequest="72" HeightRequest="72" VerticalOptions="Start" HorizontalOptions="Center">
+                <Button WidthRequest="72" HeightRequest="72" FontSize="32" TextColor="White" Text="{Binding FontIcon}" BorderWidth="3" InputTransparent="True" BorderColor="{Binding BackgroundColor}" Padding="0" CornerRadius="100" BackgroundColor="{Binding DialogColor}" FontFamily="FontAwesome"/>
             </Frame>
         </Grid>
     </Grid>

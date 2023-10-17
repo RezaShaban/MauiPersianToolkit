@@ -24,7 +24,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
         get { return (Color)GetValue(UnSelectedTabColorProperty); }
         set { SetValue(UnSelectedTabColorProperty, value); }
     }
-    public static readonly BindableProperty SelectedTabColorProperty = BindableProperty.Create(nameof(SelectedTabColor), typeof(Color), typeof(TabView), Colors.White, BindingMode.TwoWay);
+    public static readonly BindableProperty SelectedTabColorProperty = BindableProperty.Create(nameof(SelectedTabColor), typeof(Color), typeof(TabView), Colors.Gray, BindingMode.TwoWay);
     public Color SelectedTabColor
     {
         get { return (Color)GetValue(SelectedTabColorProperty); }
@@ -75,6 +75,10 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
             IsGeneratedTabs = true;
             var currentTab = new Button();
             this.tabButtons.ColumnDefinitions.Clear();
+            double width = DeviceDisplay.Current.MainDisplayInfo.Orientation == DisplayOrientation.Portrait ?
+                    DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density :
+                    DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
+
             foreach (TabItemView item in ItemsSource.Where(x => x.IsVisible))
             {
                 tabPages.Add(item, 0, 0);
@@ -91,7 +95,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     BackgroundColor = Colors.White,
                     HeightRequest = 64
                 };
-
+                
                 var label = new Label()
                 {
                     IsEnabled = item.IsEnabled,
@@ -103,7 +107,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     TextColor = UnSelectedTabColor,
                     Margin = new Thickness(0, 0, 5, 5),
                     Scale = AnimateCaptions ? 0 : 1,
-                    FontFamily = "IranianSans",
+                    FontFamily = "IranianSans"
                 };
 
                 var shape = new Microsoft.Maui.Controls.Shapes.Path()
@@ -118,9 +122,6 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     HeightRequest = 8,
                     TranslationY = 0,
                 };
-                double width = DeviceDisplay.Current.MainDisplayInfo.Orientation == DisplayOrientation.Portrait ?
-                    DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density :
-                    DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
                 shape.TranslationX = ((width / ItemsSource.Count) / 2) - (37 / 2);
                 //if (AnimateCaptions)
                 //    label.ScaleTo(0);

@@ -135,14 +135,13 @@ public partial class DatePicker : ContentView
 
         return Task.Run(() =>
         {
-            try
-            {
-                this.IsLoading = true;
-                this.CalendarOption.SelectedPersianDate = this.SelectedPersianDate ?? DateTime.Now.ToPersianDate();
-                this.CalendarOption.SelectedPersianDates = this.BadgeDates;
-                this.CalendarOption.AutoCloseAfterSelectDate = this.CalendarOption.SelectionMode != Enums.SelectionMode.Multiple ? this.CalendarOption.AutoCloseAfterSelectDate : false;
-                this.view = new DatePickerView(this.CalendarOption);
-                this.view.SelectedDateChanged += (object sender, SelectedDateChangedEventArgs e) =>
+            this.IsLoading = true;
+
+            this.CalendarOption.SelectedPersianDate = this.SelectedPersianDate ?? DateTime.Now.ToPersianDate();
+            this.CalendarOption.SelectedPersianDates = this.BadgeDates;
+            this.CalendarOption.AutoCloseAfterSelectDate = this.CalendarOption.SelectionMode != Enums.SelectionMode.Multiple ? this.CalendarOption.AutoCloseAfterSelectDate : false;
+            this.view = new DatePickerView(this.CalendarOption);
+            this.view.SelectedDateChanged += (object sender, SelectedDateChangedEventArgs e) =>
                 {
                     if (this.CalendarOption.SelectionMode == Enums.SelectionMode.Single)
                     {
@@ -155,38 +154,24 @@ public partial class DatePicker : ContentView
                     || (CalendarOption.AutoCloseAfterSelectDate && e.SelectedDates.Count == 2 && this.CalendarOption.SelectionMode == Enums.SelectionMode.Range))
                         this.view.Close();
                 };
-                this.view.Opened += (object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e) =>
-                {
-                    this.OnOpenedCommand?.Execute(e);
-                };
-                this.view.Closed += (object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e) =>
-                {
-                    this.view = null;
-                    initedView = InitPickerView();
-                };
-                this.IsLoading = false;
-            }
-            catch (Exception ex)
+            this.view.Opened += (object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e) =>
             {
-            }
+                this.OnOpenedCommand?.Execute(e);
+            };
+            this.view.Closed += (object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e) =>
+            {
+                this.view = null;
+                initedView = InitPickerView();
+            };
+
+            this.IsLoading = false;
         });
     }
 
-    private async void TapGestureRecognizer_Tapped(object sender)
-    {
-        if (this.view == null)
-            this.initedView.GetAwaiter().GetResult();
-        this.IsLoading = true;
-        if (this.parentPage is null)
-        {
-            var contentPage = this.Parent;
-            while (contentPage is not ContentPage)
-                contentPage = contentPage.Parent;
-            this.parentPage = (ContentPage)contentPage;
-        }
-        await parentPage.ShowPopupAsync(this.view);
-        this.IsLoading = false;
-    }
+    //private async void TapGestureRecognizer_Tapped(object sender)
+    //{
+        
+    //}
 
     #region Event's
 
@@ -196,9 +181,6 @@ public partial class DatePicker : ContentView
 
         if (propertyName == IsEnabledProperty.PropertyName)
             PlaceHolderColor = this.IsEnabled ? PlaceHolderColor : Colors.Gray;
-
-        if (propertyName == IconProperty.PropertyName)
-            lblIcon.IsVisible = !string.IsNullOrEmpty(Icon);
 
         if (propertyName == SelectedPersianDateProperty.PropertyName)
         {
@@ -237,4 +219,22 @@ public partial class DatePicker : ContentView
     }
 
     #endregion
+
+    private async void TapGestureRecognizer_Tapped(object sender)
+    {
+        if (this.view == null)
+            this.initedView.GetAwaiter().GetResult();
+        this.IsLoading = true;
+        if (this.parentPage is null)
+        {
+            IElement contentPage = this.Parent;
+            while (contentPage is not ContentPage)
+                contentPage = contentPage.Parent;
+            this.parentPage = (ContentPage)contentPage;
+        }
+        if (this.parentPage is null || this.parentPage is not ContentPage)
+            return;
+        await parentPage.ShowPopupAsync(this.view);
+        this.IsLoading = false;
+    }
 }

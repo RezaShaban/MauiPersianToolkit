@@ -1,8 +1,18 @@
-﻿namespace PersianUIControlsMaui.Models;
+﻿using PersianUIControlsMaui.ViewModels;
 
-public class PuiTuple : Tuple<string, string>
+namespace PersianUIControlsMaui.Models;
+
+public class PuiTuple : ObservableObject
 {
-    public PuiTuple(string key, string value) : base(key, value)
+    string key;
+    string value;
+    public string Key { get => key; set => SetProperty(ref key, value); }
+    public string Value { get => value; set => SetProperty(ref this.value, value); }
+
+    public PuiTuple() { }
+    public PuiTuple(string _key, string _value)
     {
+        Key = _key;
+        Value = _value;
     }
 }

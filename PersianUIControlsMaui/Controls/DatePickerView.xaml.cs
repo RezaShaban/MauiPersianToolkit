@@ -12,15 +12,19 @@ public partial class DatePickerView : Popup
 
     public event EventHandler<SelectedDateChangedEventArgs> SelectedDateChanged;
 
-    public DatePickerView()
+    public DatePickerView(CalendarOptions options)
     {
-        InitializeComponent();
-    }
-
-    public DatePickerView(CalendarOptions options): this()
-    {
-        viewModel = new DatePickerViewModel(options);
-        this.BindingContext = viewModel;
+        retry:
+        try
+        {
+            InitializeComponent();
+            viewModel = new DatePickerViewModel(options);
+            this.BindingContext = viewModel;
+        }
+        catch
+        {
+            goto retry;
+        }
     }
 
     private void btnDay_Clicked(object sender, EventArgs e)

@@ -7,7 +7,7 @@
     <!-- Content -->
     <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft" x:Name="container">
         <Grid Padding="20" HorizontalOptions="Fill">
-            <Frame HorizontalOptions="Fill" CornerRadius="7" Padding="0" Margin="0,32,0,0" BorderColor="Transparent" HasShadow="True" ZIndex="1" Background="{Binding BackgroundColor}">
+            <Frame HorizontalOptions="Fill" CornerRadius="7" Padding="0" Margin="0,32,0,0" BorderColor="Transparent" HasShadow="True" Background="{Binding BackgroundColor}">
                 <StackLayout Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill">
                     <Label Text="{Binding Title}" TextColor="Black" FontSize="Title" HorizontalOptions="Center" VerticalOptions="Center" Margin="20,45,20,0" FontFamily="IranianSans"/>
 
@@ -19,8 +19,8 @@
                     </Grid>
                 </StackLayout>
             </Frame>
-            <Frame Padding="0" CornerRadius="100" BorderColor="Transparent" ZIndex="2" WidthRequest="72" HeightRequest="72" VerticalOptions="Start" HorizontalOptions="Center">
-                <Button WidthRequest="72" HeightRequest="72" FontSize="32" TextColor="White" Text="{Binding FontIcon}" BorderWidth="3" ZIndex="2" InputTransparent="True" BorderColor="{Binding BackgroundColor}" Padding="0" CornerRadius="100" BackgroundColor="{Binding DialogColor}" FontFamily="FontAwesome"/>
+            <Frame Padding="0" CornerRadius="100" BorderColor="Transparent" WidthRequest="72" HeightRequest="72" VerticalOptions="Start" HorizontalOptions="Center">
+                <Button WidthRequest="72" HeightRequest="72" FontSize="32" TextColor="White" Text="{Binding FontIcon}" BorderWidth="3" InputTransparent="True" BorderColor="{Binding BackgroundColor}" Padding="0" CornerRadius="100" BackgroundColor="{Binding DialogColor}" FontFamily="FontAwesome"/>
             </Frame>
         </Grid>
     </Grid>
