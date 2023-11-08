@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace PersianUIControlsMaui.Controls;
-
+﻿namespace PersianUIControlsMaui.Controls;
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class EditorView : ContentView
 {
@@ -73,6 +70,8 @@ public partial class EditorView : ContentView
     public EditorView()
     {
         InitializeComponent();
+        txtEditor.Focused += Editor_Focused;
+        txtEditor.Unfocused += Editor_Unfocused;
     }
 
     private void Editor_Focused(object sender, FocusEventArgs e)

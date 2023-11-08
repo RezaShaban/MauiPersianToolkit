@@ -16,13 +16,16 @@ namespace PersianUISamples.ViewModels
         private CalendarOptions calendarOption;
         private CalendarOptions rangeCalendarOption;
         private CalendarOptions multipleCalendarOption;
-        ObservableCollection<PickerItem> pickerItems;
+        ObservableCollection<TreeViewModel> treeItems;
+        ObservableCollection<TreeViewModel> selectedItemsTree;
         ObservableCollection<PickerItem> pickerMultipleItems;
+        ObservableCollection<PickerItem> pickerItems;
         private Command onChangeDateCommand;
         private Command showAlertCommand;
         private Command showConfirmCommand;
         private Command showPromptCommand;
         private Command showCustomCommand;
+        private Command registerInCommand;
         private readonly IDialogService dialogService;
 
         public string PersianDate { get => persianDate; set => SetProperty(ref persianDate, value); }
@@ -34,6 +37,8 @@ namespace PersianUISamples.ViewModels
         public CalendarOptions RangeCalendarOption { get => rangeCalendarOption; set => SetProperty(ref rangeCalendarOption, value); }
         public CalendarOptions MultipleCalendarOption { get => multipleCalendarOption; set => SetProperty(ref multipleCalendarOption, value); }
         public ObservableCollection<PickerItem> PickerItems { get => pickerItems; set => SetProperty(ref pickerItems, value); }
+        public ObservableCollection<TreeViewModel> TreeItems { get => treeItems; set => SetProperty(ref treeItems, value); }
+        public ObservableCollection<TreeViewModel> SelectedItemsTree { get => selectedItemsTree; set => SetProperty(ref selectedItemsTree, value); }
         public ObservableCollection<PickerItem> PickerMultipleItems { get => pickerMultipleItems; set => SetProperty(ref pickerMultipleItems, value); }
         public ObservableCollection<PickerButton> PickerAdditionButtons { get; set; }
         public Command OnChangeDateCommand { get { onChangeDateCommand ??= new Command(OnDateChanged); return onChangeDateCommand; } }
@@ -41,7 +46,7 @@ namespace PersianUISamples.ViewModels
         public Command ShowConfirmCommand { get { showConfirmCommand ??= new Command(ShowConfirm); return showConfirmCommand; } }
         public Command ShowPromptCommand { get { showPromptCommand ??= new Command(ShowPrompt); return showPromptCommand; } }
         public Command ShowCustomCommand { get { showCustomCommand ??= new Command(ShowCustom); return showCustomCommand; } }
-
+        public Command RegisterInCommand { get { registerInCommand ??= new Command(RegisterIn); return registerInCommand; } }
         public MainViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
@@ -50,6 +55,11 @@ namespace PersianUISamples.ViewModels
 
         private void InitData()
         {
+            SelectedItemsTree = new ObservableCollection<TreeViewModel>()
+            {
+                new TreeViewModel(){ Id = 1, Title = "سطح 1-1", ParentId = null },
+                new TreeViewModel(){ Id = 8, Title = "سطح 4-1", ParentId = 6 }
+            };
             CalendarOption = new CalendarOptions()
             {
                 SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
@@ -95,6 +105,18 @@ namespace PersianUISamples.ViewModels
                 new PickerButton() { Text = "\uf067" },
                 new PickerButton() { Text = "\uf057" }
             };
+            TreeItems = new ObservableCollection<TreeViewModel>()
+            {
+                new TreeViewModel(){ Id = 1, Title = "سطح 1-1", ParentId = null },
+                new TreeViewModel(){ Id = 2, Title = "سطح 2-1", ParentId = 1 },
+                new TreeViewModel(){ Id = 3, Title = "سطح 2-2", ParentId = 1 },
+                new TreeViewModel(){ Id = 4, Title = "سطح 1-2", ParentId = null },
+                new TreeViewModel(){ Id = 5, Title = "سطح 2-1", ParentId = 4 },
+                new TreeViewModel(){ Id = 6, Title = "سطح 3-1", ParentId = 5 },
+                new TreeViewModel(){ Id = 7, Title = "سطح 3-1", ParentId = 5 },
+                new TreeViewModel(){ Id = 8, Title = "سطح 4-1", ParentId = 6 },
+                new TreeViewModel(){ Id = 9, Title = "سطح 4-1", ParentId = 7 },
+            };
         }
 
         private void OnAcceptDate(object obj)
@@ -116,6 +138,11 @@ namespace PersianUISamples.ViewModels
         private void OnDateChanged(object obj)
         {
 
+        }
+
+        private void RegisterIn()
+        {
+            ShowAlert(null);
         }
 
         private void ShowAlert(object obj)
@@ -183,5 +210,13 @@ namespace PersianUISamples.ViewModels
         public int Id { get; set; }
         public string Title { get; set; }
         public string Icon { get; set; } = "\uf064";
+        public int? ParentId { get; set; }
+    }
+
+    public class TreeViewModel
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public int? ParentId { get; set; }
     }
 }

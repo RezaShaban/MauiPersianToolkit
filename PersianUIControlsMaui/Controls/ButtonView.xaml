@@ -4,13 +4,7 @@
              x:Class="PersianUIControlsMaui.Controls.ButtonView"
              x:Name="buttonView" BackgroundColor="Transparent">
     <Grid ColumnDefinitions="Auto,100*" Margin="{Binding BtnMargin,Source={x:Reference buttonView}}">
-        <Button CornerRadius="{Binding CornerRadius,Source={x:Reference buttonView}}"
-                    BackgroundColor="{Binding BtnBgColor,Source={x:Reference buttonView}}"
-                    Text="{Binding Text,Source={x:Reference buttonView}}" Clicked="Button_Clicked"
-                    TextColor="{Binding TextColor,Source={x:Reference buttonView}}"
-                    Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" HorizontalOptions="FillAndExpand" Padding="10,5,32,5"
-                    FontSize="{Binding FontSize,Source={x:Reference buttonView}}" Command="{Binding Command,Source={x:Reference buttonView}}" FontFamily="IranianSans"
-                    CommandParameter="{Binding CommandParameter,Source={x:Reference buttonView}}">
+        <Button CornerRadius="{Binding CornerRadius,Source={x:Reference buttonView}}" BackgroundColor="{Binding BtnBgColor,Source={x:Reference buttonView}}" Text="{Binding Text,Source={x:Reference buttonView}}" TextColor="{Binding TextColor,Source={x:Reference buttonView}}" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" HorizontalOptions="FillAndExpand" Padding="10,5,32,5" FontSize="{Binding FontSize,Source={x:Reference buttonView}}" Command="{Binding Command,Source={x:Reference buttonView}}" FontFamily="IranianSans" CommandParameter="{Binding CommandParameter,Source={x:Reference buttonView}}" x:Name="btn">
             <Button.Triggers>
                 <DataTrigger TargetType="Button" Binding="{Binding Icon,Source={x:Reference buttonView}}" Value="">
                     <Setter Property="Padding" Value="10,5"/>

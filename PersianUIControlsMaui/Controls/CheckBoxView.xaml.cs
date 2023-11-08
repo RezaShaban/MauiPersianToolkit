@@ -1,8 +1,8 @@
 ﻿namespace PersianUIControlsMaui.Controls;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class CheckBoxView : ContentView
-	{
+public partial class CheckBoxView : ContentView
+{
     #region Propertie's
     public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(CheckBoxView), default(string), BindingMode.TwoWay);
     public string Text
@@ -47,10 +47,14 @@
         set { SetValue(IsCheckedProperty, value); }
     }
     #endregion
-    public CheckBoxView ()
-		{
-			InitializeComponent ();
-		}
+    public CheckBoxView()
+    {
+        InitializeComponent();
+
+        var tapped = new TapGestureRecognizer();
+        tapped.Tapped += lblText_Tapped;
+        lblText.GestureRecognizers.Add(tapped);
+    }
 
     private void lblText_Tapped(object sender, EventArgs e)
     {

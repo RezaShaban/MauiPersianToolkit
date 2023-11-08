@@ -18,6 +18,8 @@ public partial class DatePickerView : Popup
         try
         {
             InitializeComponent();
+            btnAccept.Clicked += btnAccept_Clicked;
+            btnCancel.Clicked += btnCancel_Clicked;
             viewModel = new DatePickerViewModel(options);
             this.BindingContext = viewModel;
         }

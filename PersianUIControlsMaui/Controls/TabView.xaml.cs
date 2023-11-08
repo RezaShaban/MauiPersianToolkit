@@ -136,7 +136,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
             if (currentTab != null && currentTab.Command != null)
                 currentTab.Command.Execute(null);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
     }

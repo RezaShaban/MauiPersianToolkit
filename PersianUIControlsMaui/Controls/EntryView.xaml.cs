@@ -8,7 +8,6 @@ public partial class EntryView : ContentView
 {
     #region Field's
     Color _color;
-    int lblState = 0;
     #endregion
 
     #region Propertie's

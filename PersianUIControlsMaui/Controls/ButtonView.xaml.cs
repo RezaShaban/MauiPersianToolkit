@@ -9,6 +9,7 @@ public partial class ButtonView : ContentView
     public ButtonView()
     {
         InitializeComponent();
+        btn.Clicked += Button_Clicked;
     }
 
     #region Propertie's

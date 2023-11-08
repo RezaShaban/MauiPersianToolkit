@@ -222,6 +222,10 @@ public partial class PickerView : ContentView
     public PickerView()
     {
         InitializeComponent();
+
+        var tapped = new TapGestureRecognizer();
+        tapped.Tapped += TapGestureRecognizer_Tapped;
+        grdPattern.GestureRecognizers.Add(tapped);
     }
     #region Event's
 

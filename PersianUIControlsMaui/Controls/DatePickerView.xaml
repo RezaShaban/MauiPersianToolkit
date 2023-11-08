@@ -137,8 +137,8 @@
                         </DataTrigger>
                     </Grid.Triggers>
 
-                    <Button Text="انصراف" Grid.Column="1" Grid.Row="0" Margin="0" BackgroundColor="White" BorderColor="Gray" FontSize="12" Clicked="btnCancel_Clicked" FontFamily="IranianSans" TextColor="{Binding Options.SelectDayColor}" BorderWidth="1"/>
-                    <Button Text="تایید" Grid.Row="0" Grid.Column="0" Margin="0" BackgroundColor="{Binding Options.SelectDayColor}" FontSize="12" Clicked="btnAccept_Clicked" FontFamily="IranianSans" TextColor="White" IsEnabled="True">
+                    <Button Text="انصراف" Grid.Column="1" Grid.Row="0" Margin="0" BackgroundColor="White" BorderColor="Gray" FontSize="12" x:Name="btnCancel" FontFamily="IranianSans" TextColor="{Binding Options.SelectDayColor}" BorderWidth="1"/>
+                    <Button Text="تایید" Grid.Row="0" Grid.Column="0" Margin="0" BackgroundColor="{Binding Options.SelectDayColor}" FontSize="12" x:Name="btnAccept" FontFamily="IranianSans" TextColor="White" IsEnabled="True">
                         <Button.Triggers>
                             <DataTrigger TargetType="Button" Binding="{Binding SelectedDays.Count}" Value="0">
                                 <Setter Property="IsEnabled" Value="False"/>

@@ -48,12 +48,47 @@
                                 </pui:PickerView.ItemTemplate>
                             </pui:PickerView>
 
-                            <pui:LabelView Text="برچسب تستی" Icon="&#xf075;" Grid.Row="4"/>
+                            <pui:SlideButton HeightRequest="48" Grid.Column="0" Grid.Row="4"
+            SlideCompletedCommand="{Binding RegisterInCommand}" FlowDirection="LeftToRight">
+                                <pui:SlideButton.Thumb>
+                                    <Frame HasShadow="False" CornerRadius="7" Padding="5" HeightRequest="46" BackgroundColor="White" BorderColor="LimeGreen">
+                                        <Label StyleId="sign-in" TextColor="LimeGreen" FontSize="32" Text="&#xf090;"
+               HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+               HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="FontAwesome"/>
+                                    </Frame>
+                                </pui:SlideButton.Thumb>
+                                <pui:SlideButton.TrackBar>
+                                    <Frame CornerRadius="10" HasShadow="false" BackgroundColor="#ddd" Padding="0">
+                                        <Label Text="ورود" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+           FontSize="17" FontFamily="IranianSans" TextColor="White"/>
+                                    </Frame>
+                                </pui:SlideButton.TrackBar>
+                                <pui:SlideButton.FillBar>
+                                    <Frame CornerRadius="10" HasShadow="false" BackgroundColor="WhiteSmoke" Padding="0" />
+                                </pui:SlideButton.FillBar>
+                            </pui:SlideButton>
 
-                            <pui:CheckBoxView Text="انتخاب اول" TextColor="Black" Grid.Row="5"/>
+                            <!--<pui:LabelView Text="برچسب تستی" Icon="&#xf075;" Grid.Row="5"/>-->
+
+                            <pui:CheckBoxView Text="انتخاب اول" TextColor="Black" Grid.Row="6"/>
+
                         </Grid>
                     </pui:ContainerView.Contents>
                 </pui:ContainerView>
+            </pui:TabItemView>
+            <pui:TabItemView Title="TreeView" Icon="&#xf00c;" Padding="0">
+                <ScrollView Padding="15">
+                    <VerticalStackLayout>
+                        <pui:TreeView SelectedItems="{Binding SelectedItemsTree}" ItemsSource="{Binding TreeItems}" KeyProperty="Id" ParentChildProperty="ParentId" DisplayProperty="Title" SelectionMode="Multiple"/>
+                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding SelectedItemsTree}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="vm:TreeViewModel">
+                                    <Button HeightRequest="32" Padding="10,1" Margin="2" Text="{Binding Title}" TextColor="White"/>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </ScrollView>
             </pui:TabItemView>
             <pui:TabItemView Padding="15" Title="ناتیف ها" Icon="&#xf00d;">
                 <Grid ColumnDefinitions="33*,33*,33*" RowDefinitions="40,40" RowSpacing="10">

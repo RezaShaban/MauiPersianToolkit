@@ -9,6 +9,13 @@ public partial class LabelView : ContentView
     public LabelView()
     {
         InitializeComponent();
+        var tapped = new TapGestureRecognizer()
+        {
+            CommandParameter = this.TapCommandParameter,
+            Command = TapCommand,
+        };
+        tapped.Tapped += (object sender, EventArgs e) => Tapped?.Invoke(this, e);
+        grdPattern.GestureRecognizers.Add(tapped);
     }
 
     #region Propertie's
@@ -87,17 +94,11 @@ public partial class LabelView : ContentView
     #endregion
 
     public event EventHandler<EventArgs> Tapped;
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        base.OnPropertyChanged(propertyName);
+    //protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    //{
+    //    base.OnPropertyChanged(propertyName);
 
-        if (IconProperty.PropertyName == propertyName)
-            lblIcon.IsVisible = !string.IsNullOrEmpty(Icon);
-    }
-
-    private void lbl_Tapped(object sender, EventArgs e)
-    {
-        if (Tapped != null)
-            Tapped.Invoke(this, e);
-    }
+    //    if (IconProperty.PropertyName == propertyName)
+    //        lblIcon.IsVisible = !string.IsNullOrEmpty(Icon);
+    //}
 }

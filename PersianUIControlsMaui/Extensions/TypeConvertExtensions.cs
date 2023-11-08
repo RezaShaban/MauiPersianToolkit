@@ -56,5 +56,10 @@
             }
 
         }
+
+        public static object GetPropertyValue(this object prop, string propertyName)
+        {
+            return prop.GetType().GetProperty(propertyName).GetValue(prop);
+        }
     }
 }
