@@ -54,6 +54,20 @@ public partial class TreeView : ContentView
         get { return (string)GetValue(ParentChildPropertyProperty); }
         set { SetValue(ParentChildPropertyProperty, value); }
     }
+
+    public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(ControlTemplate), typeof(TreeView), default(ControlTemplate), BindingMode.TwoWay);
+    public ControlTemplate ItemTemplate
+    {
+        get => (ControlTemplate)GetValue(ItemTemplateProperty);
+        set => SetValue(ItemTemplateProperty, value);
+    }
+
+    public static readonly BindableProperty ItemHeightProperty = BindableProperty.Create(nameof(ItemHeight), typeof(int), typeof(TreeView), 32, BindingMode.TwoWay);
+    public int ItemHeight
+    {
+        get { return (int)GetValue(ItemHeightProperty); }
+        set { SetValue(ItemHeightProperty, value); }
+    }
     #endregion
 
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -66,6 +80,7 @@ public partial class TreeView : ContentView
             {
                 var treeViewNode = new TreeViewNode()
                 {
+                    ItemTemplate = this.ItemTemplate,
                     ItemsSource = new List<TreeViewItem>(
                         ItemsSource.OfType<object>() //.Where(x => !object.Equals(x.GetType().GetProperty(ParentChildProperty).GetValue(x), null))
                         .Select(x => new TreeViewItem()
@@ -98,6 +113,7 @@ public partial class TreeView : ContentView
                 };
                 treeViewNode.FindByName<CheckBox>("chk").IsChecked = SelectedItems?.OfType<object>().Any(s => object.Equals(s.GetPropertyValue(KeyProperty), item.GetPropertyValue(KeyProperty))) ?? false;
                 treeViewNode.FindByName<RadioButton>("rdo").IsChecked = SelectedItems?.OfType<object>().Any(s => object.Equals(s.GetPropertyValue(KeyProperty), item.GetPropertyValue(KeyProperty))) ?? false;
+                treeViewNode.FindByName<Grid>("grdItem").RowDefinitions[0].Height = this.ItemHeight;
                 treeViewNode.SelectedItemChanged += TreeViewNode_SelectedItemChanged;
                 items.Children.Add(treeViewNode);
             }

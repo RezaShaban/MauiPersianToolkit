@@ -5,11 +5,5 @@
              xmlns:conv="clr-namespace:PersianUIControlsMaui.Converters"
              xmlns:controls="clr-namespace:PersianUIControlsMaui.Controls"
              x:Name="treeView">
-    <ContentView.Resources>
-        <ResourceDictionary>
-            <conv:FetchPropertyValueConverter x:Key="FetchPropertyValue"/>
-            <conv:FilterbyPropertyConverter x:Key="FilterbyProperty"/>
-        </ResourceDictionary>
-    </ContentView.Resources>
     <VerticalStackLayout x:Name="items" Spacing="5"/>
 </ContentView>

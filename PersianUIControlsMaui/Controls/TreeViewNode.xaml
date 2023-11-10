@@ -4,13 +4,7 @@
              x:Class="PersianUIControlsMaui.Controls.TreeViewNode"
              xmlns:conv="clr-namespace:PersianUIControlsMaui.Converters"
              x:Name="treeViewNode">
-    <ContentView.Resources>
-        <ResourceDictionary>
-            <conv:FetchPropertyValueConverter x:Key="FetchPropertyValue"/>
-        </ResourceDictionary>
-    </ContentView.Resources>
-    
-    <Grid RowDefinitions="32,Auto" ColumnDefinitions="32,Auto,100*" RowSpacing="5">
+    <Grid RowDefinitions="32,Auto" ColumnDefinitions="32,Auto,100*" RowSpacing="5" x:Name="grdItem">
         <Button Text="&#xf078;" FontFamily="FontAwesome" WidthRequest="32" HeightRequest="32" BackgroundColor="Transparent"
                 BorderWidth="0" BorderColor="BlueViolet" TextColor="Black" ContentLayout="Right,0" Padding="1"
                 CommandParameter="{x:Reference ChildItems}" Clicked="Button_Clicked" Grid.Column="0" Grid.Row="0" IsVisible="True">
@@ -31,18 +25,20 @@
                 </DataTrigger>
             </CheckBox.Triggers>
         </CheckBox>
-        <RadioButton Grid.Row="0" Grid.Column="1" Shell.UnselectedColor="DarkBlue" WidthRequest="32" HeightRequest="32" IsVisible="False" GroupName="tree" BackgroundColor="Transparent" CheckedChanged="CheckBox_CheckedChanged" x:Name="rdo" FontFamily="IranianSans">
+        <RadioButton Grid.Row="0" Grid.Column="1" Shell.UnselectedColor="DarkBlue" WidthRequest="32" HeightRequest="32"
+                     IsVisible="False" GroupName="tree" BackgroundColor="Transparent" CheckedChanged="CheckBox_CheckedChanged"
+                     x:Name="rdo" FontFamily="IranianSans">
             <RadioButton.Triggers>
                 <DataTrigger TargetType="RadioButton" Binding="{Binding ShowItem.SelectionMode,Source={x:Reference treeViewNode}}" Value="1">
                     <Setter Property="IsVisible" Value="True"/>
                 </DataTrigger>
             </RadioButton.Triggers>
         </RadioButton>
-        <Label Text="{Binding ShowItem.Title,Source={x:Reference treeViewNode}}" VerticalOptions="Center" TextColor="Black" FontFamily="IranianSans" Margin="10,0,0,0" Grid.Column="2" Grid.Row="0"/>
-        <!--<Label.Text>
-                <Binding Path="." Mode="OneWay" StringFormat="{}{0}" Converter="{StaticResource FetchPropertyValue}" ConverterParameter="{Binding Text,Source={x:Reference lblDp}}">
-                </Binding>
-            </Label.Text>-->
+        <ContentView Grid.Column="2" Margin="10,0,0,0" Grid.Row="0" BindingContext="{Binding ShowItem.OriginalItem,Source={x:Reference treeViewNode}}" ControlTemplate="{Binding ItemTemplate,Source={x:Reference treeViewNode}}"/>
+
+        <Label Text="{Binding ShowItem.Title,Source={x:Reference treeViewNode}}" VerticalOptions="Center" TextColor="Black"
+               FontFamily="IranianSans" Margin="10,0,0,0" Grid.Column="2" Grid.Row="0" IsVisible="True" x:Name="defaultTemplate"/>
+
         <VerticalStackLayout x:Name="ChildItems" Grid.Row="1" Grid.Column="1" Spacing="5" Grid.ColumnSpan="2"/>
     </Grid>
 </ContentView>

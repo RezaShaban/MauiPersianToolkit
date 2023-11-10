@@ -6,6 +6,15 @@
              xmlns:vm="clr-namespace:PersianUISamples.ViewModels"
              x:DataType="vm:MainViewModel">
 
+    <ContentPage.Resources>
+        <ControlTemplate x:Key="TreeNodeTemplate">
+            <Grid ColumnDefinitions="100*,Auto">
+                <Label Text="{TemplateBinding BindingContext.Title}" TextColor="Black" FontFamily="IranianSans" Grid.Column="0" VerticalOptions="Center"/>
+                <Button Text="&#xf067;" Padding="10,1" BackgroundColor="Gainsboro" FontFamily="FontAwesome" FontSize="Small" Grid.Column="1" TextColor="Black"/>
+            </Grid>
+        </ControlTemplate>
+    </ContentPage.Resources>
+
     <pui:TabView SelectedTabColor="{Binding CalendarOption.SelectDayColor}" UnSelectedTabColor="Gray" SelectedTab="0">
         <pui:TabView.ItemsSource>
             <pui:TabItemView Title="تقویم" Icon="&#xf133;" Padding="15">
@@ -79,7 +88,7 @@
             <pui:TabItemView Title="TreeView" Icon="&#xf00c;" Padding="0">
                 <ScrollView Padding="15">
                     <VerticalStackLayout>
-                        <pui:TreeView SelectedItems="{Binding SelectedItemsTree}" ItemsSource="{Binding TreeItems}" KeyProperty="Id" ParentChildProperty="ParentId" DisplayProperty="Title" SelectionMode="Multiple"/>
+                        <pui:TreeView ItemTemplate="{StaticResource TreeNodeTemplate}" SelectedItems="{Binding SelectedItemsTree}" ItemsSource="{Binding TreeItems}" KeyProperty="Id" ParentChildProperty="ParentId" DisplayProperty="Title" SelectionMode="Multiple" ItemHeight="64"/>
                         <HorizontalStackLayout BindableLayout.ItemsSource="{Binding SelectedItemsTree}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="vm:TreeViewModel">

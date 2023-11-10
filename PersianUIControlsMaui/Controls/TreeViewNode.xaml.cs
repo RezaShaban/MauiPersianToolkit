@@ -31,9 +31,16 @@ public partial class TreeViewNode : ContentView
         set { SetValue(IsExpandedProperty, value); }
     }
 
+    public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate), typeof(ControlTemplate), typeof(TreeViewNode), default(ControlTemplate), BindingMode.TwoWay);
+    public ControlTemplate ItemTemplate
+    {
+        get => (ControlTemplate)GetValue(ItemTemplateProperty);
+        set => SetValue(ItemTemplateProperty, value);
+    }
+
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
-        if(propertyName == nameof(IsExpanded))
+        if (propertyName == nameof(IsExpanded))
         {
             if (ChildItems.Children.Count == 0 && IsExpanded)
             {
@@ -48,8 +55,10 @@ public partial class TreeViewNode : ContentView
                     var treeViewNode = new TreeViewNode()
                     {
                         ShowItem = item,
+                        ItemTemplate = this.ItemTemplate,
                         ItemsSource = this.ItemsSource
                     };
+                    treeViewNode.grdItem.RowDefinitions[0].Height = this.grdItem.RowDefinitions[0].Height;
                     treeViewNode.SelectedItemChanged += this.SelectedItemChanged;
                     if (item.SelectionMode == Enums.TreeViewSelectionMode.Single)
                         treeViewNode.rdo.IsChecked = item.IsSelected;
@@ -61,6 +70,9 @@ public partial class TreeViewNode : ContentView
             else
                 ChildItems.Children.Clear();
         }
+
+        if(propertyName == nameof(ItemTemplate))
+            defaultTemplate.IsVisible = ItemTemplate is null;
 
         base.OnPropertyChanged(propertyName);
     }
