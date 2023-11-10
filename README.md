@@ -5,6 +5,17 @@ Persian Calendar &amp; some other controls for .NET MAUI
 To use this package in your MAUI project use the below code in your MauiProgram.cs file
 
 
+## Controls
+
+- Persian DatePicker ```Single, Multiple, Range```
+- TreeView ```None, Single, Multiple```
+- TabView
+- SlideButton
+- Picker ```Single, Multiple```
+- Dialogs ```Alter, Confirm, Prompt, Custom```
+- Expander
+- Entry
+- Editor
 
 
 ## Deployment
