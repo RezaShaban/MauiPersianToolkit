@@ -52,11 +52,11 @@ public partial class CheckBoxView : ContentView
         InitializeComponent();
 
         var tapped = new TapGestureRecognizer();
-        tapped.Tapped += lblText_Tapped;
+        tapped.Command = new Command(lblText_Tapped);
         lblText.GestureRecognizers.Add(tapped);
     }
 
-    private void lblText_Tapped(object sender, EventArgs e)
+    private void lblText_Tapped(object sender)
     {
         IsChecked = !IsChecked;
 

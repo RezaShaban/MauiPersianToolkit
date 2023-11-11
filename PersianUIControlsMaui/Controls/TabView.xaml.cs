@@ -110,7 +110,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     FontFamily = "IranianSans"
                 };
 
-                var shape = new Microsoft.Maui.Controls.Shapes.Path()
+                var shape = new Microsoft.Maui.Controls.Shapes.Path
                 {
                     ClassId = ItemsSource.IndexOf(item).ToString(),
                     Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString("M53.5 12H16.5C16.5 14.2091 18.2909 16 20.5 16H49.5C51.7091 16 53.5 14.2091 53.5 12ZM33.3257 19.3366C33.8419 20.2986 36.1581 20.2986 36.6743 19.3366C37.6164 17.5805 38.9944 16 40.9025 16L29.0975 16C31.0056 16 32.3835 17.5805 33.3257 19.3366Z"),
@@ -120,9 +120,8 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     IsVisible = true,
                     InputTransparent = true,
                     HeightRequest = 8,
-                    TranslationY = 0,
+                    TranslationX = ((width / ItemsSource.Count) / 2) - (37 / 2)
                 };
-                shape.TranslationX = ((width / ItemsSource.Count) / 2) - (37 / 2);
                 //if (AnimateCaptions)
                 //    label.ScaleTo(0);
                 tabButton.Command = new Command(() => ExecuteChangeTabCommand(item, tabButton, label, shape));
@@ -193,7 +192,6 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
 
         tab.IsVisible = true;
 
-        if (ChangedTabCommand != null)
-            ChangedTabCommand.Execute(tab.Key);
+        ChangedTabCommand?.Execute(tab.Key);
     }
 }

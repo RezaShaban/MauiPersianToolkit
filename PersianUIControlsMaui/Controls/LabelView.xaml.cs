@@ -14,7 +14,7 @@ public partial class LabelView : ContentView
             CommandParameter = this.TapCommandParameter,
             Command = TapCommand,
         };
-        tapped.Tapped += (object sender, EventArgs e) => Tapped?.Invoke(this, e);
+        //tapped.Tapped += (object sender, EventArgs e) => Tapped?.Invoke(this, e);
         grdPattern.GestureRecognizers.Add(tapped);
     }
 
@@ -93,7 +93,7 @@ public partial class LabelView : ContentView
 
     #endregion
 
-    public event EventHandler<EventArgs> Tapped;
+    //public event EventHandler<EventArgs> Tapped;
     //protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     //{
     //    base.OnPropertyChanged(propertyName);

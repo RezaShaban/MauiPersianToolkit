@@ -141,9 +141,7 @@ public partial class EntryView : ContentView
 
     private void entry_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (TextChangedCommand != null)
-            TextChangedCommand.Execute(e.NewTextValue);
-        if (TextChanged != null)
-            TextChanged.Invoke(sender, e);
+        TextChangedCommand?.Execute(e.NewTextValue);
+        TextChanged?.Invoke(sender, e);
     }
 }

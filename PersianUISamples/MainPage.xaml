@@ -77,7 +77,7 @@
                                 </pui:SlideButton.FillBar>
                             </pui:SlideButton>
 
-                            <!--<pui:LabelView Text="برچسب تستی" Icon="&#xf075;" Grid.Row="5"/>-->
+                            <pui:LabelView Text="برچسب تستی" Icon="&#xf075;" Grid.Row="5"/>
 
                             <pui:CheckBoxView Text="انتخاب اول" TextColor="Black" Grid.Row="6"/>
 
@@ -88,7 +88,7 @@
             <pui:TabItemView Title="TreeView" Icon="&#xf00c;" Padding="0">
                 <ScrollView Padding="15">
                     <VerticalStackLayout>
-                        <pui:TreeView ItemTemplate="{StaticResource TreeNodeTemplate}" SelectedItems="{Binding SelectedItemsTree}" ItemsSource="{Binding TreeItems}" KeyProperty="Id" ParentChildProperty="ParentId" DisplayProperty="Title" SelectionMode="Multiple" ItemHeight="64"/>
+                        <pui:TreeView ItemTemplate="{StaticResource TreeNodeTemplate}" SelectedItems="{Binding SelectedItemsTree}" ItemsSource="{Binding TreeItems}" KeyProperty="Id" ParentChildProperty="ParentId" DisplayProperty="Title" SelectionMode="Multiple" ItemHeight="32"/>
                         <HorizontalStackLayout BindableLayout.ItemsSource="{Binding SelectedItemsTree}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="vm:TreeViewModel">

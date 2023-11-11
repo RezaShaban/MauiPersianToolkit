@@ -224,9 +224,10 @@ public partial class PickerView : ContentView
         InitializeComponent();
 
         var tapped = new TapGestureRecognizer();
-        tapped.Tapped += TapGestureRecognizer_Tapped;
+        tapped.Command = new Command(TapGestureRecognizer_Tapped);
         grdPattern.GestureRecognizers.Add(tapped);
     }
+
     #region Event's
 
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -251,7 +252,7 @@ public partial class PickerView : ContentView
             }
     }
 
-    private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+    private void TapGestureRecognizer_Tapped()
     {
         OnOpenCommand?.Execute(null);
 

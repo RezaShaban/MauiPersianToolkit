@@ -13,11 +13,11 @@ public static class AppBuilderExtensions
         builder
             .ConfigureFonts(fonts =>
             {
-                //fonts.AddEmbeddedResourceFont(typeof(AppBuilderExtensions).Assembly, "materialdesignicons-webfont.ttf", "MDI");
                 fonts.AddEmbeddedResourceFont(typeof(AppBuilderExtensions).Assembly, "IranianSans.ttf", "IranianSans");
                 fonts.AddEmbeddedResourceFont(typeof(AppBuilderExtensions).Assembly, "FontAwesome.ttf", "FontAwesome");
             })
             .Services.AddSingleton<IDialogService, DialogService>();
+
         Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("CustomEditor", (handler, view) =>
         {
 #if ANDROID
@@ -27,13 +27,18 @@ public static class AppBuilderExtensions
             handler.PlatformView.SetBackgroundDrawable(gd);
 #endif
         });
-        // Remove Entry control underline
+        // Config Entry control --underline, focus
         Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("CustomEntry", (handler, view) =>
         {
 #if IOS || MACCATALYST
             handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
+            handler.PlatformView.EditingDidBegin += (s, e) => 
+                handler.PlatformView.PerformSelector(new ObjCRuntime.Selector("selectAll"), null, 0.0f);
 #elif ANDROID
             handler.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
+            handler.PlatformView.SetSelectAllOnFocus(true);            
+#elif WINDOWS
+            handler.PlatformView.GotFocus += (s, e) => handler.PlatformView.SelectAll();
 #endif
         });
         return builder;
