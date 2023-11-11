@@ -31,7 +31,7 @@
             </Label.Triggers>
         </Label>
 
-        <Border Stroke="Gainsboro" Grid.Row="1" Grid.Column="0" Background="Transparent" HorizontalOptions="Fill" Grid.ColumnSpan="4" Padding="0,0,48,0" InputTransparent="True">
+        <Border Stroke="Gainsboro" Grid.Row="1" Grid.Column="0" Background="Transparent" HorizontalOptions="Fill" Grid.ColumnSpan="4" Padding="48,0,0,0" InputTransparent="True">
             <Border.Triggers>
                 <DataTrigger TargetType="Border" Binding="{Binding Icon,Source={x:Reference ucDatePicker}}" Value="">
                     <Setter Property="Padding" Value="0"/>

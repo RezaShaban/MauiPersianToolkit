@@ -83,7 +83,7 @@ public partial class EntryView : ContentView
         get { return (bool)GetValue(IsPasswordProperty); }
         set { SetValue(IsPasswordProperty, value); }
     }
-    public static readonly BindableProperty IconProperty = BindableProperty.Create(nameof(Icon), typeof(string), typeof(EntryView), default(string), BindingMode.TwoWay);
+    public static readonly BindableProperty IconProperty = BindableProperty.Create(nameof(Icon), typeof(string), typeof(EntryView), string.Empty, BindingMode.TwoWay);
     public string Icon
     {
         get { return (string)GetValue(IconProperty); }

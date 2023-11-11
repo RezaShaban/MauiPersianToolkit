@@ -14,13 +14,13 @@
         <Label Text="{Binding DisplayProperty,Source={x:Reference ucPickerView}}" IsVisible="false" x:Name="lblDp"/>
         <Label Grid.Column="0" Text="{Binding PlaceHolder,Source={x:Reference ucPickerView}}" Padding="0" HorizontalOptions="Start" VerticalTextAlignment="Center" x:Name="lblPlaceholder" Grid.Row="0" InputTransparent="True" VerticalOptions="Center" Margin="0,0,0,0" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucPickerView},Mode=OneWay}" Grid.ColumnSpan="2" FontFamily="IranianSans"/>
 
-        <Label Text="{Binding Icon,Source={x:Reference ucPickerView}}" FontSize="18" WidthRequest="32" Grid.Column="0" Grid.Row="1" VerticalTextAlignment="Center" HorizontalOptions="Center" x:Name="lblIcon" VerticalOptions="Fill" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucPickerView},Mode=OneWay}" HorizontalTextAlignment="Center" FontFamily="FontAwesome"/>
+        <Label Text="{Binding Icon,Source={x:Reference ucPickerView}}" FontSize="18" WidthRequest="42" Grid.Column="0" Grid.Row="1" VerticalTextAlignment="Center" HorizontalOptions="Center" x:Name="lblIcon" VerticalOptions="Fill" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucPickerView},Mode=OneWay}" HorizontalTextAlignment="Center" FontFamily="FontAwesome"/>
 
-        <Border Stroke="Gainsboro" Grid.Row="1" Grid.Column="0" Background="Transparent" HorizontalOptions="Fill" Grid.ColumnSpan="4" Padding="0,0,24,0">
+        <Border Stroke="Gainsboro" Grid.Row="1" Grid.Column="0" Background="Transparent" HorizontalOptions="Fill" Grid.ColumnSpan="4" Padding="24,0,0,0">
             <Border.StrokeShape>
                 <RoundRectangle Fill="#fdfdfd" CornerRadius="5" StrokeThickness="1" StrokeLineJoin="Round" Stroke="Gainsboro"/>
             </Border.StrokeShape>
-            <StackLayout Padding="0,0,10,0">
+            <StackLayout Padding="10,0,0,0">
                 <Label HorizontalOptions="Fill" InputTransparent="True" Grid.Column="1" Grid.Row="0" Margin="0" FontSize="Small" HeightRequest="50" VerticalOptions="Fill" VerticalTextAlignment="Center" TextColor="{Binding TextColor,Source={x:Reference ucPickerView}}" FontFamily="IranianSans" BindingContext="{Binding SelectedItem,Source={x:Reference ucPickerView}}" IsVisible="False">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label" Binding="{Binding SelectionMode,Source={x:Reference ucPickerView}}" Value="Single">
