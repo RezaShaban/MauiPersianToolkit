@@ -16,6 +16,7 @@ To use this package in your MAUI project use the below code in your MauiProgram.
 - Expander
 - Entry
 - Editor
+- AutoCompleteView ```Comming Soon...```
 
 
 ## Deployment
