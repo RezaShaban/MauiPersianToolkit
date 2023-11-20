@@ -25,6 +25,10 @@ public static class AppBuilderExtensions
             Android.Graphics.Drawables.GradientDrawable gd = new Android.Graphics.Drawables.GradientDrawable();
             gd.SetColor(global::Android.Graphics.Color.Transparent);
             handler.PlatformView.SetBackgroundDrawable(gd);
+
+            // Either transparent or the provided background color
+            var backgroundTint = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
+            handler.PlatformView.BackgroundTintList = backgroundTint;
 #endif
         });
         // Config Entry control --underline, focus

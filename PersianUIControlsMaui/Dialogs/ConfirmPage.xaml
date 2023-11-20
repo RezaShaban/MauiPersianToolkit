@@ -8,7 +8,7 @@
     <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft" x:Name="container">
         <Grid Padding="20" HorizontalOptions="Fill">
             <Frame HorizontalOptions="Fill" CornerRadius="7" Padding="0" Margin="0,32,0,0" BorderColor="Transparent" HasShadow="True" Background="{Binding BackgroundColor}">
-                <Grid RowDefinitions="Auto,100*,45" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill">
+                <Grid RowDefinitions="Auto,Auto,45" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill">
                     <Label Text="{Binding Title}" TextColor="Black" FontSize="Title" HorizontalOptions="Center" VerticalOptions="Center" Margin="20,45,20,0" FontFamily="IranianSans" Grid.Row="0"/>
 
                     <ScrollView Grid.Row="1">

@@ -283,37 +283,20 @@ public partial class PickerView : ContentView
         if (SelectionMode == SelectionMode.Single)
             buttonLayout.ColumnDefinitions.Clear();
 
-        popupPage.Content = new Frame()
+        popupPage.Content = new VerticalStackLayout()
         {
-            VerticalOptions = LayoutOptions.End,
-            Padding = new Thickness(0),
-            Margin = new Thickness(0),
-            HasShadow = true,
-            CornerRadius = 7,
-            IsClippedToBounds = true,
-            BorderColor = Colors.Transparent,
-            BackgroundColor = Colors.White,
 #if ANDROID
-            WidthRequest = (DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density) - 30,
+            WidthRequest = (DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density),
 #endif
-            Content = new StackLayout()
+            BackgroundColor = Colors.White,
+            VerticalOptions = LayoutOptions.Fill,
+            HorizontalOptions = LayoutOptions.Fill,
+            Padding = new Thickness(15, 15, 15, 0),
+            Children =
             {
-                BackgroundColor = Colors.White,
-                VerticalOptions = LayoutOptions.Fill,
-                HorizontalOptions = LayoutOptions.Fill,
-                Padding = new Thickness(0, 15, 0, 0),
-                Children =
-                    {
-                        titleLayout,
-                        new StackLayout()
-                        {
-                            HorizontalOptions = LayoutOptions.Fill,
-                            BackgroundColor = Colors.White,
-                            VerticalOptions = LayoutOptions.Fill,
-                            Children = { ItemsList }
-                        },
-                        buttonLayout
-                    }
+                titleLayout,
+                ItemsList,
+                buttonLayout
             }
         };
 
@@ -415,10 +398,10 @@ public partial class PickerView : ContentView
                 HorizontalOptions = LayoutOptions.Fill,
                 SelectionMode = SelectionMode,
                 HeightRequest = 300,
-                ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical)
-                {
-                    ItemSpacing = 0
-                },
+                //ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical)
+                //{
+                //    ItemSpacing = 0
+                //},
                 ItemsSource = this.ItemsSource,
                 SelectedItem = this.SelectedItem,
                 SelectedItems = this.SelectedItems,
@@ -470,11 +453,13 @@ public partial class PickerView : ContentView
         var label = new LabelView()
         {
             HorizontalOptions = LayoutOptions.Fill,
-            VerticalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Fill,
             FontSize = 14,
             IconFontSize = 16,
             TextColor = Colors.Black,
-            InputTransparent = true
+            FlowDirection = FlowDirection.RightToLeft,
+            InputTransparent = true,
+            HorizontalTextAlignment = TextAlignment.Start
         };
         if (string.IsNullOrEmpty(DisplayProperty))
             label.SetBinding(LabelView.TextProperty, ".");
@@ -487,12 +472,9 @@ public partial class PickerView : ContentView
 
         var rowLayout = new StackLayout()
         {
-            Padding = new Thickness(15, 10),
-            Orientation = StackOrientation.Horizontal,
-            FlowDirection = FlowDirection.RightToLeft,
+            Padding = new Thickness(0, 10),
             Children = { label }
         };
-
         return rowLayout;
     });
 

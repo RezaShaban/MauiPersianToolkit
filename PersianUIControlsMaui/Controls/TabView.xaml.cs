@@ -95,7 +95,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     BackgroundColor = Colors.White,
                     HeightRequest = 64
                 };
-                
+
                 var label = new Label()
                 {
                     IsEnabled = item.IsEnabled,
@@ -120,7 +120,8 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     IsVisible = true,
                     InputTransparent = true,
                     HeightRequest = 8,
-                    TranslationX = ((width / ItemsSource.Count) / 2) - (37 / 2)
+                    TranslationY = -8,
+                    TranslationX = ((width / ItemsSource.Count) / 2) - 37
                 };
                 //if (AnimateCaptions)
                 //    label.ScaleTo(0);
@@ -174,6 +175,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     Offset = new Point(0, 10),
                     Radius = 80,
                 };
+                _shape.TranslationY = -8;
                 //_shape.IsVisible = _shape.ClassId == shape.ClassId;
             }
         }

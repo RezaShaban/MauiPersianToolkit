@@ -11,7 +11,7 @@
                 </DataTrigger>
             </Button.Triggers>
         </Button>
-        <Label Text="{Binding Icon,Source={x:Reference buttonView}}" FontSize="18" WidthRequest="42" Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" InputTransparent="True" HeightRequest="45" HorizontalOptions="FillAndExpand" FontFamily="FontAwesome" VerticalOptions="FillAndExpand" TextColor="{Binding IconColor,Source={x:Reference buttonView}}">
+        <Label Text="{Binding Icon,Source={x:Reference buttonView}}" FontSize="18" WidthRequest="42" Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" InputTransparent="True" HorizontalOptions="FillAndExpand" FontFamily="FontAwesome" VerticalOptions="Center" TextColor="{Binding IconColor,Source={x:Reference buttonView}}">
             <Label.Triggers>
                 <DataTrigger TargetType="Label" Binding="{Binding Icon,Source={x:Reference buttonView}}" Value="">
                     <Setter Property="IsVisible" Value="False"/>

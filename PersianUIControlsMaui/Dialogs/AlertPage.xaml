@@ -7,8 +7,11 @@
     <!-- Content -->
     <Grid VerticalOptions="Center" HorizontalOptions="Fill" FlowDirection="RightToLeft" x:Name="container">
         <Grid Padding="20" HorizontalOptions="Fill">
-            <Frame HorizontalOptions="Fill" CornerRadius="7" Padding="0" Margin="0,32,0,0" BorderColor="Transparent" HasShadow="True" Background="{Binding BackgroundColor}">
-                <Grid Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnDefinitions="*" RowDefinitions="Auto,100*,50">
+            <Border HorizontalOptions="Fill" Padding="0" Margin="0,32,0,0" Background="{Binding BackgroundColor}">
+                <Border.StrokeShape>
+                    <RoundRectangle Fill="#fdfdfd" CornerRadius="7" StrokeThickness="1" StrokeLineJoin="Round" Stroke="Gainsboro"/>
+                </Border.StrokeShape>
+                <Grid Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnDefinitions="*" RowDefinitions="Auto,Auto,50">
                     <Label Text="{Binding Title}" TextColor="Black" FontSize="Title" HorizontalOptions="CenterAndExpand" 
                        VerticalOptions="Center" Margin="20,45,20,0" Grid.Row="0" Grid.Column="0" FontFamily="IranianSans" LineBreakMode="WordWrap"/>
                     <ScrollView Grid.Row="1" Grid.Column="0">
@@ -16,7 +19,7 @@
                     </ScrollView>
                     <uc:ButtonView Text="{Binding AcceptText}" Command="{Binding Command}" BtnMargin="0" CornerRadius="3" TextColor="Black" BtnBgColor="#f5f5f5" Icon="{Binding AcceptFontIcon}" IconColor="Black" Clicked="btnAccept_Clicked" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="2"/>
                 </Grid>
-            </Frame>
+            </Border>
             <Frame Padding="0" CornerRadius="100" BorderColor="Transparent" WidthRequest="72" HeightRequest="72" VerticalOptions="Start" HorizontalOptions="Center">
                 <Button WidthRequest="72" HeightRequest="72" FontSize="32" TextColor="White" Text="{Binding FontIcon}" BorderWidth="3" InputTransparent="True" BorderColor="{Binding BackgroundColor}" Padding="0" CornerRadius="100" BackgroundColor="{Binding DialogColor}" FontFamily="FontAwesome"/>
             </Frame>

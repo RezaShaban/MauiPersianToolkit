@@ -54,7 +54,7 @@
                     </BindableLayout.ItemTemplate>
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>
-                            <Label FontSize="13" Padding="10,2" Text="{Binding PlaceHolder,Source={x:Reference ucPickerView}}" Background="White" VerticalOptions="Center" HorizontalOptions="Start" Margin="1,0" TextColor="Gray" InputTransparent="True" FontFamily="IranianSans"/>
+                            <Label FontSize="13" Padding="10,2" Text="{Binding PlaceHolder,Source={x:Reference ucPickerView}}" Background="Transparent" VerticalOptions="Center" HorizontalOptions="Start" Margin="1,0" TextColor="Gray" InputTransparent="True" FontFamily="IranianSans"/>
                         </DataTemplate>
                     </BindableLayout.EmptyViewTemplate>
                 </HorizontalStackLayout>
