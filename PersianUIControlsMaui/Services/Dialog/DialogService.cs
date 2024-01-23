@@ -10,8 +10,7 @@ public class DialogService : IDialogService
 
     private void SetMainPage()
     {
-        if (mainPage is null)
-            mainPage = Application.Current.MainPage;
+        mainPage ??= Application.Current.MainPage;
     }
 
     public void Alert(string message, string title = "", MessageIcon icon = MessageIcon.ACCEPT, string acceptText = "باشه")
@@ -38,7 +37,6 @@ public class DialogService : IDialogService
 
     public void ShowException(Exception ex)
     {
-#if DEBUG
         Alert(new AlertConfig()
         {
             Message = ex.ToString(),
@@ -47,13 +45,13 @@ public class DialogService : IDialogService
             Title = "خطای سیستمی",
             AcceptText = "باشه"
         });
-#endif
     }
 
     public void Toast(ToastConfig config)
     {
-        MainThread.BeginInvokeOnMainThread(() =>
-        {
+        CommunityToolkit.Maui.Alerts.Toast.Make(config.Message, config.Duration);
+        //MainThread.BeginInvokeOnMainThread(() =>
+        //{
             //await PopupNavigation.Instance.PushAsync(new ToastPage(config)
             //{
             //    BackgroundInputTransparent = true,
@@ -66,8 +64,10 @@ public class DialogService : IDialogService
             //        PopupNavigation.Instance.PopAsync();
             //    return false;
             //}));
-        });
+        //});
     }
+
+
 
     public async void Confirm(ConfirmConfig config)
     {
@@ -95,5 +95,14 @@ public class DialogService : IDialogService
             await mainPage.ShowPopupAsync(confirmPage);
             //await PopupNavigation.Instance.PushAsync();
         });
+    }
+
+    public void Snackbar(SnackbarConfig config)
+    {
+        CommunityToolkit.Maui.Alerts.Snackbar.Make(config.Message, config.OnAction, config.AcceptText, config.Duration,
+            new CommunityToolkit.Maui.Core.SnackbarOptions()
+            {
+                CornerRadius = 7
+            });
     }
 }

@@ -93,12 +93,20 @@ public partial class LabelView : ContentView
 
     #endregion
 
-    //public event EventHandler<EventArgs> Tapped;
-    //protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    //{
-    //    base.OnPropertyChanged(propertyName);
+    public event EventHandler<EventArgs> Tapped;
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
 
-    //    if (IconProperty.PropertyName == propertyName)
-    //        lblIcon.IsVisible = !string.IsNullOrEmpty(Icon);
-    //}
+        if (TapCommandProperty.PropertyName == propertyName)
+        {
+            this.grdPattern.GestureRecognizers.Clear();
+            var tapped = new TapGestureRecognizer()
+            {
+                CommandParameter = this.TapCommandParameter,
+                Command = TapCommand,
+            };
+            grdPattern.GestureRecognizers.Add(tapped);
+        }
+    }
 }

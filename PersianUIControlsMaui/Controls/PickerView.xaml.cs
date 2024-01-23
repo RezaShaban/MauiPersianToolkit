@@ -472,11 +472,17 @@ public partial class PickerView : ContentView
 
         var rowLayout = new StackLayout()
         {
+            HorizontalOptions = LayoutOptions.Fill,
             Padding = new Thickness(0, 10),
             Children = { label }
         };
         return rowLayout;
     });
+
+    public void ShowDialog()
+    {
+        TapGestureRecognizer_Tapped();
+    }
 
     #endregion
 

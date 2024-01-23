@@ -120,7 +120,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     IsVisible = true,
                     InputTransparent = true,
                     HeightRequest = 8,
-                    TranslationY = -8,
+                    TranslationY = -15,
                     TranslationX = ((width / ItemsSource.Count) / 2) - 37
                 };
                 //if (AnimateCaptions)

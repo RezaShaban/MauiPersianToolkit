@@ -6,7 +6,7 @@
         <Grid RowDefinitions="100*,64" x:Name="tabPages" RowSpacing="0" ColumnSpacing="0">
             <!--tab contents here-->
             
-            <Frame CornerRadius="0" Padding="0" Grid.Row="1" Grid.Column="0" BackgroundColor="White" Margin="0">
+            <Frame CornerRadius="0" Padding="0" Grid.Row="1" Grid.Column="0" BackgroundColor="White" Margin="0" IsClippedToBounds="True">
                 <Grid HorizontalOptions="FillAndExpand" RowDefinitions="64" ColumnDefinitions="20*,20*,20*,20*,20*" x:Name="tabButtons" RowSpacing="0" ColumnSpacing="0">
                     <!--tab buttons here--> 
                 </Grid>

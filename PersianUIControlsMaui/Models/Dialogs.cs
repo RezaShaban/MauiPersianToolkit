@@ -117,10 +117,14 @@ public class AlertConfig : BaseConfig
 }
 public class ToastConfig : BaseConfig
 {
-    /// <summary>
-    /// برحسب ثانیه
-    /// </summary>
-    public int Duration { get; set; } = 3;
+    public CommunityToolkit.Maui.Core.ToastDuration Duration { get; set; } = CommunityToolkit.Maui.Core.ToastDuration.Short;
+}
+public class SnackbarConfig: BaseConfig
+{
+    public Action OnAction { get; set; }
+    public string AcceptText { get; set; } = "باشه";
+    public TimeSpan Duration { get; set; } = new TimeSpan(0, 0, 15);
+
 }
 public enum MessageIcon
 {

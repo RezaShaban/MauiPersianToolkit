@@ -11,4 +11,5 @@ public interface IDialogService
     void CustomDialog(CustomDialogConfig config);
     void Prompt(PromptConfig config);
     void Toast(ToastConfig config);
+    void Snackbar(SnackbarConfig config); 
 }
