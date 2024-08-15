@@ -32,21 +32,22 @@ public partial class PromptPage : Popup
     private void SetDialogProperties()
     {
         double width = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
-        container.MaximumWidthRequest = width;
+        this.container.WidthRequest = width;
+        scrollView.WidthRequest = width - 40;
+        lblMessage.WidthRequest = scrollView.WidthRequest;
+        lblTitle.WidthRequest = width;
     }
 
     private void btnCancel_Clicked(object sender, EventArgs e)
     {
-        if (_config.OnAction != null)
-            _config.OnAction.Invoke(new PromptResult() { IsOk = false, Value = _config.DefaultValue });
+        _config.OnAction?.Invoke(new PromptResult() { IsOk = false, Value = _config.DefaultValue });
 
         this.Close();
     }
 
     private void btnAccept_Clicked(object sender, EventArgs e)
     {
-        if (_config.OnAction != null)
-            _config.OnAction.Invoke(new PromptResult() { IsOk = true, Value = _config.DefaultValue });
+        _config.OnAction?.Invoke(new PromptResult() { IsOk = true, Value = _config.DefaultValue });
         if (_config.CloseAfterAccept)
             this.Close();
     }

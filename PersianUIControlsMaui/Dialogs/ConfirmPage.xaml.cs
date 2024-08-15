@@ -20,38 +20,39 @@ public partial class ConfirmPage : Popup
     {
         double width = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
         double height = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
-        container.MaximumWidthRequest = width;
+        this.container.WidthRequest = width;
+        scrollView.WidthRequest = width - 40;
+        //lblMessage.WidthRequest = scrollView.WidthRequest;
+        lblTitle.WidthRequest = width;
         this.container.MaximumHeightRequest = (height * 0.8) - 50;
     }
 
     private void btnCancel_Clicked(object sender, EventArgs e)
     {
-        if (config.OnAction != null)
-            config.OnAction.Invoke(false);
+        config.OnAction?.Invoke(false);
         this.Close();
     }
 
     private void btnAccept_Clicked(object sender, EventArgs e)
     {
-        if (config.OnAction != null)
-            config.OnAction.Invoke(true);
+        config.OnAction?.Invoke(true);
         this.Close();
     }
 
-    private void MeasureText(string message)
-    {
-        locEditor.MaximumWidthRequest = container.MaximumWidthRequest;
-        locEditor.Text = message;
-        locEditor.FontFamily = "IranianSans";
-        var locSize = locEditor.Handler.GetDesiredSize(double.PositiveInfinity, double.PositiveInfinity);
+    //private void MeasureText(string message)
+    //{
+    //    locEditor.MaximumWidthRequest = container.MaximumWidthRequest;
+    //    locEditor.Text = message;
+    //    locEditor.FontFamily = "IranianSans";
+    //    var locSize = locEditor.Handler.GetDesiredSize(double.PositiveInfinity, double.PositiveInfinity);
 
-        scrollView.HeightRequest = locSize.Height+50;
-        container.Children.Remove(locEditor);
-        grdBody.HeightRequest = locSize.Height + 190;
-    }
+    //    scrollView.HeightRequest = locSize.Height+50;
+    //    container.Children.Remove(locEditor);
+    //    grdBody.HeightRequest = locSize.Height + 190;
+    //}
 
-    private void Popup_HandlerChanged(object sender, EventArgs e)
-    {
-        MeasureText(config.Message);
-    }
+    //private void Popup_HandlerChanged(object sender, EventArgs e)
+    //{
+    //    MeasureText(config.Message);
+    //}
 }

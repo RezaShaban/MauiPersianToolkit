@@ -35,7 +35,10 @@ public partial class CustomDialogPage : Popup
         double width = DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
         double height = DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
         container.MaximumWidthRequest = width;
-        this.container.MaximumHeightRequest = (height * 0.8) - 50;
+        scrollView.WidthRequest = width - 40;
+        lblMessage.WidthRequest = scrollView.WidthRequest;
+        lblTitle.WidthRequest = width;
+        //this.container.MaximumHeightRequest = (height * 0.8) - 50;
     }
 
     private void btnCancel_Clicked(object sender, EventArgs e)
@@ -51,20 +54,20 @@ public partial class CustomDialogPage : Popup
             this.Close();
     }
 
-    private void MeasureText()
-    {
-        locEditor.MaximumWidthRequest = container.MaximumWidthRequest;
-        locEditor.Text = _config.Message;
-        locEditor.FontFamily = "IranianSans";
-        var locSize = locEditor.Handler.GetDesiredSize(double.PositiveInfinity, double.PositiveInfinity);
-        var content = _config.Content.Measure(double.PositiveInfinity, double.PositiveInfinity);
-        scrollView.HeightRequest = locSize.Height + content.Minimum.Height + 65;
-        container.Children.Remove(locEditor);
-        grdBody.HeightRequest = locSize.Height + content.Minimum.Height + 190;
-    }
+    //private void MeasureText()
+    //{
+    //    locEditor.MaximumWidthRequest = container.MaximumWidthRequest;
+    //    locEditor.Text = _config.Message;
+    //    locEditor.FontFamily = "IranianSans";
+    //    var locSize = locEditor.Handler.GetDesiredSize(double.PositiveInfinity, double.PositiveInfinity);
+    //    var content = _config.Content.Measure(double.PositiveInfinity, double.PositiveInfinity);
+    //    scrollView.HeightRequest = locSize.Height + content.Minimum.Height + 65;
+    //    container.Children.Remove(locEditor);
+    //    grdBody.HeightRequest = locSize.Height + content.Minimum.Height + 190;
+    //}
 
-    private void Popup_HandlerChanged(object sender, EventArgs e)
-    {
-        MeasureText();
-    }
+    //private void Popup_HandlerChanged(object sender, EventArgs e)
+    //{
+    //    MeasureText();
+    //}
 }

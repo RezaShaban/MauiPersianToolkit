@@ -12,9 +12,9 @@
                 <Border.StrokeShape>
                     <RoundRectangle Fill="{Binding BackgroundColor}" CornerRadius="7" StrokeThickness="1" StrokeLineJoin="Round" Stroke="Gainsboro"/>
                 </Border.StrokeShape>
-                <Grid RowDefinitions="Auto,Auto,45" ColumnDefinitions="100*">
-                    <Label Text="{Binding Title}" TextColor="#333" FontSize="Title" HorizontalOptions="Center" Grid.Row="0" VerticalOptions="Center" Margin="20,45,20,0" FontFamily="IranianSans" LineBreakMode="WordWrap"/>
-                    <ScrollView Grid.Row="1">
+                <Grid RowDefinitions="95,Auto,45" ColumnDefinitions="100*">
+                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding Title,Mode=OneWay}" TextColor="Black" FontSize="Title" HorizontalOptions="Fill" VerticalOptions="Center" FontFamily="IranianSans" LineBreakMode="NoWrap" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Margin="20,45,20,0" x:Name="lblTitle"/>
+                    <ScrollView Grid.Row="1" x:Name="scrollView">
                         <VerticalStackLayout Padding="15,5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                             <Label Text="{Binding Message}" FontSize="Body" Margin="0,0,0,10" LineHeight="1.25" x:Name="lblMessage" FontFamily="IranianSans" TextColor="#666" LineBreakMode="WordWrap" />
 
