@@ -2,6 +2,8 @@ name: Publish to NuGet
 
 on:
   push:
+    branches:
+      - master
     tags:
       - 'v*'
 
@@ -16,7 +18,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.x'
-
+    
+    - name: Restore .NET Workloads
+      run: dotnet workload restore
+      
     - name: Build
       run: dotnet build --configuration Release
 
