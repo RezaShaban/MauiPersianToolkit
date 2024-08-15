@@ -28,7 +28,7 @@ jobs:
       run: dotnet build --configuration Release
 
     - name: Pack
-      run: dotnet pack --configuration Release
+      run: dotnet pack --configuration Release --no-build --output ./nupkgs
 
     - name: Publish to NuGet
       env:
