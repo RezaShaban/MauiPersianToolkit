@@ -9,18 +9,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.x'
-    
-    - name: Restore .NET Workloads
-      run: dotnet workload restore
+        dotnet-version: 6.0.x
+        
+    - name: Install MAUI workloads
+      shell: pwsh
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      run: dotnet restore
       
     - name: Build
       run: dotnet build --configuration Release
