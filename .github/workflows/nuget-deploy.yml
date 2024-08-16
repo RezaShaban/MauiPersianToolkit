@@ -2,8 +2,6 @@ name: Publish to NuGet
 
 on:
   push:
-    branches:
-      - master
     tags:
       - 'v*'
 
@@ -29,16 +27,24 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release
 
+    - name: Extract version from tag
+      id: extract_version
+      run: |
+        echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+        
     - name: Pack
-      run: dotnet pack PersianUIControlsMaui/PersianUIControlsMaui.csproj --configuration Release --no-build --output ./nupkgs
+      run: dotnet pack PersianUIControlsMaui/PersianUIControlsMaui.csproj --configuration Release --no-build --output ./nupkgs /p:PackageVersion=${{ env.VERSION }}
 
+    - name: List packed packages
+      run: dir .\nupkgs
+      
     - name: List packed packages
       run: dir .\nupkgs
 
     - name: Publish to NuGet
       shell: pwsh
       run: |
-        $nupkgPath = ".\nupkgs\PersianUIControlsMaui.2.0.2.nupkg"
+        $nupkgPath = ".\nupkgs\PersianUIControlsMaui.${{ env.VERSION }}.nupkg"
         dotnet nuget push $nupkgPath --api-key $env:NUGET_API_KEY --source $env:NUGET_SOURCE
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
