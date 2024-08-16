@@ -10,8 +10,10 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
     - uses: actions/checkout@v3
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -30,8 +32,14 @@ jobs:
     - name: Pack
       run: dotnet pack PersianUIControlsMaui/PersianUIControlsMaui.csproj --configuration Release --no-build --output ./nupkgs
 
+    - name: List packed packages
+      run: dir .\nupkgs
+
     - name: Publish to NuGet
+      shell: pwsh
+      run: |
+        $nupkgPath = ".\nupkgs\PersianUIControlsMaui.2.0.2.nupkg"
+        dotnet nuget push $nupkgPath --api-key $env:NUGET_API_KEY --source $env:NUGET_SOURCE
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         NUGET_SOURCE: https://api.nuget.org/v3/index.json
-      run: dotnet nuget push ./nupkgs/PersianUIControlsMaui.2.0.2.nupkg --api-key $NUGET_API_KEY --source $NUGET_SOURCE
