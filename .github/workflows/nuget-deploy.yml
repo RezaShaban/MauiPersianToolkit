@@ -7,23 +7,45 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.x'
+        dotnet-version: 6.0.x
+        
+    - name: Install MAUI workloads
+      shell: pwsh
+      run: dotnet workload install maui
 
+    - name: Restore dependencies
+      run: dotnet restore
+      
     - name: Build
       run: dotnet build --configuration Release
 
+    - name: Extract version from tag
+      id: extract_version
+      run: |
+        echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+        
     - name: Pack
-      run: dotnet pack --configuration Release
+      run: dotnet pack PersianUIControlsMaui/PersianUIControlsMaui.csproj --configuration Release --no-build --output ./nupkgs /p:PackageVersion=${{ env.VERSION }}
+
+    - name: List packed packages
+      run: dir .\nupkgs
+      
+    - name: List packed packages
+      run: dir .\nupkgs
 
     - name: Publish to NuGet
+      shell: pwsh
+      run: |
+        $nupkgPath = ".\nupkgs\PersianUIControlsMaui.${{ env.VERSION }}.nupkg"
+        dotnet nuget push $nupkgPath --api-key $env:NUGET_API_KEY --source $env:NUGET_SOURCE
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-      run: dotnet nuget push bin/Release/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+        NUGET_SOURCE: https://api.nuget.org/v3/index.json
