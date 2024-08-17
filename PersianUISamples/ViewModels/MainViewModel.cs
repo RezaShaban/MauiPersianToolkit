@@ -1,7 +1,7 @@
-﻿using PersianUIControlsMaui.Controls;
-using PersianUIControlsMaui.Models;
-using PersianUIControlsMaui.Services.Dialog;
-using PersianUIControlsMaui.ViewModels;
+﻿using MauiPersianToolkit.Controls;
+using MauiPersianToolkit.Models;
+using MauiPersianToolkit.Services.Dialog;
+using MauiPersianToolkit.ViewModels;
 using System.Collections.ObjectModel;
 
 namespace PersianUISamples.ViewModels
@@ -62,16 +62,16 @@ namespace PersianUISamples.ViewModels
             };
             CalendarOption = new CalendarOptions()
             {
-                SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
-                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Single,
+                SelectDateMode = MauiPersianToolkit.Enums.SelectionDateMode.Day,
+                SelectionMode = MauiPersianToolkit.Enums.SelectionMode.Single,
                 SelectDayColor = Color.FromArgb("#5B2BDF"),
                 MinDateCanSelect = DateTime.Now.AddDays(-10),
                 MaxDateCanSelect = DateTime.Now.AddDays(10)
             };
             RangeCalendarOption = new CalendarOptions()
             {
-                SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
-                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Range,
+                SelectDateMode = MauiPersianToolkit.Enums.SelectionDateMode.Day,
+                SelectionMode = MauiPersianToolkit.Enums.SelectionMode.Range,
                 SelectDayColor = Color.FromArgb("#5B2BDF"),
                 AutoCloseAfterSelectDate = false,
                 OnAccept = OnAcceptDate,
@@ -80,8 +80,8 @@ namespace PersianUISamples.ViewModels
             };
             MultipleCalendarOption = new CalendarOptions()
             {
-                SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
-                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Multiple,
+                SelectDateMode = MauiPersianToolkit.Enums.SelectionDateMode.Day,
+                SelectionMode = MauiPersianToolkit.Enums.SelectionMode.Multiple,
                 SelectDayColor = Color.FromArgb("#5B2BDF"),
                 AutoCloseAfterSelectDate = false,
                 OnAccept = OnAcceptDateMultiple,
@@ -200,7 +200,7 @@ namespace PersianUISamples.ViewModels
                     Children =
                     {
                         new EntryView(){ PlaceHolder = "نام" },
-                        new PersianUIControlsMaui.Controls.DatePicker(){ PlaceHolder = "تاریخ تولد" }
+                        new MauiPersianToolkit.Controls.DatePicker(){ PlaceHolder = "تاریخ تولد" }
                     }
                 }
             });

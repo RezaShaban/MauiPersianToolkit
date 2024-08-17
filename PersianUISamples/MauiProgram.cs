@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Maui;
-using PersianUIControlsMaui;
+using MauiPersianToolkit;
 using PersianUISamples.ViewModels;
 
 namespace PersianUISamples

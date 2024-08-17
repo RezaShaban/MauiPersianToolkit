@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="MauiPersianToolkit.Controls.PickerView"
+             xmlns:conv="clr-namespace:MauiPersianToolkit.Converters"
+             x:Name="ucPickerView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <conv:InverseBoolConverter x:Key="InversBool"/>
+            <conv:FetchPropertyValueConverter x:Key="FetchPropertyValue"/>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid HorizontalOptions="Fill" ColumnDefinitions="Auto,100*,Auto" RowDefinitions="Auto,50" Padding="0,10" ColumnSpacing="0" x:Name="grdPattern">
+        <Label Text="{Binding DisplayProperty,Source={x:Reference ucPickerView}}" IsVisible="false" x:Name="lblDp"/>
+        <Label Grid.Column="0" Text="{Binding PlaceHolder,Source={x:Reference ucPickerView}}" Padding="0" HorizontalOptions="Start" VerticalTextAlignment="Center" x:Name="lblPlaceholder" Grid.Row="0" InputTransparent="True" VerticalOptions="Center" Margin="0,0,0,0" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucPickerView},Mode=OneWay}" Grid.ColumnSpan="2" FontFamily="IranianSans"/>
+
+        <Label Text="{Binding Icon,Source={x:Reference ucPickerView}}" FontSize="18" WidthRequest="42" Grid.Column="0" Grid.Row="1" VerticalTextAlignment="Center" HorizontalOptions="Center" x:Name="lblIcon" VerticalOptions="Fill" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucPickerView},Mode=OneWay}" HorizontalTextAlignment="Center" FontFamily="FontAwesome"/>
+
+        <Border Stroke="Gainsboro" Grid.Row="1" Grid.Column="0" Background="Transparent" HorizontalOptions="Fill" Grid.ColumnSpan="4" Padding="24,0,0,0">
+            <Border.StrokeShape>
+                <RoundRectangle Fill="#fdfdfd" CornerRadius="5" StrokeThickness="1" StrokeLineJoin="Round" Stroke="Gainsboro"/>
+            </Border.StrokeShape>
+            <StackLayout Padding="10,0,0,0">
+                <Label HorizontalOptions="Fill" InputTransparent="True" Grid.Column="1" Grid.Row="0" Margin="0" FontSize="Small" HeightRequest="50" VerticalOptions="Fill" VerticalTextAlignment="Center" TextColor="{Binding TextColor,Source={x:Reference ucPickerView}}" FontFamily="IranianSans" BindingContext="{Binding SelectedItem,Source={x:Reference ucPickerView}}" IsVisible="False">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding SelectionMode,Source={x:Reference ucPickerView}}" Value="Single">
+                            <Setter Property="IsVisible" Value="True"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                    <Label.Text>
+                        <Binding Path="." Mode="OneWay" StringFormat="{}{0}" Converter="{StaticResource FetchPropertyValue}"
+                                     ConverterParameter="{Binding Text,Source={x:Reference lblDp}}">
+                        </Binding>
+                    </Label.Text>
+                </Label>
+
+                <HorizontalStackLayout HorizontalOptions="Fill" BindableLayout.ItemsSource="{Binding SelectedItems,Source={x:Reference ucPickerView},Mode=OneWay}" VerticalOptions="Fill" HeightRequest="50" InputTransparent="True" IsVisible="True">
+                    <HorizontalStackLayout.Triggers>
+                        <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding SelectionMode,Source={x:Reference ucPickerView}}" Value="Single">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </HorizontalStackLayout.Triggers>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Button FontSize="12" Padding="10,2" Background="{Binding ActivePlaceHolderColor,Source={x:Reference ucPickerView}}" VerticalOptions="Center" HorizontalOptions="Start" Margin="1,0" FontFamily="IranianSans" InputTransparent="True" TextColor="White">
+                                <Button.Text>
+                                    <Binding Path="." Mode="OneWay" StringFormat="{}{0}"
+                                                 Converter="{StaticResource FetchPropertyValue}"
+                                                 ConverterParameter="{Binding Text,Source={x:Reference lblDp}}">
+                                    </Binding>
+                                </Button.Text>
+                            </Button>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                    <BindableLayout.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Label FontSize="13" Padding="10,2" Text="{Binding PlaceHolder,Source={x:Reference ucPickerView}}" Background="Transparent" VerticalOptions="Center" HorizontalOptions="Start" Margin="1,0" TextColor="Gray" InputTransparent="True" FontFamily="IranianSans"/>
+                        </DataTemplate>
+                    </BindableLayout.EmptyViewTemplate>
+                </HorizontalStackLayout>
+            </StackLayout>
+        </Border>
+        <Label Text="&#xf107;" Grid.Column="2" Grid.Row="1" VerticalOptions="Center" HorizontalOptions="End" FontSize="Medium" FontFamily="FontAwesome" TextColor="Gray" Padding="10,0,0,0" Background="Transparent"/>
+        <Label Text="{Binding ErrorMessage,Source={x:Reference ucPickerView}}" Grid.Column="0" Grid.ColumnSpan="3"
+               HorizontalOptions="End" VerticalTextAlignment="Center" x:Name="lblMessage" FontSize="12"
+               Grid.Row="1" InputTransparent="True" VerticalOptions="End" Margin="0,-10,0,-24"
+               IsVisible="{Binding IsValid,Source={x:Reference ucPickerView}}"/>
+    </Grid>
+</ContentView>

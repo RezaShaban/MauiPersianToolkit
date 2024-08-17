@@ -74,7 +74,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PersianUIControlsMaui\PersianUIControlsMaui.csproj" />
+    <ProjectReference Include="..\MauiPersianToolkit\MauiPersianToolkit.csproj" />
+    <ProjectReference Include="..\MauiPersianToolkit\MauiPersianToolkit.csproj" />
   </ItemGroup>
 
   <ItemGroup>
