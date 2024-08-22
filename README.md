@@ -1,8 +1,8 @@
 # Maui Persian Toolkit
 
-[![NuGet](https://img.shields.io/nuget/v/PersianUIControlsMaui.svg)](https://www.nuget.org/packages/PersianUIControlsMaui/)
-[![License](https://img.shields.io/github/license/RezaShaban/PersianUIControlsMaui)](LICENSE)
-[![Build](https://github.com/RezaShaban/PersianUIControlsMaui/actions/workflows/build.yml/badge.svg)](https://github.com/RezaShaban/PersianUIControlsMaui/actions)
+[![NuGet](https://img.shields.io/nuget/v/MauiPersianToolkit.svg)](https://www.nuget.org/packages/MauiPersianToolkit/)
+[![License](https://img.shields.io/github/license/RezaShaban/MauiPersianToolkit)](LICENSE)
+[![Build](https://github.com/RezaShaban/MauiPersianToolkit/actions/workflows/build.yml/badge.svg)](https://github.com/RezaShaban/MauiPersianToolkit/actions)
 
 `MauiPersianTookit` is a comprehensive library for .NET MAUI that provides a variety of Persian language UI controls and components. This library is designed to help developers create modern, cross-platform applications with support for Persian language and right-to-left (RTL) layouts.
 
@@ -20,16 +20,16 @@
 
 ## Installation
 
-You can install the `PersianUIControlsMaui` package via NuGet Package Manager or .NET CLI:
+You can install the `MauiPersianToolkit` package via NuGet Package Manager or .NET CLI:
 
 ### NuGet Package Manager
 
 ```bash
-Install-Package PersianUIControlsMaui
+Install-Package MauiPersianToolkit
 ```
 ### .NET CLI
 ```basb
-dotnet add package PersianUIControlsMaui
+dotnet add package MauiPersianToolkit
 ```
 
 # Getting Started
@@ -61,7 +61,7 @@ After installing the package, you can start using the controls by adding the app
 ```basb
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:persian="clr-namespace:PersianUIControlsMaui.Controls;assembly=PersianUIControlsMaui"
+             xmlns:persian="clr-namespace:MauiPersianToolkit.Controls;assembly=MauiPersianToolkit"
              x:Class="YourAppNamespace.MainPage">
 
     <StackLayout>
@@ -107,7 +107,7 @@ OnChangeDateCommand="{Binding OnChangeDateCommand}"/>
 ```
 ### Example Usage in C#
 ```basb
-using PersianUIControlsMaui;
+using MauiPersianToolkit;
 
 public partial class MainPage : ContentPage
 {
@@ -165,7 +165,7 @@ public partial class MainPage : ContentPage
 ```
 ## Dialogs
 
-PersianUIControlsMaui includes several types of dialogs:
+MauiPersianToolkit includes several types of dialogs:
 
 Alert Dialog: Simple message dialog.
 Confirm Dialog: Dialog with confirmation options.
@@ -236,7 +236,7 @@ This library also includes several converters to assist with data binding in you
 <Label Text="{Binding Date, Converter={StaticResource PersianDateConverter}}" />
 ```
 ## Customization
-All controls in PersianUIControlsMaui are designed to be easily customizable to match the look and feel of your application. You can adjust properties such as colors, fonts, and behaviors through XAML or C#.
+All controls in MauiPersianToolkit are designed to be easily customizable to match the look and feel of your application. You can adjust properties such as colors, fonts, and behaviors through XAML or C#.
 
 ## Contributing
 We welcome contributions! If you have ideas, suggestions, or issues to report, please feel free to open an issue or submit a pull request.
@@ -255,7 +255,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Special thanks to the .NET MAUI community and all contributors for their support and contributions to this project.
 
 
-Feel free to explore and use PersianUIControlsMaui in your MAUI projects. We are excited to see what you will create with these powerful Persian language UI controls!
+Feel free to explore and use MauiPersianToolkit in your MAUI projects. We are excited to see what you will create with these powerful Persian language UI controls!
 
 
 ### توضیحات درباره‌ی فایل `README.md`:
