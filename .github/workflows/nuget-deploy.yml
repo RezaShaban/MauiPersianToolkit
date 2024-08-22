@@ -34,7 +34,7 @@ jobs:
         echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
         
     - name: Pack
-      run: dotnet pack ./MauiPersianToolkit/MauiPersianToolkit.csproj --configuration Release --no-build --output ./nupkgs /p:PackageVersion=${{ env.VERSION }}
+      run: dotnet pack ./MauiPersianToolkit/MauiPersianToolkit.csproj --configuration Release --no-build --output ./nupkgs /p:PackageVersion=2.0.3
 
     - name: List packed packages
       run: dir .\nupkgs
