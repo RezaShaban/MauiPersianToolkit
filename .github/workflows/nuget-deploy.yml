@@ -48,5 +48,5 @@ jobs:
         $nupkgPath = ".\nupkgs\MauiPersianToolkit.2.0.3.nupkg"
         dotnet nuget push $nupkgPath --api-key $env:NUGET_API_KEY --source $env:NUGET_SOURCE
       env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        NUGET_API_KEY: ${{ secrets.NUGET_PERSIAN_API_KEY }}
         NUGET_SOURCE: https://api.nuget.org/v3/index.json
