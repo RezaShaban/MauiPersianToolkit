@@ -1,4 +1,4 @@
-﻿using PersianUIControlsMaui.Services.Dialog;
+﻿using MauiPersianToolkit.Services.Dialog;
 
 namespace PersianUISamples
 {

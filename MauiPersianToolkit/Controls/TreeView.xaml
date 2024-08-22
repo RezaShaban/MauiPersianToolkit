@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiPersianToolkit.Controls.TreeView"
+             xmlns:conv="clr-namespace:MauiPersianToolkit.Converters"
+             xmlns:controls="clr-namespace:MauiPersianToolkit.Controls"
+             x:Name="treeView">
+    <VerticalStackLayout x:Name="items" Spacing="5"/>
+</ContentView>

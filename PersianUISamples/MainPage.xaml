@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:pui="clr-namespace:PersianUIControlsMaui.Controls;assembly=PersianUIControlsMaui"
+             xmlns:pui="clr-namespace:MauiPersianToolkit.Controls;assembly=MauiPersianToolkit"
              x:Class="PersianUISamples.MainPage" FlowDirection="RightToLeft" BackgroundColor="#3E8EED"
              xmlns:vm="clr-namespace:PersianUISamples.ViewModels"
              x:DataType="vm:MainViewModel">

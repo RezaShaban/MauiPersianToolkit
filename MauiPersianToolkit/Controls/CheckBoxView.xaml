@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="MauiPersianToolkit.Controls.CheckBoxView"
+             x:Name="checkView">
+    <Grid ColumnDefinitions="35,100*" RowDefinitions="28">
+        <CheckBox Grid.Column="0" Grid.Row="0" Color="{Binding IconColor,Source={x:Reference checkView}}"
+                      VerticalOptions="Center" IsChecked="{Binding IsChecked,Source={x:Reference checkView}}" />
+        <Label Text="{Binding Text,Source={x:Reference checkView}}" Grid.Column="1" Grid.Row="0" FontFamily="IranianSans"
+                   TextColor="{Binding TextColor,Source={x:Reference checkView}}" VerticalOptions="Center" x:Name="lblText"/>
+    </Grid>
+</ContentView>

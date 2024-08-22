@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="MauiPersianToolkit.Controls.ContainerView"
+             xmlns:ct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:conv="clr-namespace:MauiPersianToolkit.Converters"
+             x:Name="ucContainer">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <conv:StringToBoolConverter x:Key="StringToBool"/>
+            <Shadow Brush="#666" Offset="0,10" Opacity=".3" Radius="15" x:Key="shadow"/>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Border Padding="0" Margin="10,5" VerticalOptions="Start" BackgroundColor="#ffffff">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="7"/>
+        </Border.StrokeShape>
+        <Border.Triggers>
+            <DataTrigger TargetType="Border" Binding="{Binding HasShadow,Source={x:Reference ucContainer}}" Value="True">
+                <Setter Property="Shadow" Value="{StaticResource shadow}"/>
+            </DataTrigger>
+        </Border.Triggers>
+        <ct:Expander IsExpanded="{Binding IsExpanded,Source={x:Reference ucContainer}}" Padding="10" x:Name="expander" Content="{Binding Contents,Source={x:Reference ucContainer}}" >
+            <ct:Expander.Header>
+                <Grid ColumnDefinitions="Auto,100*,Auto" RowDefinitions="Auto">
+                    <Label Text="{Binding Icon,Source={x:Reference ucContainer}}" FontFamily="FontAwesome" FontSize="Small" Grid.Column="0" Grid.Row="0" VerticalOptions="Center" TextColor="DodgerBlue">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsExpanded,Source={x:Reference expander}}" Value="True">
+                                <Setter Property="Text" Value="&#xf107;"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Text="{Binding Title,Source={x:Reference ucContainer}}" Padding="0,0,5,0" Grid.Column="1" Grid.Row="0" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" TextColor="Black" FontFamily="IranianSans">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsExpanded,Source={x:Reference expander}}" Value="True">
+                                <Setter Property="Padding" Value="0,0,5,10"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Text="{Binding LeftTitle,Source={x:Reference ucContainer}}" Padding="0,0,0,0" Grid.Column="2" Grid.Row="0" VerticalOptions="Center" HorizontalOptions="End" HorizontalTextAlignment="End" IsVisible="{Binding LeftTitle,Source={x:Reference ucContainer},Converter={StaticResource StringToBool}}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsExpanded,Source={x:Reference expander}}" Value="True">
+                                <Setter Property="Padding" Value="0,0,0,10"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+            </ct:Expander.Header>
+        </ct:Expander>
+    </Border>
+</ContentView>
