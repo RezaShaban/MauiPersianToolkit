@@ -36,11 +36,16 @@
     <Debugger>Xamarin</Debugger>
     <AndroidUseAapt2>True</AndroidUseAapt2>
     <AndroidLinkTool>r8</AndroidLinkTool>
+    <PublishTrimmed>True</PublishTrimmed>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+  <!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+  </PropertyGroup>-->
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
     <Debugger>Xamarin</Debugger>
     <AndroidUseAapt2>True</AndroidUseAapt2>
+    <PublishTrimmed>False</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>
@@ -63,6 +68,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.10" />
+    <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.10" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,16 +76,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\AppIcon\appiconfg.svg" />
     <None Remove="Resources\Fonts\IranianSans.ttf" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MauiPersianToolkit\MauiPersianToolkit.csproj" />
-    <ProjectReference Include="..\MauiPersianToolkit\MauiPersianToolkit.csproj" />
+    <MauiImage Include="Resources\AppIcon\appiconfg.svg" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.10" />
+    <ProjectReference Include="..\MauiPersianToolkit\MauiPersianToolkit.csproj" />
   </ItemGroup>
 
 </Project>
