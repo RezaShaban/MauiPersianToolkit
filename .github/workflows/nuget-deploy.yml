@@ -45,7 +45,7 @@ jobs:
     - name: Publish to NuGet
       shell: pwsh
       run: |
-        $nupkgPath = ".\nupkgs\MauiPersianToolkit.${{ env.VERSION }}.nupkg"
+        $nupkgPath = ".\nupkgs\MauiPersianToolkit.2.0.3.nupkg"
         dotnet nuget push $nupkgPath --api-key $env:NUGET_API_KEY --source $env:NUGET_SOURCE
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
