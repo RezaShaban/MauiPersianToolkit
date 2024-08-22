@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="MauiPersianToolkit.Controls.LabelView"
+             x:Name="lblView">
+    <Grid ColumnDefinitions="Auto,100*" RowDefinitions="Auto" x:Name="grdPattern">
+        <Label Text="{Binding Icon,Source={x:Reference lblView}}" Grid.Column="0" Grid.Row="0" WidthRequest="24" VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="{Binding TextColor,Source={x:Reference lblView}}" FontSize="{Binding IconFontSize,Source={x:Reference lblView}}" InputTransparent="True" FontFamily="FontAwesome" IsVisible="true">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding Icon,Source={x:Reference lblView}}" Value="">
+                    <Setter Property="IsVisible" Value="False"/>
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
+
+        <Label Text="{Binding Text,Source={x:Reference lblView}}" HorizontalOptions="FillAndExpand" FontSize="{Binding FontSize,Source={x:Reference lblView}}" TextColor="{Binding TextColor,Source={x:Reference lblView}}" Grid.Column="1" Grid.Row="0" FontAttributes="{Binding FontAttribute,Source={x:Reference lblView}}" HorizontalTextAlignment="{Binding HorizontalTextAlignment,Source={x:Reference lblView}}" InputTransparent="True" TextDecorations="{Binding TextDecoration,Source={x:Reference lblView}}" FontFamily="IranianSans"/>
+    </Grid>
+</ContentView>

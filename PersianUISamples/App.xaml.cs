@@ -1,13 +1,15 @@
-﻿namespace PersianUISamples
+﻿using MauiPersianToolkit.Services.Dialog;
+
+namespace PersianUISamples
 {
     public partial class App : Application
     {
-        public App(MainPage mainPage)
+        public App()
         {
             InitializeComponent();
             try
             {
-                MainPage = mainPage;
+                MainPage = new MainPage(new ViewModels.MainViewModel(new DialogService()));
             }
             catch (Exception ex)
             {

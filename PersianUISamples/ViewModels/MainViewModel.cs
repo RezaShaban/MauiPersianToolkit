@@ -1,7 +1,7 @@
-﻿using PersianUIControlsMaui.Controls;
-using PersianUIControlsMaui.Models;
-using PersianUIControlsMaui.Services.Dialog;
-using PersianUIControlsMaui.ViewModels;
+﻿using MauiPersianToolkit.Controls;
+using MauiPersianToolkit.Models;
+using MauiPersianToolkit.Services.Dialog;
+using MauiPersianToolkit.ViewModels;
 using System.Collections.ObjectModel;
 
 namespace PersianUISamples.ViewModels
@@ -16,13 +16,16 @@ namespace PersianUISamples.ViewModels
         private CalendarOptions calendarOption;
         private CalendarOptions rangeCalendarOption;
         private CalendarOptions multipleCalendarOption;
-        ObservableCollection<PickerItem> pickerItems;
+        ObservableCollection<TreeViewModel> treeItems;
+        ObservableCollection<TreeViewModel> selectedItemsTree;
         ObservableCollection<PickerItem> pickerMultipleItems;
+        ObservableCollection<PickerItem> pickerItems;
         private Command onChangeDateCommand;
         private Command showAlertCommand;
         private Command showConfirmCommand;
         private Command showPromptCommand;
         private Command showCustomCommand;
+        private Command registerInCommand;
         private readonly IDialogService dialogService;
 
         public string PersianDate { get => persianDate; set => SetProperty(ref persianDate, value); }
@@ -34,6 +37,8 @@ namespace PersianUISamples.ViewModels
         public CalendarOptions RangeCalendarOption { get => rangeCalendarOption; set => SetProperty(ref rangeCalendarOption, value); }
         public CalendarOptions MultipleCalendarOption { get => multipleCalendarOption; set => SetProperty(ref multipleCalendarOption, value); }
         public ObservableCollection<PickerItem> PickerItems { get => pickerItems; set => SetProperty(ref pickerItems, value); }
+        public ObservableCollection<TreeViewModel> TreeItems { get => treeItems; set => SetProperty(ref treeItems, value); }
+        public ObservableCollection<TreeViewModel> SelectedItemsTree { get => selectedItemsTree; set => SetProperty(ref selectedItemsTree, value); }
         public ObservableCollection<PickerItem> PickerMultipleItems { get => pickerMultipleItems; set => SetProperty(ref pickerMultipleItems, value); }
         public ObservableCollection<PickerButton> PickerAdditionButtons { get; set; }
         public Command OnChangeDateCommand { get { onChangeDateCommand ??= new Command(OnDateChanged); return onChangeDateCommand; } }
@@ -41,7 +46,7 @@ namespace PersianUISamples.ViewModels
         public Command ShowConfirmCommand { get { showConfirmCommand ??= new Command(ShowConfirm); return showConfirmCommand; } }
         public Command ShowPromptCommand { get { showPromptCommand ??= new Command(ShowPrompt); return showPromptCommand; } }
         public Command ShowCustomCommand { get { showCustomCommand ??= new Command(ShowCustom); return showCustomCommand; } }
-
+        public Command RegisterInCommand { get { registerInCommand ??= new Command(RegisterIn); return registerInCommand; } }
         public MainViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
@@ -50,18 +55,23 @@ namespace PersianUISamples.ViewModels
 
         private void InitData()
         {
+            SelectedItemsTree = new ObservableCollection<TreeViewModel>()
+            {
+                new TreeViewModel(){ Id = 1, Title = "سطح 1-1", ParentId = null },
+                new TreeViewModel(){ Id = 8, Title = "سطح 4-1", ParentId = 6 }
+            };
             CalendarOption = new CalendarOptions()
             {
-                SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
-                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Single,
+                SelectDateMode = MauiPersianToolkit.Enums.SelectionDateMode.Day,
+                SelectionMode = MauiPersianToolkit.Enums.SelectionMode.Single,
                 SelectDayColor = Color.FromArgb("#5B2BDF"),
                 MinDateCanSelect = DateTime.Now.AddDays(-10),
                 MaxDateCanSelect = DateTime.Now.AddDays(10)
             };
             RangeCalendarOption = new CalendarOptions()
             {
-                SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
-                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Range,
+                SelectDateMode = MauiPersianToolkit.Enums.SelectionDateMode.Day,
+                SelectionMode = MauiPersianToolkit.Enums.SelectionMode.Range,
                 SelectDayColor = Color.FromArgb("#5B2BDF"),
                 AutoCloseAfterSelectDate = false,
                 OnAccept = OnAcceptDate,
@@ -70,8 +80,8 @@ namespace PersianUISamples.ViewModels
             };
             MultipleCalendarOption = new CalendarOptions()
             {
-                SelectDateMode = PersianUIControlsMaui.Enums.SelectionDateMode.Day,
-                SelectionMode = PersianUIControlsMaui.Enums.SelectionMode.Multiple,
+                SelectDateMode = MauiPersianToolkit.Enums.SelectionDateMode.Day,
+                SelectionMode = MauiPersianToolkit.Enums.SelectionMode.Multiple,
                 SelectDayColor = Color.FromArgb("#5B2BDF"),
                 AutoCloseAfterSelectDate = false,
                 OnAccept = OnAcceptDateMultiple,
@@ -94,6 +104,18 @@ namespace PersianUISamples.ViewModels
             PickerAdditionButtons = new ObservableCollection<PickerButton>() {
                 new PickerButton() { Text = "\uf067" },
                 new PickerButton() { Text = "\uf057" }
+            };
+            TreeItems = new ObservableCollection<TreeViewModel>()
+            {
+                new TreeViewModel(){ Id = 1, Title = "سطح 1-1", ParentId = null },
+                new TreeViewModel(){ Id = 2, Title = "سطح 2-1", ParentId = 1 },
+                new TreeViewModel(){ Id = 3, Title = "سطح 2-2", ParentId = 1 },
+                new TreeViewModel(){ Id = 4, Title = "سطح 1-2", ParentId = null },
+                new TreeViewModel(){ Id = 5, Title = "سطح 2-1", ParentId = 4 },
+                new TreeViewModel(){ Id = 6, Title = "سطح 3-1", ParentId = 5 },
+                new TreeViewModel(){ Id = 7, Title = "سطح 3-1", ParentId = 5 },
+                new TreeViewModel(){ Id = 8, Title = "سطح 4-1", ParentId = 6 },
+                new TreeViewModel(){ Id = 9, Title = "سطح 4-1", ParentId = 7 },
             };
         }
 
@@ -118,9 +140,16 @@ namespace PersianUISamples.ViewModels
 
         }
 
+        private void RegisterIn()
+        {
+            ShowAlert(null);
+        }
+
         private void ShowAlert(object obj)
         {
-            dialogService.Alert("لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.", "هشدار");
+            dialogService.Alert("لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد." +
+                "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد." +
+                "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.", "هشدار");
         }
 
         private void ShowConfirm(object obj)
@@ -130,7 +159,7 @@ namespace PersianUISamples.ViewModels
                 Title = "حذف کالا",
                 AcceptText = "آره",
                 CancelText = "نه",
-                Message = "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
+                Message = "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
                 Icon = MessageIcon.QUESTION,
                 OnAction = new Action<bool>((arg) => { }),
             });
@@ -143,7 +172,7 @@ namespace PersianUISamples.ViewModels
                 Title = "ثبت اطلاعات",
                 AcceptText = "ثبت",
                 CancelText = "انصراف",
-                Message = "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
+                Message = "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
                 Placeholder = "اطلاعات",
                 Icon = MessageIcon.QUESTION,
                 OnAction = new Action<PromptResult>((arg) => { }),
@@ -157,7 +186,7 @@ namespace PersianUISamples.ViewModels
                 Title = "ثبت اطلاعات",
                 AcceptText = "ثبت",
                 CancelText = "انصراف",
-                Message = "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
+                Message = "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
                 Icon = MessageIcon.QUESTION,
                 AcceptIcon = MessageIcon.QUESTION,
                 Cancelable = true,
@@ -171,7 +200,7 @@ namespace PersianUISamples.ViewModels
                     Children =
                     {
                         new EntryView(){ PlaceHolder = "نام" },
-                        new PersianUIControlsMaui.Controls.DatePicker(){ PlaceHolder = "تاریخ تولد" }
+                        new MauiPersianToolkit.Controls.DatePicker(){ PlaceHolder = "تاریخ تولد" }
                     }
                 }
             });
@@ -183,5 +212,13 @@ namespace PersianUISamples.ViewModels
         public int Id { get; set; }
         public string Title { get; set; }
         public string Icon { get; set; } = "\uf064";
+        public int? ParentId { get; set; }
+    }
+
+    public class TreeViewModel
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public int? ParentId { get; set; }
     }
 }
