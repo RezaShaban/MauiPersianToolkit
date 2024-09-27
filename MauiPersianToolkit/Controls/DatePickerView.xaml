@@ -21,7 +21,7 @@
 
                 <Button Text="&#xf324;" Margin="0" Padding="15,7" Command="{Binding PrevYearCommand}" TextColor="Black" Grid.Column="1" Grid.Row="0" BackgroundColor="White" FontFamily="FontAwesome" IsVisible="False"/>
 
-                <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentMonth}" FontSize="12" TextColor="Black" Padding="10,7" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" BackgroundColor="White" FontFamily="IranianSans" FontAutoScalingEnabled="True" Command="{Binding SwitchModeCommand}">
+                <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentMonth}" FontSize="12" TextColor="Black" Padding="10,7" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" BackgroundColor="White" FontFamily="IranianSans" FontAutoScalingEnabled="True" Command="{Binding SwitchModeCommand}" CommandParameter="0">
                     <Button.ImageSource>
                         <FontImageSource Glyph="&#xf078;" FontFamily="FontAwesome" Color="Black" Size="14"/>
                     </Button.ImageSource>
@@ -32,10 +32,15 @@
                     </Button.Triggers>
                 </Button>
 
-                <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentYear}" TextColor="Black" Padding="15,7" Grid.Column="3" Grid.Row="0" BackgroundColor="White" FontFamily="IranianSans" FontAutoScalingEnabled="True" Grid.ColumnSpan="2">
+                <Button HorizontalOptions="FillAndExpand" Text="{Binding CurrentYear}" TextColor="Black" Padding="15,7" Grid.Column="3" Grid.Row="0" BackgroundColor="White" FontFamily="IranianSans" FontAutoScalingEnabled="True" Grid.ColumnSpan="2" Command="{Binding SwitchModeCommand}" CommandParameter="2">
                     <Button.ImageSource>
                         <FontImageSource Glyph="&#xf078;" FontFamily="FontAwesome" Color="Black" Size="14"/>
                     </Button.ImageSource>
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding SelectDateMode}" Value="2">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </Button.Triggers>
                 </Button>
 
                 <Button Text="&#xf323;" Margin="0" Command="{Binding NextYearCommand}" TextColor="Black" Padding="15,7" Grid.Row="0" Grid.Column="4" BackgroundColor="White" FontFamily="FontAwesome" IsVisible="false"/>
@@ -43,8 +48,7 @@
                 <Button Text="&#xf053;" Margin="0" Command="{Binding NextMonthCommand}" TextColor="Black" Padding="5,0" Grid.Column="5" Grid.Row="0" BackgroundColor="White" FontFamily="FontAwesome" BorderWidth="1" BorderColor="Gray" FontSize="Micro" HeightRequest="28" WidthRequest="28" VerticalOptions="Center" HorizontalOptions="End" CornerRadius="7"/>
             </Grid>
 
-            <FlexLayout IsVisible="False" BindableLayout.ItemsSource="{Binding PersianMonths}" Wrap="Wrap" Direction="RowReverse"
-                    Grid.Column="0" Grid.Row="1" Grid.RowSpan="7" Grid.ColumnSpan="7" JustifyContent="SpaceAround">
+            <FlexLayout IsVisible="False" BindableLayout.ItemsSource="{Binding PersianMonths}" Wrap="Wrap" Direction="RowReverse" Grid.Column="0" Grid.Row="1" Grid.RowSpan="7" Grid.ColumnSpan="7" JustifyContent="SpaceAround">
                 <FlexLayout.Triggers>
                     <DataTrigger TargetType="FlexLayout" Binding="{Binding SelectDateMode}" Value="0">
                         <Setter Property="IsVisible" Value="True"/>
@@ -53,21 +57,43 @@
                 <BindableLayout.ItemTemplate>
                     <DataTemplate x:DataType="models:PuiTuple">
                         <Button Text="{Binding Value}" Margin="0" BackgroundColor="White" TextColor="#333" FontSize="12" FontFamily="IranianSans" FlexLayout.Basis="25%" FlexLayout.Grow="1" Command="{Binding SelectMonthCommand,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}" CommandParameter="{Binding}">
-                            <Button.Triggers>
+                            <!--<Button.Triggers>
                                 <DataTrigger TargetType="Button" Binding="{Binding .}" Value="مهر">
                                     <Setter Property="TextColor" Value="{Binding Options.SelectDayColor,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}"/>
                                 </DataTrigger>
-                            </Button.Triggers>
+                            </Button.Triggers>-->
                         </Button>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </FlexLayout>
 
+            <CollectionView IsVisible="False" ItemsSource="{Binding PersianYears}" Grid.Column="0" Grid.Row="1" Grid.RowSpan="7" Grid.ColumnSpan="7" ItemsUpdatingScrollMode="KeepLastItemInView">
+                <CollectionView.Triggers>
+                    <DataTrigger TargetType="CollectionView" Binding="{Binding SelectDateMode}" Value="2">
+                        <Setter Property="IsVisible" Value="True"/>
+                    </DataTrigger>
+                </CollectionView.Triggers>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="4" HorizontalItemSpacing="0" Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:PuiTuple">
+                        <Button Text="{Binding Value}" Margin="0" BackgroundColor="White" TextColor="#333" FontSize="15" FontFamily="IranianSans" Command="{Binding SelectYearCommand,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}" CommandParameter="{Binding}" Padding="2,10">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding .}" Value="1403">
+                                    <Setter Property="TextColor" Value="{Binding Options.SelectDayColor,Source={RelativeSource AncestorType={x:Type vm:DatePickerViewModel}}}"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
             <HorizontalStackLayout BindableLayout.ItemsSource="{Binding DaysOfWeek}" Grid.Row="1" Grid.Column="0"
-                               Grid.ColumnSpan="7" HeightRequest="48">
+                               Grid.ColumnSpan="7" HeightRequest="48" IsVisible="False">
                 <HorizontalStackLayout.Triggers>
-                    <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding SelectDateMode}" Value="0">
-                        <Setter Property="IsVisible" Value="False"/>
+                    <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding SelectDateMode}" Value="1">
+                        <Setter Property="IsVisible" Value="True"/>
                     </DataTrigger>
                 </HorizontalStackLayout.Triggers>
                 <BindableLayout.ItemTemplate>
@@ -77,13 +103,13 @@
                 </BindableLayout.ItemTemplate>
             </HorizontalStackLayout>
 
-            <CollectionView ItemsSource="{Binding DaysOfMonth}" Grid.Column="0" Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="7">
+            <CollectionView ItemsSource="{Binding DaysOfMonth}" Grid.Column="0" Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="7" IsVisible="False">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Span="7" HorizontalItemSpacing="0" Orientation="Vertical"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.Triggers>
-                    <DataTrigger TargetType="CollectionView" Binding="{Binding SelectDateMode}" Value="0">
-                        <Setter Property="IsVisible" Value="False"/>
+                    <DataTrigger TargetType="CollectionView" Binding="{Binding SelectDateMode}" Value="1">
+                        <Setter Property="IsVisible" Value="True"/>
                     </DataTrigger>
                 </CollectionView.Triggers>
                 <CollectionView.ItemTemplate>

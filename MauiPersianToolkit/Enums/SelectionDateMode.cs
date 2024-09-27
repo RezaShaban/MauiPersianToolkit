@@ -2,6 +2,7 @@
 
 public enum SelectionDateMode
 {
-    Month,
-    Day
+    Year = 2,
+    Month = 0,
+    Day = 1
 }

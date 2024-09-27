@@ -23,7 +23,7 @@ public partial class DatePickerView : Popup
             viewModel = new DatePickerViewModel(options);
             this.BindingContext = viewModel;
         }
-        catch
+        catch(Exception ex)
         {
             goto retry;
         }

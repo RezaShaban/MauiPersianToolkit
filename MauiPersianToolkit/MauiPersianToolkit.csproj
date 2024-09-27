@@ -20,7 +20,7 @@
 		<Authors>rezashaban</Authors>
 		<Description>MauiPersianTookit is a comprehensive library for .NET MAUI that provides a variety of Persian language UI controls and components. This library is designed to help developers create modern, cross-platform applications with support for Persian language and right-to-left (RTL) layouts.</Description>
 		<PackageTags>MAUI;UI;;Controls;Toolkit;XAML;.NET;Farsi;Persian;Localization;RightToLeft;RTL;Mobile;CrossPlatform;.NET6;Blazor;MobileDevelopment;UserInterface;Component</PackageTags>
-		<PackageProjectUrl>https://github.com/RezaShaban/MauiPersianToolkit</PackageProjectUrl>
+		<PackageProjectUrl>https://rezashaban.github.io/MauiPersianToolkit</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/RezaShaban/MauiPersianToolkit.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
@@ -49,7 +49,7 @@
 
 	<ItemGroup>
     <PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
-    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.10" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.90" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -121,7 +121,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.10" />
+	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.90" />
 	</ItemGroup>
 
 </Project>
