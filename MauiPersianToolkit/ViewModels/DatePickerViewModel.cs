@@ -31,6 +31,7 @@ public class DatePickerViewModel : ObservableObject
     private List<string> daysOfWeek;
     private List<DayOfMonth> daysOfMonth;
     private ObservableCollection<PuiTuple> persianMonths;
+    private ObservableCollection<PuiTuple> persianYears;
     private ObservableCollection<DayOfMonth> selectedDays;
     #endregion
 
@@ -38,6 +39,7 @@ public class DatePickerViewModel : ObservableObject
     public List<DayOfMonth> DaysOfMonth { get => daysOfMonth; set => SetProperty(ref daysOfMonth, value); }
     public ObservableCollection<DayOfMonth> SelectedDays { get => selectedDays; set => SetProperty(ref selectedDays, value); }
     public ObservableCollection<PuiTuple> PersianMonths { get => persianMonths; set => SetProperty(ref persianMonths, value); }
+    public ObservableCollection<PuiTuple> PersianYears { get => persianYears; set => SetProperty(ref persianYears, value); }
     #endregion
 
     #region Command's
@@ -52,6 +54,7 @@ public class DatePickerViewModel : ObservableObject
     private Command gotoTodayCommand;
     private Command switchModeCommand;
     private Command selectMonthCommand;
+    private Command selectYearCommand;
     #endregion
 
     public Command NextMonthCommand { get { nextMonthCommand ??= new Command(NextMonth); return nextMonthCommand; } }
@@ -60,6 +63,7 @@ public class DatePickerViewModel : ObservableObject
     public Command PrevYearCommand { get { prevYearCommand ??= new Command(PrevYear); return prevYearCommand; } }
     public Command SwitchModeCommand { get { switchModeCommand ??= new Command(SwitchMode); return switchModeCommand; } }
     public Command SelectMonthCommand { get { selectMonthCommand ??= new Command(SelectMonth); return selectMonthCommand; } }
+    public Command SelectYearCommand { get { selectYearCommand ??= new Command(SelectYear); return selectYearCommand; } }
     public Command GotoTodayCommand { get { gotoTodayCommand ??= new Command(GotoToday); return gotoTodayCommand; } }
     public Command InitCalendarDaysCommand { get { initCalendarDaysCommand ??= new Command(InitCalendarDays); return initCalendarDaysCommand; } }
     public Command SelectDateCommand { get { selectDateCommand ??= new Command(SelectDate); return selectDateCommand; } }
@@ -116,8 +120,9 @@ public class DatePickerViewModel : ObservableObject
             return;
 
         CurrentMonth = typeof(PersianMonthNames).GetDisplay(date.GetPersianMonth() - 1);
-        PersianMonths = GetMonths();
         CurrentYear = date.GetPersianYear();
+        PersianMonths = GetMonths();
+        PersianYears = GetYears();
 
         var firstDayOfMonth = date.GetPersianBeginningMonth().ToDateTime();
         var endDayOfMonth = date.GetPersianEndingMonth().ToDateTime();
@@ -152,6 +157,13 @@ public class DatePickerViewModel : ObservableObject
             };
             return day;
         }).ToList();
+    }
+
+    private ObservableCollection<PuiTuple> GetYears()
+    {
+        var items = Enumerable.Range(CurrentYear - 100, 150).Select(x =>
+                        new PuiTuple() { Key = x.ToString(), Value = x.ToString() }).ToObservableCollection();
+        return items;
     }
 
     private ObservableCollection<PuiTuple> GetMonths()
@@ -292,7 +304,7 @@ public class DatePickerViewModel : ObservableObject
     }
 
     private void SwitchMode(object obj) =>
-        SelectDateMode = SelectionDateMode.Month;
+        SelectDateMode = Enum.Parse<SelectionDateMode>(obj.ToString());
 
     private void SelectMonth(object obj)
     {
@@ -301,6 +313,17 @@ public class DatePickerViewModel : ObservableObject
 
         var month = Enum.Parse<PersianMonthNames>(value.Key);
         var date = $"{CurrentYear}/{(int)month + 1}/01".ToDateTime();
+        SelectDateMode = SelectionDateMode.Day;
+        InitCalendarDays(date);
+    }
+    private void SelectYear(object obj)
+    {
+        if (obj is not PuiTuple value)
+            return;
+
+        int.TryParse(value.Key, out int year);
+        var month = EnumExtensions.GetValueByDisplay<PersianMonthNames>(CurrentMonth);
+        var date = $"{year}/{(int)(month) + 1}/01".ToDateTime();
         SelectDateMode = SelectionDateMode.Day;
         InitCalendarDays(date);
     }
