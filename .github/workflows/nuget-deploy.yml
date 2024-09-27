@@ -33,7 +33,7 @@ jobs:
         echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
         
     - name: Pack
-      run: dotnet pack PersianUIControlsMaui/PersianUIControlsMaui.csproj --configuration Release --no-build --output ./nupkgs /p:PackageVersion=${{ env.VERSION }}
+      run: dotnet pack ./MauiPersianToolkit/MauiPersianToolkit.csproj --configuration Release --no-build --output ./nupkgs /p:PackageVersion=${{ env.VERSION }}
 
     - name: List packed packages
       run: dir .\nupkgs
@@ -44,8 +44,8 @@ jobs:
     - name: Publish to NuGet
       shell: pwsh
       run: |
-        $nupkgPath = ".\nupkgs\PersianUIControlsMaui.${{ env.VERSION }}.nupkg"
+        $nupkgPath = ".\nupkgs\MauiPersianToolkit.${{ env.VERSION }}.nupkg"
         dotnet nuget push $nupkgPath --api-key $env:NUGET_API_KEY --source $env:NUGET_SOURCE
       env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        NUGET_API_KEY: ${{ secrets.NUGET_PERSIAN_API_KEY }}
         NUGET_SOURCE: https://api.nuget.org/v3/index.json
