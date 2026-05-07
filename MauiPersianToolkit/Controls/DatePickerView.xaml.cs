@@ -51,6 +51,7 @@ public partial class DatePickerView : Popup
                 SelectedDate = _selectedDate,
                 SelectedDates = _viewModel.SelectedDays.ToList()
             });
+            this.Close();
         }
     }
 

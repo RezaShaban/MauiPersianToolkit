@@ -8,7 +8,19 @@ namespace MauiPersianToolkit;
 // All the code in this file is included in all platforms.
 public static class AppBuilderExtensions
 {
+    /// <summary>
+    /// Configures the application to use Persian UI controls. This method is obsolete; use <see cref="UseMauiPersianToolkit"/>
+    /// instead.
+    /// </summary>
+    /// <remarks>This method has been replaced by <see cref="UseMauiPersianToolkit"/>. It is recommended to update existing
+    /// code to use the new method for future compatibility.</remarks>
+    /// <param name="builder">The Maui application builder to configure with Persian UI controls.</param>
+    /// <returns>The same MauiAppBuilder instance, configured to use Persian UI controls.</returns>
+    [Obsolete("Use UseMauiPersianToolkit instead.")]
     public static MauiAppBuilder UsePersianUIControls(this MauiAppBuilder builder)
+        => UseMauiPersianToolkit(builder);
+
+    public static MauiAppBuilder UseMauiPersianToolkit(this MauiAppBuilder builder)
     {
         builder
             .ConfigureFonts(fonts =>

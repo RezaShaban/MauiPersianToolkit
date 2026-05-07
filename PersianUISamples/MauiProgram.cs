@@ -17,7 +17,7 @@ namespace PersianUISamples
                         fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     })
                 .UseMauiCommunityToolkit()
-                .UsePersianUIControls()
+                .UseMauiPersianToolkit()
                 .Services.AddScoped<MainPage>().AddScoped<MainViewModel>();
             return builder.Build();
         }

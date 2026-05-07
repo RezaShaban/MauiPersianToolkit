@@ -72,7 +72,7 @@ public class DatePickerViewModel : ObservableObject
         SelectDateMode = options.SelectDateMode;
 
         DaysOfWeek ??= FillDaysOfWeek();
-        InitCalendarDays(options.SelectedPersianDate.ToDateTime());
+        InitCalendarDays(_calendarService.ToGregorianDate(options.SelectedPersianDate));
     }
 
     private IEnumerable<DayOfMonth> GetSelectedDates(List<string> selectedDates) =>

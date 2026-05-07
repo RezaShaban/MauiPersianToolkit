@@ -219,7 +219,7 @@ public partial class DatePicker : ContentView
 
     private void ConfigureCalendarOptions()
     {
-        CalendarOption.SelectedPersianDate = SelectedPersianDate ?? DateTime.Now.ToPersianDate();
+        CalendarOption.SelectedPersianDate = SelectedPersianDate ?? DateTime.Now.ToCalendarDate(CalendarOption.CalendarType);
         CalendarOption.SelectedPersianDates = BadgeDates;
         CalendarOption.AutoCloseAfterSelectDate = CalendarOption.SelectionMode != Enums.SelectionMode.Multiple 
             && CalendarOption.AutoCloseAfterSelectDate;

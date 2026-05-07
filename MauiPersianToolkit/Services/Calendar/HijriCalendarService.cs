@@ -16,16 +16,16 @@ public class HijriCalendarService : ICalendarService
     {
         "محرم",
         "صفر",
-        "ربيع الأول",
-        "ربيع الثاني",
-        "جمادى الأولى",
-        "جمادى الثانية",
+        "ر.الأول",
+        "ر.الثاني",
+        "ج.الأولى",
+        "ج.الثانية",
         "رجب",
         "شعبان",
         "رمضان",
         "شوال",
-        "ذو القعدة",
-        "ذو الحجة"
+        "ذ.القعدة",
+        "ذ.الحجة"
     };
 
     public string ToCalendarDate(DateTime gregorianDate)
