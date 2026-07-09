@@ -2,31 +2,43 @@
 using System.Runtime.CompilerServices;
 
 namespace MauiPersianToolkit.ViewModels;
-
-// Marking the class as partial to address CsWinRT1028 diagnostic
-public partial class ObservableObject : INotifyPropertyChanged
+public abstract partial class ObservableObject : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    private static readonly Dictionary<string, PropertyChangedEventArgs> _eventArgsCache = new();
 
-    #region INotifyPropertyChanged
-    protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName] string propertyName = "", Action onChanged = null)
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null, Action? onChanged = null)
     {
-        if (EqualityComparer<T>.Default.Equals(backingStore, value))
+        if (EqualityComparer<T>.Default.Equals(field, value))
             return false;
 
-        backingStore = value;
+        field = value;
+
         onChanged?.Invoke();
+
         OnPropertyChanged(propertyName);
+
         return true;
     }
 
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
-        var changed = PropertyChanged;
-        if (changed == null)
+        if (propertyName is null)
             return;
 
-        changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        if (!_eventArgsCache.TryGetValue(propertyName, out var args))
+        {
+            args = new PropertyChangedEventArgs(propertyName);
+            _eventArgsCache[propertyName] = args;
+        }
+
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-    #endregion
+
+    protected void OnPropertyChanged(params string[] propertyNames)
+    {
+        foreach (var propertyName in propertyNames)
+            OnPropertyChanged(propertyName);
+    }
 }

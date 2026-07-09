@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiPersianToolkit.Controls.TreeViewNode"
              xmlns:conv="clr-namespace:MauiPersianToolkit.Converters"
+             xmlns:controls="clr-namespace:MauiPersianToolkit.Controls" x:DataType="controls:TreeView"
              x:Name="treeViewNode">
     <Grid RowDefinitions="32,Auto" ColumnDefinitions="32,Auto,100*" RowSpacing="5" x:Name="grdItem">
         <Button Text="&#xf078;" FontFamily="FontAwesome" WidthRequest="32" HeightRequest="32" BackgroundColor="Transparent"

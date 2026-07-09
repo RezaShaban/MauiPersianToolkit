@@ -27,16 +27,16 @@ public partial class ConfirmPage : Popup
         this.container.MaximumHeightRequest = (height * 0.8) - 50;
     }
 
-    private void btnCancel_Clicked(object sender, EventArgs e)
+    private async void btnCancel_Clicked(object sender, EventArgs e)
     {
         config.OnAction?.Invoke(false);
-        this.Close();
+        await this.CloseAsync();
     }
 
-    private void btnAccept_Clicked(object sender, EventArgs e)
+    private async void btnAccept_Clicked(object sender, EventArgs e)
     {
         config.OnAction?.Invoke(true);
-        this.Close();
+        await this.CloseAsync();
     }
 
     //private void MeasureText(string message)

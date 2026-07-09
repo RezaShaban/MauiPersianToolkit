@@ -109,7 +109,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     Scale = AnimateCaptions ? 0 : 1,
                     FontFamily = "IranianSans"
                 };
-
+                var shapeXPosistion = ((width / ItemsSource.Count) / 2);
                 var shape = new Microsoft.Maui.Controls.Shapes.Path
                 {
                     ClassId = ItemsSource.IndexOf(item).ToString(),
@@ -120,11 +120,11 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     IsVisible = true,
                     InputTransparent = true,
                     HeightRequest = 8,
-                    TranslationY = -15,
-                    TranslationX = ((width / ItemsSource.Count) / 2) - 37
+                    TranslationY = -12,
+                    TranslationX = -(shapeXPosistion / 4)
                 };
                 //if (AnimateCaptions)
-                //    label.ScaleTo(0);
+                //label.ScaleToAsync(0);
                 tabButton.Command = new Command(() => ExecuteChangeTabCommand(item, tabButton, label, shape));
                 this.tabButtons.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100 / ItemsSource.Count, GridUnitType.Star) });
                 this.tabButtons.Add(tabButton, ItemsSource.IndexOf(item), 0);
@@ -141,7 +141,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
         }
     }
 
-    private void ExecuteChangeTabCommand(object control, Button currentBtn, Label currentLabel, Microsoft.Maui.Controls.Shapes.Path shape)
+    private async void ExecuteChangeTabCommand(object control, Button currentBtn, Label currentLabel, Microsoft.Maui.Controls.Shapes.Path shape)
     {
         if (control is not TabItemView tab)
             return;
@@ -161,13 +161,13 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
             if (item is Label lbl)
             {
                 if (AnimateCaptions)
-                    lbl.Scale = (0);
+                    await lbl.ScaleToAsync(0);
                 lbl.TextColor = this.UnSelectedTabColor;
             }
             if (item is Microsoft.Maui.Controls.Shapes.Path _shape)
             {
                 if (AnimateCaptions)
-                    _shape.Scale = (0);
+                    await _shape.ScaleToAsync(0);
                 _shape.Fill = new SolidColorBrush(Colors.Transparent);
                 _shape.Shadow = new Shadow()
                 {
@@ -175,7 +175,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     Offset = new Point(0, 10),
                     Radius = 80,
                 };
-                _shape.TranslationY = -8;
+                _shape.TranslationY = -12;
                 //_shape.IsVisible = _shape.ClassId == shape.ClassId;
             }
         }

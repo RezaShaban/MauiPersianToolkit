@@ -38,17 +38,17 @@ public partial class PromptPage : Popup
         lblTitle.WidthRequest = width;
     }
 
-    private void btnCancel_Clicked(object sender, EventArgs e)
+    private async void btnCancel_Clicked(object sender, EventArgs e)
     {
         _config.OnAction?.Invoke(new PromptResult() { IsOk = false, Value = _config.DefaultValue });
 
-        this.Close();
+        await this.CloseAsync();
     }
 
-    private void btnAccept_Clicked(object sender, EventArgs e)
+    private async void btnAccept_Clicked(object sender, EventArgs e)
     {
         _config.OnAction?.Invoke(new PromptResult() { IsOk = true, Value = _config.DefaultValue });
         if (_config.CloseAfterAccept)
-            this.Close();
+            await this.CloseAsync();
     }
 }

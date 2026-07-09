@@ -67,7 +67,7 @@ namespace MauiPersianToolkit.Controls
             switch (e.StatusType)
             {
                 case GestureStatus.Started:
-                    await TrackBar.FadeTo(_fadeEffect, _animLength);
+                    await TrackBar.FadeToAsync(_fadeEffect, _animLength);
                     break;
 
                 case GestureStatus.Running:
@@ -96,8 +96,8 @@ namespace MauiPersianToolkit.Controls
                     var thumbX = RightToLeft ? Width : 0;
                     // Reset translation applied during the pan
                     await Task.WhenAll(new Task[]{
-                        TrackBar.FadeTo(1, _animLength),
-                        Thumb.TranslateTo(thumbX, 0, _animLength * 2, Easing.CubicIn)
+                        TrackBar.FadeToAsync(1, _animLength),
+                        Thumb.TranslateToAsync(thumbX, 0, _animLength * 2, Easing.CubicIn)
                     });
                     if (!RightToLeft)
                     {

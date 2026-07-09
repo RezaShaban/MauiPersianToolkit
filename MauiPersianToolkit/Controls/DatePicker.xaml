@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiPersianToolkit.Controls.DatePicker"
+             xmlns:controls="clr-namespace:MauiPersianToolkit.Controls" x:DataType="controls:DatePicker"
              x:Name="ucDatePicker" Loaded="ucDatePicker_Loaded">
     <ContentView.Resources>
         <ResourceDictionary>

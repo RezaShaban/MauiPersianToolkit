@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Maui.Views;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
@@ -307,10 +308,10 @@ public partial class PickerView : ContentView
             HorizontalOptions = LayoutOptions.Fill,
             BackgroundColor = Colors.Transparent,
             FontFamily = "IranianSans",
-            Command = new Command(() =>
+            Command = new Command(async () =>
             {
                 SelectedItems.Clear();
-                try { popupPage.Close(); } catch { }
+                try { await popupPage.CloseAsync(); } catch { }
             })
         }, SelectionMode == SelectionMode.Single ? 0 : 1, 0);
 
@@ -323,10 +324,10 @@ public partial class PickerView : ContentView
                 HorizontalOptions = LayoutOptions.Fill,
                 BackgroundColor = Colors.Transparent,
                 FontFamily = "IranianSans",
-                Command = new Command(() =>
+                Command = new Command(async () =>
                 {
                     AcceptCommand?.Execute(SelectedItems);
-                    popupPage.Close();
+                    await popupPage.CloseAsync();
                 })
             }, 0, 0);
         #endregion
@@ -378,9 +379,9 @@ public partial class PickerView : ContentView
 
     private Popup popupPage => new()
     {
-        VerticalOptions = Microsoft.Maui.Primitives.LayoutAlignment.End,
-        HorizontalOptions = Microsoft.Maui.Primitives.LayoutAlignment.Fill,
-        Color = Colors.Transparent,
+        VerticalOptions = LayoutOptions.End,
+        HorizontalOptions = LayoutOptions.Fill,
+        BackgroundColor = Colors.Transparent,
         Parent = null
     };
 
@@ -408,7 +409,7 @@ public partial class PickerView : ContentView
                 ItemTemplate = ItemTemplate ?? DefaultItemTemplate
             };
 
-            list.SelectionChanged += (object sender, SelectionChangedEventArgs e) =>
+            list.SelectionChanged += async (object sender, SelectionChangedEventArgs e) =>
             {
                 if (((CollectionView)sender).SelectionMode == SelectionMode.Single)
                 {
@@ -422,7 +423,7 @@ public partial class PickerView : ContentView
                     if (SelectionChangedCommand != null)
                         SelectionChangedCommand.Execute(SelectionChangedCommandParameter ?? SelectedItem);
 
-                    try { popupPage.Close(); } catch { }
+                    try { await popupPage.CloseAsync(); } catch { }
                 }
             };
 
