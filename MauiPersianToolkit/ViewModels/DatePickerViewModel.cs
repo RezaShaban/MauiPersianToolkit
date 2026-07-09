@@ -1,15 +1,19 @@
-﻿using MauiPersianToolkit.Enums;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using MauiPersianToolkit.Enums;
 using MauiPersianToolkit.Models;
+using MauiPersianToolkit.Services.Calendar;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using MauiPersianToolkit.Extensions;
-using CommunityToolkit.Maui.Core.Extensions;
 
 namespace MauiPersianToolkit.ViewModels;
 
 public class DatePickerViewModel : ObservableObject
 {
+    #region Fields
+
+    private ICalendarService _calendarService;
+
+    #endregion
+
     #region Properties
 
     private int currentYear;
@@ -58,41 +62,48 @@ public class DatePickerViewModel : ObservableObject
     public DatePickerViewModel(CalendarOptions options)
     {
         Options = options;
+        _calendarService = CalendarServiceFactory.GetService(options.CalendarType);
+        
         SelectedDays = new ObservableCollection<DayOfMonth>(GetSelectedDates(options.SelectedPersianDates));
         PersianMonths = new ObservableCollection<PuiTuple>();
         SelectDateMode = options.SelectDateMode;
 
         DaysOfWeek ??= FillDaysOfWeek();
-        InitCalendarDays(options.SelectedPersianDate.ToDateTime());
+        InitCalendarDays(_calendarService.ToGregorianDate(options.SelectedPersianDate));
     }
 
-    private IEnumerable<DayOfMonth> GetSelectedDates(List<string> selectedPersianDates) =>
-        [.. (selectedPersianDates ?? []).Select(x =>
+    private IEnumerable<DayOfMonth> GetSelectedDates(List<string> selectedDates) =>
+        [.. (selectedDates ?? []).Select(x =>
         {
-            var currentDate = x.ToDateTime();
+            var currentDate = _calendarService.ToGregorianDate(x);
             return CreateDayOfMonth(currentDate, true, false, false);
         })];
 
-    private List<string> FillDaysOfWeek() =>
-        [.. typeof(PersianDayOfWeek).GetMembers()
-            .Where(x => x.MemberType == MemberTypes.Field)
-            .Select(x => ((DisplayAttribute)x.GetCustomAttribute(typeof(DisplayAttribute)))?.Name?.FirstOrDefault().ToString())
-            .Where(x => !string.IsNullOrEmpty(x))];
+    private List<string> FillDaysOfWeek()
+    {
+        return Enumerable.Range(0, 7)
+            .Select(i => _calendarService.GetDayOfWeekName((DayOfWeek)i))
+            .ToList();
+    }
 
     private void InitCalendarDays(object obj)
     {
         if (obj is not DateTime date) return;
 
-        CurrentMonth = typeof(PersianMonthNames).GetDisplay(date.GetPersianMonth() - 1);
-        CurrentYear = date.GetPersianYear();
+        CurrentMonth = _calendarService.GetMonthName(_calendarService.GetMonth(date));
+        CurrentYear = _calendarService.GetYear(date);
         PersianMonths = GetMonths();
         PersianYears = GetYears();
 
-        var firstDayOfMonth = date.GetPersianBeginningMonth().ToDateTime();
-        var endDayOfMonth = date.GetPersianEndingMonth().ToDateTime();
-        var startDayOffset = ((int)firstDayOfMonth.GetPersianDay() + 1) % 7;
+        var monthBeginningStr = _calendarService.GetMonthBeginning(date);
+        var monthEndingStr = _calendarService.GetMonthEnding(date);
+        
+        var firstDayOfMonth = _calendarService.ToGregorianDate(monthBeginningStr);
+        var endDayOfMonth = _calendarService.ToGregorianDate(monthEndingStr);
+        
+        var startDayOffset = ((int)_calendarService.GetDayOfWeek(firstDayOfMonth) + 1) % 7;
 
-        var monthDaysCount = Enumerable.Range(-startDayOffset, (endDayOfMonth - firstDayOfMonth).Days + startDayOffset + 1).ToList();
+        var monthDaysCount = Enumerable.Range(-startDayOffset, (int)(endDayOfMonth - firstDayOfMonth).TotalDays + startDayOffset + 1).ToList();
         DaysOfMonth = GetDaysOfMonth(monthDaysCount, firstDayOfMonth, date);
     }
 
@@ -103,31 +114,45 @@ public class DatePickerViewModel : ObservableObject
             return CreateDayOfMonth(currentDate, GetIsSelected(currentDate, date), GetIsInRange(currentDate), offset >= 0);
         })];
 
-    private DayOfMonth CreateDayOfMonth(DateTime currentDate, bool isSelected, bool isInRange, bool isInCurrentMonth) =>
-        new()
+    private DayOfMonth CreateDayOfMonth(DateTime currentDate, bool isSelected, bool isInRange, bool isInCurrentMonth)
+    {
+        var dayNum = _calendarService.GetDayOfMonth(currentDate);
+        var calendarDate = _calendarService.ToCalendarDate(currentDate);
+        var dateNo = calendarDate.Replace("/", "").ToInt();
+        var dayOfWeek = _calendarService.GetDayOfWeek(currentDate);
+        var isHoliday = dayOfWeek == _calendarService.GetLastDayOfWeek();
+
+        return new()
         {
-            DayNum = currentDate.GetPersianDayOfMonth(),
+            DayNum = dayNum,
             GregorianDate = currentDate,
-            PersianDate = currentDate.ToPersianDate(),
-            PersianDateNo = currentDate.ToPersianDate().Replace("/", "").ToInt(),
+            PersianDate = calendarDate,
+            PersianDateNo = dateNo,
             IsSelected = isSelected,
             IsInRange = isInRange,
             IsInCurrentMonth = isInCurrentMonth,
-            IsHoliday = currentDate.GetPersianDay() == DayOfWeek.Friday,
+            IsHoliday = isHoliday,
             IsToday = currentDate.Date == DateTime.Now.Date,
-            DayOfWeek = (PersianDayOfWeek)currentDate.GetPersianDay(),
+            DayOfWeek = (PersianDayOfWeek)dayOfWeek,
             CanSelect = GetCanSelect(currentDate),
         };
+    }
 
-    private ObservableCollection<PuiTuple> GetYears() =>
-        Enumerable.Range(CurrentYear - 100, 150)
+    private ObservableCollection<PuiTuple> GetYears()
+    {
+        var currentYear = _calendarService.GetYear(DateTime.Now);
+        return Enumerable.Range(currentYear - 100, 150)
             .Select(year => new PuiTuple(year.ToString(), year.ToString()))
             .ToObservableCollection();
+    }
 
-    private ObservableCollection<PuiTuple> GetMonths() =>
-        typeof(PersianMonthNames).GetFields(BindingFlags.Static | BindingFlags.Public)
-            .Select(field => new PuiTuple(field.Name, field.GetCustomAttribute<DisplayAttribute>().Name))
+    private ObservableCollection<PuiTuple> GetMonths()
+    {
+        var monthNames = _calendarService.GetAllMonthNames();
+        return Enumerable.Range(1, _calendarService.GetMonthsInYear())
+            .Select((i, index) => new PuiTuple(i.ToString(), monthNames.ElementAtOrDefault(index) ?? i.ToString()))
             .ToObservableCollection();
+    }
 
     private void SelectDate(object obj)
     {
@@ -210,7 +235,7 @@ public class DatePickerViewModel : ObservableObject
         (Options.MinDateCanSelect == null || currentDate >= Options.MinDateCanSelect) &&
         (Options.MaxDateCanSelect == null || currentDate <= Options.MaxDateCanSelect) &&
         (!Options.InactiveDays.Exists(day => day.Date == currentDate.Date)) &&
-        (Options.CanSelectHolidays || currentDate.GetPersianDay() != DayOfWeek.Friday);
+        (Options.CanSelectHolidays || _calendarService.GetDayOfWeek(currentDate) != _calendarService.GetLastDayOfWeek());
 
     private bool GetIsSelected(DateTime currentDate, DateTime date) =>
         Options.SelectionMode switch
@@ -239,10 +264,13 @@ public class DatePickerViewModel : ObservableObject
     {
         if (obj is not PuiTuple value) return;
 
-        var month = Enum.Parse<PersianMonthNames>(value.Key);
-        var date = $"{CurrentYear}/{(int)month + 1}/01".ToDateTime();
-        SelectDateMode = SelectionDateMode.Day;
-        InitCalendarDays(date);
+        if (int.TryParse(value.Key, out int monthNum))
+        {
+            var year = _calendarService.GetYear(GetSelectedDate());
+            var date = _calendarService.ToGregorianDate($"{year}/{monthNum}/01");
+            SelectDateMode = SelectionDateMode.Day;
+            InitCalendarDays(date);
+        }
     }
 
     private void SelectYear(object obj)
@@ -251,8 +279,8 @@ public class DatePickerViewModel : ObservableObject
 
         if (int.TryParse(value.Key, out int year))
         {
-            var month = EnumExtensions.GetValueByDisplay<PersianMonthNames>(CurrentMonth);
-            var date = $"{year}/{(int)month + 1}/01".ToDateTime();
+            var month = _calendarService.GetMonth(GetSelectedDate());
+            var date = _calendarService.ToGregorianDate($"{year}/{month}/01");
             SelectDateMode = SelectionDateMode.Day;
             InitCalendarDays(date);
         }

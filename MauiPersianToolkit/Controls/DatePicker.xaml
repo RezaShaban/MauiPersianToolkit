@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiPersianToolkit.Controls.DatePicker"
+             xmlns:controls="clr-namespace:MauiPersianToolkit.Controls" x:DataType="controls:DatePicker"
              x:Name="ucDatePicker" Loaded="ucDatePicker_Loaded">
     <ContentView.Resources>
         <ResourceDictionary>
@@ -17,11 +18,11 @@
             </Style>
         </ResourceDictionary>
     </ContentView.Resources>
-    <Grid HorizontalOptions="FillAndExpand" ColumnDefinitions="38,100*,Auto,38" RowDefinitions="30,50,15" Padding="0,10" ColumnSpacing="0" RowSpacing="0" x:Name="container">
+    <Grid HorizontalOptions="Fill" ColumnDefinitions="38,100*,Auto,38" RowDefinitions="30,50,15" Padding="0,10" ColumnSpacing="0" RowSpacing="0" x:Name="container">
         <!--<Grid.GestureRecognizers>
             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
         </Grid.GestureRecognizers>-->
-        <Label Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding PlaceHolder,Source={x:Reference ucDatePicker}}" HorizontalOptions="StartAndExpand" VerticalTextAlignment="Center" Grid.Row="0" VerticalOptions="Center" InputTransparent="True" FontFamily="IranianSans" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucDatePicker}}" Margin="5,0,0,0" FontAttributes="Bold"/>
+        <Label Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding PlaceHolder,Source={x:Reference ucDatePicker}}" HorizontalOptions="Start" VerticalTextAlignment="Center" Grid.Row="0" VerticalOptions="Center" InputTransparent="True" FontFamily="IranianSans" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucDatePicker}}" Margin="5,0,0,0" FontAttributes="Bold"/>
 
         <Label Text="{Binding Icon,Source={x:Reference ucDatePicker}}" FontSize="18" WidthRequest="38" Grid.Column="0" Grid.Row="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" TextColor="{Binding PlaceHolderColor,Source={x:Reference ucDatePicker}}" InputTransparent="True" Padding="0,0,15,0" FontFamily="FontAwesome">
             <Label.Triggers>

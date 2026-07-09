@@ -41,17 +41,17 @@ public partial class CustomDialogPage : Popup
         //this.container.MaximumHeightRequest = (height * 0.8) - 50;
     }
 
-    private void btnCancel_Clicked(object sender, EventArgs e)
+    private async void btnCancel_Clicked(object sender, EventArgs e)
     {
         _config.OnAction?.Invoke(false);
-        this.Close();
+        await this.CloseAsync();
     }
 
-    private void btnAccept_Clicked(object sender, EventArgs e)
+    private async void btnAccept_Clicked(object sender, EventArgs e)
     {
         _config.OnAction?.Invoke(true);
         if (_config.CloseAfterAccept)
-            this.Close();
+            await this.CloseAsync();
     }
 
     //private void MeasureText()

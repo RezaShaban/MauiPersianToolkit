@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="MauiPersianToolkit.Controls.PickerView"
              xmlns:conv="clr-namespace:MauiPersianToolkit.Converters"
+             xmlns:controls="clr-namespace:MauiPersianToolkit.Controls" x:DataType="controls:PickerView"
              x:Name="ucPickerView">
     <ContentView.Resources>
         <ResourceDictionary>
@@ -29,24 +30,24 @@
                     </Label.Triggers>
                     <Label.Text>
                         <Binding Path="." Mode="OneWay" StringFormat="{}{0}" Converter="{StaticResource FetchPropertyValue}"
-                                     ConverterParameter="{Binding Text,Source={x:Reference lblDp}}">
+                                     ConverterParameter="{Binding Text,Source={x:Reference lblDp}, x:DataType=Label}">
                         </Binding>
                     </Label.Text>
                 </Label>
 
                 <HorizontalStackLayout HorizontalOptions="Fill" BindableLayout.ItemsSource="{Binding SelectedItems,Source={x:Reference ucPickerView},Mode=OneWay}" VerticalOptions="Fill" HeightRequest="50" InputTransparent="True" IsVisible="True">
                     <HorizontalStackLayout.Triggers>
-                        <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding SelectionMode,Source={x:Reference ucPickerView}}" Value="Single">
+                        <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding SelectionMode,Source={x:Reference ucPickerView}, x:DataType=controls:PickerView}" Value="Single">
                             <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </HorizontalStackLayout.Triggers>
                     <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <Button FontSize="12" Padding="10,2" Background="{Binding ActivePlaceHolderColor,Source={x:Reference ucPickerView}}" VerticalOptions="Center" HorizontalOptions="Start" Margin="1,0" FontFamily="IranianSans" InputTransparent="True" TextColor="White">
+                        <DataTemplate x:DataType="controls:PickerView">
+                            <Button FontSize="12" Padding="10,2" Background="{Binding ActivePlaceHolderColor,Source={x:Reference ucPickerView}, x:DataType=controls:PickerView}" VerticalOptions="Center" HorizontalOptions="Start" Margin="1,0" FontFamily="IranianSans" InputTransparent="True" TextColor="White">
                                 <Button.Text>
                                     <Binding Path="." Mode="OneWay" StringFormat="{}{0}"
                                                  Converter="{StaticResource FetchPropertyValue}"
-                                                 ConverterParameter="{Binding Text,Source={x:Reference lblDp}}">
+                                                 ConverterParameter="{Binding Text,Source={x:Reference lblDp}, x:DataType=Label}">
                                     </Binding>
                                 </Button.Text>
                             </Button>
@@ -54,7 +55,9 @@
                     </BindableLayout.ItemTemplate>
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>
-                            <Label FontSize="13" Padding="10,2" Text="{Binding PlaceHolder,Source={x:Reference ucPickerView}}" Background="Transparent" VerticalOptions="Center" HorizontalOptions="Start" Margin="1,0" TextColor="Gray" InputTransparent="True" FontFamily="IranianSans"/>
+                            <Label FontSize="13" Padding="10,2" Text="{Binding PlaceHolder,Source={x:Reference ucPickerView},x:DataType=controls:PickerView}"
+                                   Background="Transparent" VerticalOptions="Center" HorizontalOptions="Start" Margin="1,0" TextColor="Gray"
+                                   InputTransparent="True" FontFamily="IranianSans"/>
                         </DataTemplate>
                     </BindableLayout.EmptyViewTemplate>
                 </HorizontalStackLayout>

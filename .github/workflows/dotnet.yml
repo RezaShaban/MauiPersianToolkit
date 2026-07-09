@@ -1,4 +1,4 @@
-name: PersianUIControlsMaui CI
+name: MauiPersianToolkit CI
 
 on:
   push:
@@ -10,11 +10,12 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+    
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
         
     - name: Install MAUI workloads
       shell: pwsh
@@ -22,9 +23,53 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
+    
+    - name: Restore workloads
+      run: dotnet workload restore
 
-    - name: Build
-      run: dotnet build -c Debug --no-restore
+    - name: Build Library (net8.0)
+      run: dotnet build ./MauiPersianToolkit/MauiPersianToolkit.csproj -c Debug --no-restore
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Build Sample App (Windows)
+      run: dotnet build ./PersianUISamples/PersianUISamples.csproj -c Debug --no-restore -f net8.0-windows10.0.19041.0 -r win-x64
+
+  test:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install MAUI workloads
+      shell: pwsh
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Run Unit Tests
+      run: dotnet test ./MauiPersianToolkit.Test/MauiPersianToolkit.Test.csproj `
+        -c Debug `
+        --no-restore `
+        --logger "trx;LogFileName=test-results.trx" `
+        --verbosity normal
+
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: '**/test-results.trx'
+
+    - name: Publish Test Report
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Unit Tests Report
+        path: '**/test-results.trx'
+        reporter: 'dotnet-trx'
+        fail-on-error: false

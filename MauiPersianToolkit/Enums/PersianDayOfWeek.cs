@@ -4,18 +4,18 @@ namespace MauiPersianToolkit.Enums;
 
 public enum PersianDayOfWeek
 {
-    [Display(Name = "شنبه")]
+    [Display(Name = "ش")]
     Saturday,
-    [Display(Name = "یکشنبه")]
+    [Display(Name = "ی")]
     Sunday,
-    [Display(Name = "دوشنبه")]
+    [Display(Name = "د")]
     Monday,
-    [Display(Name = "سه شنبه")]
+    [Display(Name = "س")]
     Tuesday,
-    [Display(Name = "چهارشنبه")]
+    [Display(Name = "چ")]
     Wednesday,
-    [Display(Name = "پنجشنبه")]
+    [Display(Name = "پ")]
     Thursday,
-    [Display(Name = "جمعه")]
+    [Display(Name = "ج")]
     Friday
 }

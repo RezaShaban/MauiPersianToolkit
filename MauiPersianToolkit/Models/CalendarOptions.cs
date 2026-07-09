@@ -6,6 +6,7 @@ namespace MauiPersianToolkit.Models
     public class CalendarOptions : ObservableObject
     {
         private SelectionDateMode selectDateMode;
+        private CalendarType calendarType;
         private Enums.SelectionMode selectionMode;
         private string selectedPersianDate;
         private List<string> selectedPersianDates;
@@ -19,6 +20,7 @@ namespace MauiPersianToolkit.Models
         public CalendarOptions()
         {
             selectDateMode = SelectionDateMode.Day;
+            calendarType = CalendarType.Persian;
             selectionMode = Enums.SelectionMode.Single;
             selectedPersianDate = DateTime.Now.ToPersianDate();
             selectedPersianDates = new List<string>();
@@ -31,6 +33,11 @@ namespace MauiPersianToolkit.Models
         /// default is Day
         /// </summary>
         public SelectionDateMode SelectDateMode { get => selectDateMode; set => SetProperty(ref selectDateMode, value); }
+
+        /// <summary>
+        /// default is Persian
+        /// </summary>
+        public CalendarType CalendarType { get => calendarType; set => SetProperty(ref calendarType, value); }
 
         /// <summary>
         /// 

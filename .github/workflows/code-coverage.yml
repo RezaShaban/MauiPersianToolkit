@@ -1,0 +1,66 @@
+name: Code Coverage
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  coverage:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install MAUI workloads
+      shell: pwsh
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Run Tests with Code Coverage
+      run: dotnet test ./MauiPersianToolkit.Test/MauiPersianToolkit.Test.csproj `
+        -c Debug `
+        --no-restore `
+        /p:CollectCoverage=true `
+        /p:CoverletOutputFormat=cobertura `
+        /p:CoverletOutput=./coverage/ `
+        --logger "trx;LogFileName=coverage-tests.trx"
+
+    - name: Upload Coverage Artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: coverage-report
+        path: './coverage/'
+
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v3
+      if: always()
+      with:
+        files: ./coverage/coverage.cobertura.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+        verbose: true
+
+    - name: Display Coverage Summary
+      shell: pwsh
+      if: always()
+      run: |
+        if (Test-Path "./coverage/coverage.cobertura.xml") {
+          Write-Output "? Coverage report generated successfully"
+          $xml = [xml](Get-Content "./coverage/coverage.cobertura.xml")
+          $lineRate = $xml.coverage.Attributes['line-rate'].Value
+          $branchRate = $xml.coverage.Attributes['branch-rate'].Value
+          Write-Output "?? Line Coverage: $([math]::Round([double]$lineRate * 100, 2))%"
+          Write-Output "?? Branch Coverage: $([math]::Round([double]$branchRate * 100, 2))%"
+        } else {
+          Write-Output "?? Coverage report not found"
+        }

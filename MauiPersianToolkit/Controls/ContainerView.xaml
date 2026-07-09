@@ -4,6 +4,7 @@
              x:Class="MauiPersianToolkit.Controls.ContainerView"
              xmlns:ct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:conv="clr-namespace:MauiPersianToolkit.Converters"
+             xmlns:controls="clr-namespace:MauiPersianToolkit.Controls" x:DataType="controls:ContainerView"
              x:Name="ucContainer">
     <ContentView.Resources>
         <ResourceDictionary>
@@ -30,7 +31,7 @@
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
-                    <Label Text="{Binding Title,Source={x:Reference ucContainer}}" Padding="0,0,5,0" Grid.Column="1" Grid.Row="0" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" TextColor="Black" FontFamily="IranianSans">
+                    <Label Text="{Binding Title,Source={x:Reference ucContainer}}" Padding="0,0,5,0" Grid.Column="1" Grid.Row="0" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="Start" TextColor="Black" FontFamily="IranianSans">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label" Binding="{Binding IsExpanded,Source={x:Reference expander}}" Value="True">
                                 <Setter Property="Padding" Value="0,0,5,10"/>

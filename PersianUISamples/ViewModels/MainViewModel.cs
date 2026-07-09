@@ -62,14 +62,17 @@ namespace PersianUISamples.ViewModels
             };
             CalendarOption = new CalendarOptions()
             {
+                CalendarType = MauiPersianToolkit.Enums.CalendarType.Hijri,
                 SelectDateMode = MauiPersianToolkit.Enums.SelectionDateMode.Day,
                 SelectionMode = MauiPersianToolkit.Enums.SelectionMode.Single,
                 SelectDayColor = Color.FromArgb("#5B2BDF"),
                 MinDateCanSelect = DateTime.Now.AddDays(-10),
-                MaxDateCanSelect = DateTime.Now.AddDays(10)
+                MaxDateCanSelect = DateTime.Now.AddDays(10),
+                AutoCloseAfterSelectDate = true,
             };
             RangeCalendarOption = new CalendarOptions()
             {
+                CalendarType = MauiPersianToolkit.Enums.CalendarType.Persian,
                 SelectDateMode = MauiPersianToolkit.Enums.SelectionDateMode.Day,
                 SelectionMode = MauiPersianToolkit.Enums.SelectionMode.Range,
                 SelectDayColor = Color.FromArgb("#5B2BDF"),
@@ -88,6 +91,7 @@ namespace PersianUISamples.ViewModels
             };
             MultipleCalendarOption = new CalendarOptions()
             {
+                CalendarType = MauiPersianToolkit.Enums.CalendarType.Gregorian,
                 SelectDateMode = MauiPersianToolkit.Enums.SelectionDateMode.Day,
                 SelectionMode = MauiPersianToolkit.Enums.SelectionMode.Multiple,
                 SelectDayColor = Color.FromArgb("#5B2BDF"),

@@ -1,66 +1,101 @@
 ﻿using CommunityToolkit.Maui.Views;
 using MauiPersianToolkit.Models;
 using MauiPersianToolkit.ViewModels;
+using System.Runtime.CompilerServices;
 
 namespace MauiPersianToolkit.Controls;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DatePickerView : Popup
 {
-    DayOfMonth selectedDate;
-    DatePickerViewModel viewModel;
+    private DayOfMonth _selectedDate;
+    private DatePickerViewModel _viewModel;
+
+    #region Properties
+
+    public static readonly BindableProperty CalendarOptionProperty = BindableProperty.Create(
+        nameof(CalendarOption), typeof(CalendarOptions), typeof(DatePicker),
+        new CalendarOptions(), BindingMode.TwoWay);
+    public CalendarOptions CalendarOption
+    {
+        get => (CalendarOptions)GetValue(CalendarOptionProperty);
+        set => SetValue(CalendarOptionProperty, value);
+    }
+    #endregion
 
     public event EventHandler<SelectedDateChangedEventArgs> SelectedDateChanged;
 
+    public DatePickerView()
+    {
+        InitializeComponent();
+    }
+
     public DatePickerView(CalendarOptions options)
     {
-        retry:
+        InitializeComponent();
+        InitializeView(options);
+    }
+
+    private void InitializeView(CalendarOptions options)
+    {
         try
         {
-            InitializeComponent();
-            btnAccept.Clicked += btnAccept_Clicked;
-            btnCancel.Clicked += btnCancel_Clicked;
-            viewModel = new DatePickerViewModel(options);
-            this.BindingContext = viewModel;
+            btnAccept.Clicked += BtnAccept_Clicked;
+            btnCancel.Clicked += BtnCancel_Clicked;
+
+            _viewModel = new DatePickerViewModel(options);
+            this.BindingContext = _viewModel;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            goto retry;
+            System.Diagnostics.Debug.WriteLine($"Error initializing DatePickerView: {ex.Message}");
+            throw;
         }
     }
 
-    private void btnDay_Clicked(object sender, EventArgs e)
+    private async void BtnDay_Clicked(object sender, EventArgs e)
     {
-        if (((Button)sender).CommandParameter is not DayOfMonth _selectedDate || !_selectedDate.CanSelect)
+        if (((Button)sender).CommandParameter is not DayOfMonth selectedDayOfMonth || !selectedDayOfMonth.CanSelect)
             return;
 
-        viewModel.SelectDateCommand.Execute(_selectedDate);
+        _viewModel.SelectDateCommand.Execute(selectedDayOfMonth);
+        _selectedDate = selectedDayOfMonth;
 
-        selectedDate = _selectedDate;
-
-        if (SelectedDateChanged != null && viewModel.CanClose(selectedDate))
+        if (SelectedDateChanged != null && _viewModel.CanClose(_selectedDate))
         {
-            viewModel.Options.OnAccept?.Invoke(viewModel.SelectedDays);
-            SelectedDateChanged.Invoke(sender, new SelectedDateChangedEventArgs()
+            _viewModel.Options.OnAccept?.Invoke(_viewModel.SelectedDays);
+            SelectedDateChanged.Invoke(sender, new SelectedDateChangedEventArgs
             {
-                SelectedDate = selectedDate,
-                SelectedDates = viewModel.SelectedDays.ToList()
+                SelectedDate = _selectedDate,
+                SelectedDates = _viewModel.SelectedDays.ToList()
             });
-
+            await this.CloseAsync();
         }
     }
 
-    private void btnAccept_Clicked(object sender, EventArgs e)
+    private async void BtnAccept_Clicked(object sender, EventArgs e)
     {
-        var dates = viewModel.SelectedDays.Where(x => x.IsSelected).ToList();
-        viewModel.Options.OnAccept?.Invoke(dates);
-        this.Close();
+        var dates = _viewModel.SelectedDays.Where(x => x.IsSelected).ToList();
+        _viewModel.Options.OnAccept?.Invoke(dates);
+        await this.CloseAsync();
     }
 
-    private void btnCancel_Clicked(object sender, EventArgs e)
+    private async void BtnCancel_Clicked(object sender, EventArgs e)
     {
-        viewModel.Options.OnCancel?.Invoke();
-        this.Close();
+        _viewModel.Options.OnCancel?.Invoke();
+        await this.CloseAsync();
+    }
+
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+
+        switch (propertyName)
+        {
+            case nameof(CalendarOption):
+                InitializeView(CalendarOption);
+                break;
+        }
     }
 }
 

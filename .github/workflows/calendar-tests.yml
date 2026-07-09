@@ -1,0 +1,68 @@
+name: Calendar Tests
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - 'MauiPersianToolkit/Services/Calendar/**'
+      - 'MauiPersianToolkit/ViewModels/DatePickerViewModel.cs'
+      - 'MauiPersianToolkit.Test/Calendar*'
+  pull_request:
+    branches: [ "master" ]
+    paths:
+      - 'MauiPersianToolkit/Services/Calendar/**'
+      - 'MauiPersianToolkit/ViewModels/DatePickerViewModel.cs'
+      - 'MauiPersianToolkit.Test/Calendar*'
+
+jobs:
+  calendar-tests:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install MAUI workloads
+      shell: pwsh
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Restore workloads
+      run: dotnet workload restore
+
+    - name: Run Calendar Service Tests
+      run: dotnet test ./MauiPersianToolkit.Test/MauiPersianToolkit.Test.csproj `
+        -c Debug `
+        --no-restore `
+        --filter "FullyQualifiedName~CalendarServiceTests" `
+        --logger "trx;LogFileName=calendar-service-tests.trx" `
+        --verbosity normal
+
+    - name: Run Calendar Week Layout Tests
+      run: dotnet test ./MauiPersianToolkit.Test/MauiPersianToolkit.Test.csproj `
+        -c Debug `
+        --no-restore `
+        --filter "FullyQualifiedName~CalendarWeekLayoutTests" `
+        --logger "trx;LogFileName=calendar-layout-tests.trx" `
+        --verbosity normal
+
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: calendar-test-results
+        path: '**/calendar-*-tests.trx'
+
+    - name: Publish Calendar Test Report
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Calendar Tests Report
+        path: '**/calendar-*-tests.trx'
+        reporter: 'dotnet-trx'
+        fail-on-error: false

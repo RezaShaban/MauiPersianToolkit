@@ -24,26 +24,56 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+    - name: Build Release
+      run: dotnet build ./MauiPersianToolkit/MauiPersianToolkit.csproj --configuration Release --no-restore /p:GeneratePackageOnBuild=false
 
     - name: Extract version from tag
       id: extract_version
+      shell: pwsh
       run: |
         $version = "${{ github.ref }}" -replace 'refs/tags/v', ''
         echo "VERSION=$version" >> $env:GITHUB_ENV
-        
-    - name: Pack
-      run: dotnet pack ./MauiPersianToolkit/MauiPersianToolkit.csproj --configuration Release --no-build --output ./nupkgs /p:PackageVersion=${{ env.VERSION }}
 
-    - name: List packed packages
-      run: dir .\nupkgs
+    - name: Pack NuGet package
+      shell: pwsh
+      run: |
+        dotnet pack ./MauiPersianToolkit/MauiPersianToolkit.csproj `
+          --configuration Release `
+          --no-build `
+          --output ./nupkgs `
+          -p:PackageVersion=${{ env.VERSION }} `
+          -p:GeneratePackageOnBuild=false `
+          -p:IncludeSymbols=true
+
+    - name: Verify package contents
+      shell: pwsh
+      run: |
+        $nupkgPath = ".\nupkgs\MauiPersianToolkit.${{ env.VERSION }}.nupkg"
+        if (Test-Path $nupkgPath) {
+          Write-Output "? Package found: $nupkgPath"
+          $size = (Get-Item $nupkgPath).Length / 1MB
+          Write-Output "? Package size: $size MB"
+        } else {
+          Write-Error "? Package not found: $nupkgPath"
+          Get-ChildItem .\nupkgs -Recurse
+          exit 1
+        }
 
     - name: Publish to NuGet
       shell: pwsh
       run: |
         $nupkgPath = ".\nupkgs\MauiPersianToolkit.${{ env.VERSION }}.nupkg"
-        dotnet nuget push $nupkgPath --api-key $env:NUGET_API_KEY --source $env:NUGET_SOURCE
+        if (Test-Path $nupkgPath) {
+          Write-Output "Publishing: $nupkgPath"
+          dotnet nuget push $nupkgPath `
+            --api-key $env:NUGET_API_KEY `
+            --source $env:NUGET_SOURCE `
+            --skip-duplicate
+          Write-Output "? Package published successfully"
+        } else {
+          Write-Error "? Package file not found for publishing"
+          exit 1
+        }
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_PERSIAN_API_KEY }}
         NUGET_SOURCE: https://api.nuget.org/v3/index.json

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Extensions;
 using MauiPersianToolkit.Dialogs;
 using MauiPersianToolkit.Models;
 
@@ -31,7 +32,11 @@ public class DialogService : IDialogService
         {
             SetMainPage();
             var alertPage = new AlertPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseWhenBackgroundIsClicked };
-            await mainPage.ShowPopupAsync(alertPage);
+            await mainPage.ShowPopupAsync(alertPage, new PopupOptions
+            {
+                Shape = null,
+                Shadow = null
+            });
         });
     }
 
@@ -50,21 +55,6 @@ public class DialogService : IDialogService
     public void Toast(ToastConfig config)
     {
         CommunityToolkit.Maui.Alerts.Toast.Make(config.Message, config.Duration);
-        //MainThread.BeginInvokeOnMainThread(() =>
-        //{
-            //await PopupNavigation.Instance.PushAsync(new ToastPage(config)
-            //{
-            //    BackgroundInputTransparent = true,
-            //    BackgroundColor = Color.Transparent,
-            //    CloseWhenBackgroundIsClicked = false
-            //});
-            //Device.StartTimer(new TimeSpan(0, 0, config.Duration), new Func<bool>(() =>
-            //{
-            //    if (PopupNavigation.Instance.PopupStack.Count > 0)
-            //        PopupNavigation.Instance.PopAsync();
-            //    return false;
-            //}));
-        //});
     }
 
 
@@ -73,7 +63,11 @@ public class DialogService : IDialogService
     {
         SetMainPage();
         var confirmPage = new ConfirmPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseWhenBackgroundIsClicked };
-        await mainPage.ShowPopupAsync(confirmPage);
+        await mainPage.ShowPopupAsync(confirmPage, new PopupOptions
+        {
+            Shape = null,
+            Shadow = null
+        });
     }
 
     public void CustomDialog(CustomDialogConfig config)
@@ -82,7 +76,11 @@ public class DialogService : IDialogService
         {
             SetMainPage();
             var customPage = new CustomDialogPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseWhenBackgroundIsClicked };
-            await mainPage.ShowPopupAsync(customPage);
+            await mainPage.ShowPopupAsync(customPage, new PopupOptions
+            {
+                Shape = null,
+                Shadow = null
+            });
         });
     }
 
@@ -92,8 +90,7 @@ public class DialogService : IDialogService
         {
             SetMainPage();
             var confirmPage = new PromptPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseAfterAccept };
-            await mainPage.ShowPopupAsync(confirmPage);
-            //await PopupNavigation.Instance.PushAsync();
+            await mainPage.ShowPopupAsync(confirmPage, new PopupOptions { Shape = null, Shadow = null });
         });
     }
 

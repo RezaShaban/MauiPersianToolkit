@@ -21,7 +21,7 @@
             </Border.StrokeShape>
         </Border>
     </Grid>-->
-    <pui:TabView SelectedTabColor="{Binding CalendarOption.SelectDayColor}" UnSelectedTabColor="Gray" SelectedTab="0">
+    <pui:TabView SelectedTabColor="{Binding CalendarOption.SelectDayColor}" UnSelectedTabColor="Gray" SelectedTab="0" AnimateCaptions="False">
         <pui:TabView.ItemsSource>
             <pui:TabItemView Title="تقویم" Icon="&#xf133;" Padding="15">
                 <pui:ContainerView Title="تقویم شمسی">
@@ -30,12 +30,13 @@
                             <VerticalStackLayout>
                                 <pui:CircleImageView ImageSource="dotnet_bot.svg" Margin="25,25,25,0" ImageHeight="96" ImageWidth="96" BorderThickness="2" BorderColor="BlueViolet" VerticalOptions="Center" HorizontalOptions="Center"/>
                             </VerticalStackLayout>
-                            <Grid RowDefinitions="Auto,Auto,Auto">
-                                <pui:DatePicker PlaceHolder="تاریخ" DisplayFormat="yyyy/MM/dd" Icon="&#xf073;" SelectedPersianDate="" />
+                            <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+                                <pui:DatePicker PlaceHolder="تاریخ(قمری)" DisplayFormat="yyyy/MM/dd" Icon="&#xf073;" SelectedPersianDate="" CalendarOption="{Binding CalendarOption}" />
 
-                                <pui:DatePicker PlaceHolder="بازه تاریخی" SelectedPersianDate="{Binding PersianDateRange}" CalendarOption="{Binding RangeCalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}" Icon="&#xf073;" BadgeDates="{Binding BadgeDates}" Grid.Row="1"/>
+                                <pui:DatePicker PlaceHolder="بازه تاریخی(شمسی)" SelectedPersianDate="{Binding PersianDateRange}" CalendarOption="{Binding RangeCalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}" Icon="&#xf073;" BadgeDates="{Binding BadgeDates}" Grid.Row="1"/>
 
-                                <pui:DatePicker PlaceHolder="تاریخ ها" SelectedPersianDate="{Binding PersianDateMultiple}" CalendarOption="{Binding MultipleCalendarOption}" DisplayFormat="yyyy/MM/dd" Icon="&#xf073;" BadgeDates="{Binding MultipleBadgeDates}" Grid.Row="2"/>
+                                <pui:DatePicker PlaceHolder="تاریخ ها(میلادی)" SelectedPersianDate="{Binding PersianDateMultiple}" CalendarOption="{Binding MultipleCalendarOption}" DisplayFormat="yyyy/MM/dd" Icon="&#xf073;" BadgeDates="{Binding MultipleBadgeDates}" Grid.Row="2"/>
+
                             </Grid>
                         </VerticalStackLayout>
                     </pui:ContainerView.Contents>
@@ -102,6 +103,7 @@ FontSize="17" FontFamily="IranianSans" TextColor="White"/>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </HorizontalStackLayout>
+                        <pui:DatePickerView CalendarOption="{Binding CalendarOption}"/>
                     </VerticalStackLayout>
                 </ScrollView>
             </pui:TabItemView>

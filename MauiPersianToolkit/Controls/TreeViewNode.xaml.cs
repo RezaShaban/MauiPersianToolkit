@@ -84,42 +84,6 @@ public partial class TreeViewNode : ContentView
             return;
 
         IsExpanded = !IsExpanded;
-        return;
-
-        var childItemsSource = this.ItemsSource.Where(x => object.Equals(x.ParentId, ShowItem.Id)).ToList();
-        double destinationHeight = childItemsSource.Count * 32;
-        bool canCollapse = childItems.HeightRequest >= destinationHeight;
-
-        if (childItems.Children.Count == 0)
-        {
-            IsExpanded = true;
-            foreach (var item in childItemsSource)
-            {
-                item.ChildItems = ItemsSource.Where(x => object.Equals(x.ParentId, item.Id)).ToList();
-
-                var treeViewNode = new TreeViewNode()
-                {
-                    ShowItem = item,
-                    ItemsSource = this.ItemsSource
-                };
-                treeViewNode.SelectedItemChanged += this.SelectedItemChanged;
-                if (item.SelectionMode == Enums.TreeViewSelectionMode.Single)
-                    treeViewNode.rdo.IsChecked = item.IsSelected;
-                if (item.SelectionMode == Enums.TreeViewSelectionMode.Multiple)
-                    treeViewNode.chk.IsChecked = item.IsSelected;
-                childItems.Children.Add(treeViewNode);
-            }
-        }
-        else
-        {
-            childItems.Children.Clear();
-            IsExpanded = false;
-        }
-
-        var animation = new Animation((arg) => { },
-            canCollapse ? destinationHeight : 0,
-            canCollapse ? 0 : destinationHeight, Easing.Linear, null);
-        childItems.Animate("expanding", animation, 1, 100, Easing.Linear);
     }
 
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Extensions;
 using MauiPersianToolkit.Enums;
 using MauiPersianToolkit.Models;
 using System.Runtime.CompilerServices;
@@ -219,7 +220,7 @@ public partial class DatePicker : ContentView
 
     private void ConfigureCalendarOptions()
     {
-        CalendarOption.SelectedPersianDate = SelectedPersianDate ?? DateTime.Now.ToPersianDate();
+        CalendarOption.SelectedPersianDate = SelectedPersianDate ?? DateTime.Now.ToCalendarDate(CalendarOption.CalendarType);
         CalendarOption.SelectedPersianDates = BadgeDates;
         CalendarOption.AutoCloseAfterSelectDate = CalendarOption.SelectionMode != Enums.SelectionMode.Multiple 
             && CalendarOption.AutoCloseAfterSelectDate;
@@ -232,7 +233,7 @@ public partial class DatePicker : ContentView
         _pickerView.Closed += OnPickerViewClosed;
     }
 
-    private void OnPickerViewSelectedDateChanged(object sender, SelectedDateChangedEventArgs e)
+    private async void OnPickerViewSelectedDateChanged(object sender, SelectedDateChangedEventArgs e)
     {
         if (CalendarOption.SelectionMode == Enums.SelectionMode.Single)
         {
@@ -240,26 +241,14 @@ public partial class DatePicker : ContentView
             UpdateFormattedDate();
             OnChangeDateCommand?.Execute(SelectedPersianDate);
         }
-
-        if (ShouldAutoClose(e))
-        {
-            _pickerView.Close();
-        }
     }
 
-    private bool ShouldAutoClose(SelectedDateChangedEventArgs e)
-    {
-        return CalendarOption.AutoCloseAfterSelectDate &&
-               ((CalendarOption.SelectionMode == Enums.SelectionMode.Single) ||
-                (CalendarOption.SelectionMode == Enums.SelectionMode.Range && e.SelectedDates.Count == 2));
-    }
-
-    private void OnPickerViewOpened(object sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs e)
+    private void OnPickerViewOpened(object sender, EventArgs e)
     {
         OnOpenedCommand?.Execute(e);
     }
 
-    private void OnPickerViewClosed(object sender, CommunityToolkit.Maui.Core.PopupClosedEventArgs e)
+    private void OnPickerViewClosed(object sender, EventArgs e)
     {
         DetachPickerViewEventHandlers();
         _pickerView = null;
@@ -375,7 +364,11 @@ public partial class DatePicker : ContentView
         IsLoading = true;
         try
         {
-            await _parentPage.ShowPopupAsync(_pickerView);
+            await _parentPage.ShowPopupAsync(_pickerView, new PopupOptions
+            {
+                Shape = null,
+                Shadow = null
+            });
         }
         finally
         {

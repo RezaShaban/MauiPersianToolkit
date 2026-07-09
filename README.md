@@ -2,269 +2,440 @@
 
 [![NuGet](https://img.shields.io/nuget/v/MauiPersianToolkit.svg)](https://www.nuget.org/packages/MauiPersianToolkit/)
 [![License](https://img.shields.io/github/license/RezaShaban/MauiPersianToolkit)](LICENSE)
-[![Build](https://github.com/RezaShaban/MauiPersianToolkit/actions/workflows/build.yml/badge.svg)](https://github.com/RezaShaban/MauiPersianToolkit/actions)
+[![Build](https://github.com/RezaShaban/MauiPersianToolkit/actions/workflows/dotnet.yml/badge.svg)](https://github.com/RezaShaban/MauiPersianToolkit/actions)
+[![Tests](https://img.shields.io/badge/tests-20%2B%20passing-brightgreen)](https://github.com/RezaShaban/MauiPersianToolkit/actions)
+[![.NET 8](https://img.shields.io/badge/.NET-8.0-blueviolet)](https://dotnet.microsoft.com/)
 
-`MauiPersianToolkit` is a comprehensive library for .NET MAUI that provides a variety of Persian language UI controls and components. This library is designed to help developers create modern, cross-platform applications with support for Persian language and right-to-left (RTL) layouts.
+`MauiPersianToolkit` is a comprehensive library for **.NET MAUI** that provides a variety of Persian language UI controls and components with full support for multiple calendar systems. This library is designed to help developers create modern, cross-platform applications with support for Persian language and right-to-left (RTL) layouts.
 
-## Features
+## ✨ Key Features
 
-- **Persian DatePicker**: Single, Multiple, and Range selection modes with full customization.
-- **TreeView**: Supports None, Single, and Multiple selection modes.
-- **TabView**: Customizable tab control with multiple tabs and dynamic content.
-- **SlideButton**: Interactive slideable button for confirmation actions.
-- **Picker**: Single and Multiple selection pickers with enhanced UI.
-- **Dialogs**: Includes Alert, Confirm, Prompt, and fully Customizable dialogs.
-- **Expander**: Expandable and collapsible container for dynamic content.
-- **Entry & Editor**: Enhanced text entry controls with Persian language and RTL support.
-- **Converters**: Various converters to simplify data binding.
-- **Custom Fonts**: Includes support for Persian fonts like `IranianSans`.
-- **RTL Support**: Full right-to-left layout support for all controls.
+### 📅 Advanced Calendar System
+- **Multiple Calendar Support**: Persian (Jalali), Gregorian, and Islamic (Hijri) calendars
+- **Flexible DatePicker**: Single, Multiple, and Range selection modes
+- **Calendar Service Architecture**: Strategy pattern for extensible calendar implementations
+- **Full Calendar Validation**: Automatic week alignment and day-of-week positioning
+- **20+ Unit Tests**: Comprehensive test coverage for calendar functionality
 
-## Installation
+### 🎨 UI Controls
+- **Persian DatePicker**: Customizable date picker with multiple selection modes
+- **TreeView**: Supports None, Single, and Multiple selection modes with hierarchy support
+- **TabView**: Customizable tab control with multiple tabs and dynamic content
+- **SlideButton**: Interactive slideable button for confirmation actions
+- **Picker**: Single and Multiple selection pickers with enhanced UI
+- **Entry & Editor**: Enhanced text entry controls with Persian language and RTL support
+- **Expander**: Expandable and collapsible container for dynamic content
+- **CheckBox, Button, Circle Image**: Custom-styled UI components
+
+### 💬 Dialog System
+- **Alert Dialog**: Simple message dialog
+- **Confirm Dialog**: Dialog with confirmation options
+- **Prompt Dialog**: Dialog to capture user input
+- **Custom Dialog**: Fully customizable dialog with any content
+
+### 🛠️ Developer Tools
+- **Converters**: PersianDateConverter, PersianDateTimeConverter, and more
+- **Extensions**: Calendar extensions for easy date manipulation
+- **Custom Fonts**: Built-in support for IranianSans and FontAwesome fonts
+- **RTL Support**: Full right-to-left layout support for all controls
+
+## 📋 Project Statistics
+
+- **Version**: 2.0.7
+- **Target Framework**: .NET 8.0+
+- **Platforms**: Windows, iOS, Android
+- **License**: MIT
+- **Tests**: 20+ unit tests (Calendar Service + Week Layout)
+- **Code Quality**: CI/CD with automated testing on every PR
+
+## 🚀 Installation
 
 You can install the `MauiPersianToolkit` package via NuGet Package Manager or .NET CLI:
 
 ### NuGet Package Manager
-    Install-Package MauiPersianToolkit
+```powershell
+Install-Package MauiPersianToolkit
+```
 
 ### .NET CLI
-    dotnet add package MauiPersianToolkit
+```bash
+dotnet add package MauiPersianToolkit
+```
 
-# Getting Started
+## 🎯 Getting Started
 
-### Startup  
-    public static class MauiProgram
+### 1. Startup Configuration
+
+Add the Persian Toolkit to your MauiApp in `MauiProgram.cs`:
+
+```csharp
+public static class MauiProgram
+{
+    public static MauiApp CreateMauiApp()
     {
-        public static MauiApp CreateMauiApp()
-        {
-            var builder = MauiApp.CreateBuilder();
-            builder
-                .UseMauiApp<App>()
-                .ConfigureFonts(fonts =>
-                    {
-                        fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                        fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                    })
-                .UseMauiCommunityToolkit()
-                .UsePersianUIControls();
-            return builder.Build();
-        }
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("IranianSans.ttf", "IranianSans");
+            })
+            .UseMauiCommunityToolkit()
+            .UsePersianUIControls();  // Add this line
+        
+        return builder.Build();
     }
-After installing the package, you can start using the controls by adding the appropriate namespaces to your XAML or C# files.
+}
+```
 
-### Example Usage in XAML
+### 2. Basic XAML Usage
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:persian="clr-namespace:MauiPersianToolkit.Controls;assembly=MauiPersianToolkit"
-             x:Class="YourAppNamespace.MainPage">
+             x:Class="YourApp.MainPage"
+             Title="Persian Toolkit Demo">
 
-    <StackLayout>
-        <!-- Persian DatePicker Single Selection -->
-        <persian:DatePicker PlaceHolder="تاریخ شروع" SelectedPersianDate="{Binding PersianDate}" CalendarOption="{Binding CalendarOption}" DisplayFormat="yyyy/MM/dd" OnChangeDateCommand="{Binding OnChangeDateCommand}"/>
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+            
+            <!-- Persian DatePicker - Single Selection -->
+            <Label Text="Persian DatePicker (Single)" FontSize="16" FontAttributes="Bold"/>
+            <persian:DatePicker 
+                PlaceHolder="Select Date" 
+                SelectedPersianDate="{Binding SelectedDate}"
+                CalendarType="Persian"
+                DisplayFormat="yyyy/MM/dd" />
+            
+            <!-- Gregorian DatePicker -->
+            <Label Text="Gregorian DatePicker" FontSize="16" FontAttributes="Bold"/>
+            <persian:DatePicker 
+                PlaceHolder="Select Date" 
+                SelectedPersianDate="{Binding SelectedGregorianDate}"
+                CalendarType="Gregorian"
+                DisplayFormat="yyyy/MM/dd" />
+            
+            <!-- Islamic (Hijri) DatePicker -->
+            <Label Text="Islamic DatePicker" FontSize="16" FontAttributes="Bold"/>
+            <persian:DatePicker 
+                PlaceHolder="Select Date" 
+                SelectedPersianDate="{Binding SelectedHijriDate}"
+                CalendarType="Hijri"
+                DisplayFormat="yyyy/MM/dd" />
 
-        <!-- TreeView with Multiple Selection -->
-        <persianControls:TreeView x:Name="treeView"
-                                  SelectionMode="Multiple" />
+            <!-- Entry Control -->
+            <Label Text="Entry Field" FontSize="16" FontAttributes="Bold"/>
+            <persian:EntryView 
+                PlaceHolder="Enter your name" 
+                Text="{Binding UserName}" />
 
-        <!-- TabView -->
-        <persianControls:TabView x:Name="tabView">
-            <persianControls:TabViewItem Title="Tab 1">
-                <Label Text="Content for Tab 1" />
-            </persianControls:TabViewItem>
-            <persianControls:TabViewItem Title="Tab 2">
-                <Label Text="Content for Tab 2" />
-            </persianControls:TabViewItem>
-        </persianControls:TabView>
+            <!-- Expander Control -->
+            <Label Text="Expandable Section" FontSize="16" FontAttributes="Bold"/>
+            <persian:Expander IsExpanded="False" Header="Click to expand">
+                <Label Text="This content is hidden until expanded" Padding="10"/>
+            </persian:Expander>
 
-        <!-- SlideButton -->
-        <persianControls:SlideButton x:Name="slideButton"
-                                     Text="Slide to Confirm" />
-
-        <!-- Picker with Multiple Selection -->
-        <persianControls:Picker x:Name="multiPicker"
-                                SelectionMode="Multiple" />
-
-        <!-- Expander -->
-        <persianControls:Expander x:Name="expander"
-                                  IsExpanded="False"
-                                  Header="Click to expand">
-            <Label Text="This is the expandable content" />
-        </persianControls:Expander>
-
-        <!-- Entry and Editor -->
-        <persianControls:Entry Placeholder="Enter text here" />
-        <persianControls:Editor Placeholder="Enter more detailed text here" />
-    </StackLayout>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
+```
 
-### Example Usage in C#
-    using MauiPersianToolkit;
-    public partial class MainPage : ContentPage
+### 3. Calendar System Usage
+
+#### Using Calendar Services Directly
+
+```csharp
+using MauiPersianToolkit.Services.Calendar;
+using MauiPersianToolkit.Enums;
+
+// Get calendar service
+var persianService = CalendarServiceFactory.GetService(CalendarType.Persian);
+var gregorianService = CalendarServiceFactory.GetService(CalendarType.Gregorian);
+var hijriService = CalendarServiceFactory.GetService(CalendarType.Hijri);
+
+// Convert dates
+var today = DateTime.Now;
+string persianDate = persianService.ToCalendarDate(today);      // "1403/05/25"
+string gregorianDate = gregorianService.ToCalendarDate(today);  // "2024/08/16"
+string hijriDate = hijriService.ToCalendarDate(today);          // "1446/02/21"
+
+// Parse dates back
+var parsed = persianService.ToGregorianDate("1403/05/25");
+
+// Get calendar information
+int year = persianService.GetYear(today);
+int month = persianService.GetMonth(today);
+string monthName = persianService.GetMonthName(month);
+bool isLeap = persianService.IsLeapYear(year);
+DayOfWeek holiday = persianService.GetLastDayOfWeek();  // Friday for Persian
+```
+
+#### Using Extension Methods (Backward Compatible)
+
+```csharp
+using MauiPersianToolkit;
+
+DateTime today = DateTime.Now;
+
+// Convert to Persian (default)
+string persianDate = today.ToPersianDate();  // "1403/05/25"
+
+// Convert to other calendars
+string gregorianDate = today.ToCalendarDate(CalendarType.Gregorian);
+string hijriDate = today.ToCalendarDate(CalendarType.Hijri);
+
+// Parse back
+var parsed = "1403/05/25".ToDateTime();
+var gregorianParsed = "2024/08/16".ToDateTime(CalendarType.Gregorian);
+```
+
+### 4. Dialog Usage
+
+```csharp
+using MauiPersianToolkit.Services.Dialog;
+using MauiPersianToolkit.Models;
+
+public partial class MainPage : ContentPage
+{
+    private readonly IDialogService _dialogService;
+    
+    public MainPage(IDialogService dialogService)
     {
-        public MainPage()
-        {
-            InitializeComponent();
-
-            // Using Persian DatePicker with Single Selection
-            PersianDatePicker singleDatePicker = new PersianDatePicker
-            {
-                SelectionMode = DatePickerSelectionMode.Single,
-                Format = "yyyy/MM/dd"
-            };
-
-            // Using TreeView with Multiple Selection
-            TreeView treeView = new TreeView
-            {
-                SelectionMode = SelectionMode.Multiple
-            };
-
-            // Configuring TabView
-            TabView tabView = new TabView();
-            tabView.Items.Add(new TabViewItem { Title = "Tab 1", Content = new Label { Text = "Content for Tab 1" } });
-            tabView.Items.Add(new TabViewItem { Title = "Tab 2", Content = new Label { Text = "Content for Tab 2" } });
-
-            // Using SlideButton
-            SlideButton slideButton = new SlideButton
-            {
-                Text = "Slide to Confirm"
-            };
-
-            // Configuring Picker with Multiple Selection
-            Picker multiPicker = new Picker
-            {
-                SelectionMode = PickerSelectionMode.Multiple
-            };
-
-            // Using Expander
-            Expander expander = new Expander
-            {
-                IsExpanded = false,
-                Header = "Click to expand",
-                Content = new Label { Text = "This is the expandable content" }
-            };
-
-            // Adding controls to the layout
-            var stackLayout = new StackLayout
-            {
-                Children = { singleDatePicker, treeView, tabView, slideButton, multiPicker, expander }
-            };
-
-            this.Content = stackLayout;
-        }
+        InitializeComponent();
+        _dialogService = dialogService;
     }
 
-## Dialogs
-
-MauiPersianToolkit includes several types of dialogs:
-
-- ``Alert Dialog:`` Simple message dialog.
-
-- ``Confirm Dialog:`` Dialog with confirmation options.
-
-- ``Prompt Dialog:`` Dialog to capture user input.
-
-- ``Custom Dialog:`` Fully customizable dialog to suit your needs.
-
--
-
-    // Show Alert Dialog
-    dialogService.Alert("This is an alert message.");
-
-    // Show Confirm Dialog
-    dialogService.Confirm(new ConfirmConfig()
+    // Alert Dialog
+    private async void ShowAlert()
     {
-        Title = "Remove Item",
-        AcceptText = "Yes",
-        CancelText = "No",
-        Message = "Are you sure you want to proceed?",
-        Icon = MessageIcon.QUESTION,
-        OnAction = new Action<bool>((arg) => {
-            if(!arg) return;
-        }),
-    });
+        await _dialogService.Alert("This is an alert message");
+    }
 
-    // Show Prompt Dialog
-    dialogService.Prompt(new PromptConfig()
+    // Confirm Dialog
+    private async void ShowConfirm()
     {
-        Title = "Regiser Name",
-        AcceptText = "Register",
-        CancelText = "Cancel",
-        Message = "Enter your name:",
-        Placeholder = "name",
-        Icon = MessageIcon.QUESTION,
-        OnAction = new Action<PromptResult>((arg) => {
-            if(!arg.IsOk) return;
-        }),
-    });
+        var config = new ConfirmConfig
+        {
+            Title = "Confirm Action",
+            Message = "Are you sure?",
+            AcceptText = "Yes",
+            CancelText = "No",
+            OnAction = (result) =>
+            {
+                if (result)
+                    Debug.WriteLine("User confirmed");
+                else
+                    Debug.WriteLine("User cancelled");
+            }
+        };
+        
+        await _dialogService.Confirm(config);
+    }
+
+    // Prompt Dialog
+    private async void ShowPrompt()
+    {
+        var config = new PromptConfig
+        {
+            Title = "Enter Name",
+            Message = "Please enter your name:",
+            Placeholder = "Name",
+            AcceptText = "OK",
+            CancelText = "Cancel",
+            OnAction = (result) =>
+            {
+                if (result.IsOk)
+                    Debug.WriteLine($"User entered: {result.Input}");
+            }
+        };
+        
+        await _dialogService.Prompt(config);
+    }
 
     // Custom Dialog
-    dialogService.CustomDialog(new CustomDialogConfig()
+    private async void ShowCustomDialog()
     {
-        Title = "Register Information",
-        AcceptText = "Register",
-        CancelText = "Cancle",
-        Message = "Enter Your Info",
-        Icon = MessageIcon.QUESTION,
-        AcceptIcon = MessageIcon.QUESTION,
-        Cancelable = true,
-        CancelIcon = MessageIcon.ERROR,
-        DialogColor = Colors.DeepPink,
-        CloseWhenBackgroundIsClicked = true,
-        CloseAfterAccept = true,
-        OnAction = new Action<bool>((arg) => { }),
-        Content = new StackLayout()
+        var customContent = new StackLayout
         {
             Children =
             {
-                new EntryView(){ PlaceHolder = "Name" },
-                new MauiPersianToolkit.Controls.DatePicker(){ PlaceHolder = "BirthDate" }
+                new EntryView { PlaceHolder = "Name" },
+                new EntryView { PlaceHolder = "Email" },
+                new persian:DatePicker { PlaceHolder = "Birth Date" }
             }
-        }
-    });
+        };
 
-## Converters
-This library also includes several converters to assist with data binding in your MAUI applications.
+        var config = new CustomDialogConfig
+        {
+            Title = "Register",
+            Message = "Enter your information",
+            Content = customContent,
+            AcceptText = "Register",
+            CancelText = "Cancel",
+            OnAction = (result) =>
+            {
+                Debug.WriteLine($"Dialog result: {result}");
+            }
+        };
+        
+        await _dialogService.CustomDialog(config);
+    }
+}
+```
 
-### Example Usage of Converters
+## 📚 Examples and Documentation
 
-    <Label Text="{Binding Date, Converter={StaticResource PersianDateConverter}}" />
-    
-## Customization
-All controls in MauiPersianToolkit are designed to be easily customizable to match the look and feel of your application. You can adjust properties such as colors, fonts, and behaviors through XAML or C#.
+### Calendar Service Examples
+See `MauiPersianToolkit/Examples/CalendarServiceExamples.cs` for:
+- Extension methods usage
+- Calendar service factory usage
+- Calendar conversions
+- DatePicker control usage
+- Custom calendar registration
 
-## Contributing
-We welcome contributions! If you have ideas, suggestions, or issues to report, please feel free to open an issue or submit a pull request.
+### Calendar Tests
+The project includes comprehensive unit tests:
 
-### Steps to Contribute
-Fork this repository.
-Create a new branch (git checkout -b feature/NewFeature).
-Commit your changes (git commit -m 'Add new feature').
-Push to the branch (git push origin feature/NewFeature).
-Open a Pull Request.
+**CalendarServiceTests** - 7 tests covering:
+- Date conversion roundtrip
+- Month boundaries
+- Holiday detection
+- Month names
+- Leap year validation
+- DatePickerViewModel integration
+- Date formatting
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+**CalendarWeekLayoutTests** - 13+ tests covering:
+- Consecutive days alignment
+- Week structure (7 columns per week)
+- Persian calendar day positioning
+- Gregorian calendar day positioning
+- Empty cells before first day
+- End of month positioning
+- Multiple month validation
+- Holiday day placement
+- Specific date column placement
 
-## Acknowledgments
-Special thanks to the .NET MAUI community and all contributors for their support and contributions to this project.
+Run tests:
+```bash
+dotnet test ./MauiPersianToolkit.Test/MauiPersianToolkit.Test.csproj
+```
 
+## 🔧 Customization
 
-Feel free to explore and use MauiPersianToolkit in your MAUI projects. We are excited to see what you will create with these powerful Persian language UI controls!
+All controls are designed to be easily customizable:
 
+### Custom Calendar Type
 
-### توضیحات درباره‌ی فایل `README.md`:
-- **Features**: معرفی ویژگی‌های کلیدی کتابخانه و کنترل‌های موجود.
-- **Installation**: دستورالعمل نصب از طریق NuGet و .NET CLI.
-- **Getting Started**: مثال‌های کد برای نحوه استفاده از کنترل‌ها در XAML و C#.
-- **Dialogs**: توضیح درباره‌ی دیالوگ‌های مختلف موجود و نحوه استفاده از آن‌ها.
-- **Converters**: اشاره به وجود Converters برای کمک به Data Binding.
-- **Customization**: اشاره به قابلیت سفارشی‌سازی کنترل‌ها.
-- **Contributing**: دستورالعمل‌هایی برای مشارکت در توسعه‌ی پروژه.
-- **License**: اطلاعات مربوط به مجوز پروژه.
-- **Acknowledgments**: قدردانی از جامعه و مشارکت‌کنندگان.
+Implement `ICalendarService` for custom calendar support:
 
-این فایل به شما کمک می‌کند تا مستندات ریپازیتوری خود را به صورت کامل و دقیق برای کاربران و توسعه‌دهندگان دیگر ارائه دهید.
+```csharp
+public class MyCustomCalendarService : ICalendarService
+{
+    // Implement interface methods
+    public string ToCalendarDate(DateTime gregorianDate) { /* ... */ }
+    public DateTime ToGregorianDate(string calendarDate) { /* ... */ }
+    // ... other methods
+}
 
-## Screenshots
+// Register with factory
+CalendarServiceFactory.RegisterService(
+    CalendarType.Custom, 
+    new MyCustomCalendarService()
+);
+```
 
-![App Screenshot](https://raw.githubusercontent.com/RezaShaban/MauiPersianToolkit/master/PersianUISamples/date-picker-demo.png)
+### Style Customization
+
+Customize colors, fonts, and behaviors:
+
+```xml
+<persian:DatePicker
+    PlaceHolder="Select Date"
+    SelectDayColor="Blue"
+    CanSelectHolidays="False"
+    DisplayFormat="yyyy/MM/dd" />
+```
+
+## 🧪 Testing
+
+The project includes a comprehensive test suite:
+
+```
+MauiPersianToolkit.Test/
+├── CalendarServiceTests.cs (7 tests)
+├── CalendarWeekLayoutTests.cs (13+ tests)
+└── CalendarWeekLayoutTests.README.md (documentation)
+```
+
+### GitHub Actions CI/CD
+
+Automated testing on every commit:
+- ✅ Build validation
+- ✅ Unit tests execution
+- ✅ Calendar-specific tests
+- ✅ Code coverage reports
+
+See `.github/workflows/` for CI/CD configuration.
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+We welcome contributions! Follow these steps:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/YourFeature`)
+3. **Commit** your changes (`git commit -m 'Add YourFeature'`)
+4. **Push** to the branch (`git push origin feature/YourFeature`)
+5. **Open** a Pull Request
+
+### Contribution Guidelines
+
+- Follow existing code style and conventions
+- Add unit tests for new features
+- Update documentation as needed
+- Ensure all tests pass locally
+- Provide clear PR description
+
+## 🙏 Acknowledgments
+
+- .NET MAUI Community for excellent framework and tools
+- CommunityToolkit.Maui for reusable components
+- All contributors and users for feedback and suggestions
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/RezaShaban/MauiPersianToolkit/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/RezaShaban/MauiPersianToolkit/discussions)
+- **Website**: [Project Homepage](https://rezashaban.github.io/MauiPersianToolkit)
+
+## 🔗 Quick Links
+
+- [NuGet Package](https://www.nuget.org/packages/MauiPersianToolkit/)
+- [GitHub Repository](https://github.com/RezaShaban/MauiPersianToolkit)
+- [Documentation](https://github.com/RezaShaban/MauiPersianToolkit/wiki)
+- [Issues & Bugs](https://github.com/RezaShaban/MauiPersianToolkit/issues)
+
+## 📊 Project Status
+
+| Component | Status | Coverage |
+|-----------|--------|----------|
+| Core Library | ✅ Stable | Mature |
+| Calendar System | ✅ Stable | 3 calendars |
+| UI Controls | ✅ Stable | 10+ controls |
+| Dialog System | ✅ Stable | 4 types |
+| Unit Tests | ✅ Complete | 20+ tests |
+| Documentation | ✅ Complete | Full |
+
+---
+
+**Happy Coding! 🚀**
+
+Start building beautiful Persian-enabled applications with MauiPersianToolkit today!

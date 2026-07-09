@@ -1,147 +1,115 @@
 ﻿using System.Globalization;
+using MauiPersianToolkit.Enums;
+using MauiPersianToolkit.Services.Calendar;
 
 namespace MauiPersianToolkit;
+
+/// <summary>
+/// Extension methods for calendar operations
+/// Note: These methods use Persian calendar by default for backward compatibility
+/// For other calendar types, use ICalendarService directly
+/// </summary>
 public static class CalendarExtensions
 {
-    public static string ToPersianDate(this DateTime _date)
+    private static readonly ICalendarService _defaultCalendarService = CalendarServiceFactory.GetService(CalendarType.Persian);
+
+    /// <summary>
+    /// Converts gregorian DateTime to Persian date string
+    /// </summary>
+    public static string ToPersianDate(this DateTime date)
     {
-        try
-        {
-            PersianCalendar pc = new PersianCalendar();
-            var year = pc.GetYear(_date);
-            var month = pc.GetMonth(_date);
-            var day = pc.GetDayOfMonth(_date);
-            return $"{year}/{month.ToString().PadLeft(2, '0')}/{day.ToString().PadLeft(2, '0')}";
-        }
-        catch (Exception)
-        {
-            return "";
-        }
+        return _defaultCalendarService.ToCalendarDate(date);
     }
 
-    public static string ToPersianDateTime(this DateTime _date)
+    /// <summary>
+    /// Converts gregorian DateTime to Persian date time string
+    /// </summary>
+    public static string ToPersianDateTime(this DateTime date)
     {
-        try
-        {
-            PersianCalendar pc = new PersianCalendar();
-            var year = pc.GetYear(_date);
-            var month = pc.GetMonth(_date);
-            var day = pc.GetDayOfMonth(_date);
-            return $"{year}/{month.ToString().PadLeft(2, '0')}/{day.ToString().PadLeft(2, '0')} {_date.Hour.ToString().PadLeft(2, '0')}:{_date.Minute.ToString().PadLeft(2, '0')}";
-        }
-        catch (Exception)
-        {
-            return "";
-        }
+        var calendarDate = _defaultCalendarService.ToCalendarDate(date);
+        return $"{calendarDate} {date.Hour.ToString().PadLeft(2, '0')}:{date.Minute.ToString().PadLeft(2, '0')}";
     }
 
+    /// <summary>
+    /// Converts Persian date string to gregorian DateTime
+    /// </summary>
     public static DateTime ToDateTime(this string persianDate)
     {
-        try
-        {
-            int hour = 0; int minute = 0;
-            if (!persianDate.Contains("/") || persianDate.Split('/').Length != 3)
-                return DateTime.Now;
-            if (persianDate.Contains(':'))
-            {
-                persianDate = persianDate.Split(' ').Length > 0 ? persianDate.Split(' ')[0] : persianDate;
-                try
-                {
-                    var time = persianDate.Split(' ').Length > 0 ? persianDate.Split(' ')[1] : "";
-                    hour = int.Parse(time.Split(':')[0]);
-                    minute = int.Parse(time.Split(':')[1]);
-                }
-                catch { }
-            }
-            PersianCalendar pc = new PersianCalendar();
-            var date = persianDate.Split('/');
-
-            return new DateTime(int.Parse(date[0]), int.Parse(date[1]), int.Parse(date[2]), hour, minute, 0, pc);
-        }
-        catch (Exception) { return DateTime.Now; }
+        return _defaultCalendarService.ToGregorianDate(persianDate);
     }
 
+    /// <summary>
+    /// Gets the beginning of Persian month
+    /// </summary>
     public static string GetPersianBeginningMonth(this DateTime date)
     {
-        try
-        {
-            PersianCalendar pc = new PersianCalendar();
-            var year = pc.GetYear(date);
-            var month = pc.GetMonth(date);
-
-            return $"{year}/{month.ToString().PadLeft(2, '0')}/01";
-        }
-        catch (Exception ex)
-        {
-            return ex.ToString();
-        }
+        return _defaultCalendarService.GetMonthBeginning(date);
     }
+
+    /// <summary>
+    /// Gets the ending of Persian month
+    /// </summary>
     public static string GetPersianEndingMonth(this DateTime date)
     {
-        try
-        {
-            PersianCalendar pc = new PersianCalendar();
-            var year = pc.GetYear(date);
-            var month = pc.GetMonth(date);
-            int monthLength = !pc.IsLeapYear(year) && month == 12 ? 29 : 30;
-            return $"{year}/{month.ToString().PadLeft(2, '0')}/{(month < 7 ? 31 : monthLength)}";
-        }
-        catch (Exception ex)
-        {
-            return ex.ToString();
-        }
+        return _defaultCalendarService.GetMonthEnding(date);
     }
 
+    /// <summary>
+    /// Gets day of week in Persian calendar
+    /// </summary>
     public static DayOfWeek GetPersianDay(this DateTime date)
     {
-        try
-        {
-            PersianCalendar pc = new PersianCalendar();
-            return pc.GetDayOfWeek(date);
-        }
-        catch (Exception)
-        {
-            return DayOfWeek.Friday;
-        }
+        return _defaultCalendarService.GetDayOfWeek(date);
     }
 
+    /// <summary>
+    /// Gets year in Persian calendar
+    /// </summary>
     public static int GetPersianYear(this DateTime date)
     {
-        try
-        {
-            PersianCalendar pc = new PersianCalendar();
-            var year = pc.GetYear(date);
-            return year;
-        }
-        catch (Exception)
-        {
-            return 0;
-        }
+        return _defaultCalendarService.GetYear(date);
     }
 
+    /// <summary>
+    /// Gets month in Persian calendar
+    /// </summary>
     public static int GetPersianMonth(this DateTime date)
     {
-        try
-        {
-            PersianCalendar pc = new PersianCalendar();
-            return pc.GetMonth(date);
-        }
-        catch (Exception)
-        {
-            return 0;
-        }
+        return _defaultCalendarService.GetMonth(date);
     }
 
+    /// <summary>
+    /// Gets day of month in Persian calendar
+    /// </summary>
     public static int GetPersianDayOfMonth(this DateTime date)
     {
-        try
-        {
-            PersianCalendar pc = new PersianCalendar();
-            return pc.GetDayOfMonth(date);
-        }
-        catch (Exception)
-        {
-            return 0;
-        }
+        return _defaultCalendarService.GetDayOfMonth(date);
+    }
+
+    /// <summary>
+    /// Converts date using specified calendar type
+    /// </summary>
+    public static string ToCalendarDate(this DateTime date, CalendarType calendarType)
+    {
+        var service = CalendarServiceFactory.GetService(calendarType);
+        return service.ToCalendarDate(date);
+    }
+
+    /// <summary>
+    /// Converts calendar string using specified calendar type
+    /// </summary>
+    public static DateTime ToDateTime(this string calendarDate, CalendarType calendarType)
+    {
+        var service = CalendarServiceFactory.GetService(calendarType);
+        return service.ToGregorianDate(calendarDate);
+    }
+
+    /// <summary>
+    /// Gets day of week using specified calendar type
+    /// </summary>
+    public static DayOfWeek GetDayOfWeek(this DateTime date, CalendarType calendarType)
+    {
+        var service = CalendarServiceFactory.GetService(calendarType);
+        return service.GetDayOfWeek(date);
     }
 }

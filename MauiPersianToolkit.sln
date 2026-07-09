@@ -1,11 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33627.172
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiPersianToolkit", "MauiPersianToolkit\MauiPersianToolkit.csproj", "{89FA2596-1369-45F0-BDC0-39C980205C9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersianUISamples", "PersianUISamples\PersianUISamples.csproj", "{87F123B6-647D-48E9-A966-1289F7E16A3F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{849D4B04-70FB-4359-BC74-B6CC23A62554}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{ADA0BF29-7398-403A-92DF-6D98E07F2C06}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\calendar-tests.yml = .github\workflows\calendar-tests.yml
+		.github\workflows\code-coverage.yml = .github\workflows\code-coverage.yml
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		.github\workflows\nuget-deploy.yml = .github\workflows\nuget-deploy.yml
+		.github\workflows\pr-status-checks.yml = .github\workflows\pr-status-checks.yml
+		.github\workflows\README.md = .github\workflows\README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiPersianToolkit.Test", "MauiPersianToolkit.Test\MauiPersianToolkit.Test.csproj", "{39CCB2F9-774D-4632-BBA4-D23F062A5D06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,9 +37,16 @@ Global
 		{87F123B6-647D-48E9-A966-1289F7E16A3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87F123B6-647D-48E9-A966-1289F7E16A3F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87F123B6-647D-48E9-A966-1289F7E16A3F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{39CCB2F9-774D-4632-BBA4-D23F062A5D06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39CCB2F9-774D-4632-BBA4-D23F062A5D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39CCB2F9-774D-4632-BBA4-D23F062A5D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39CCB2F9-774D-4632-BBA4-D23F062A5D06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ADA0BF29-7398-403A-92DF-6D98E07F2C06} = {849D4B04-70FB-4359-BC74-B6CC23A62554}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D76EAD88-07E1-45F6-A4EF-9B5B37426CFF}
