@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="MauiPersianToolkit.Controls.CircleImageView"
+             xmlns:controls="clr-namespace:MauiPersianToolkit.Controls" x:DataType="controls:CircleImageView"
              x:Name="circleView">
     <Grid x:Name="grid" HorizontalOptions="Center" HeightRequest="{Binding ContainerHeight,Source={x:Reference circleView}}" WidthRequest="{Binding ContainerWidth,Source={x:Reference circleView}}" >
         <Ellipse Grid.Row="0" Grid.Column="0" x:Name="ellipse" HorizontalOptions="Center"

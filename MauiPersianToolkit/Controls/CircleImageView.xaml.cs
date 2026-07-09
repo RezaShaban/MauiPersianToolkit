@@ -37,8 +37,8 @@ public partial class CircleImageView : ContentView
         set { SetValue(BorderColorProperty, value); }
     }
 
-    private int ContainerWidth;
-    private int ContainerHeight;
+    protected internal int ContainerWidth;
+    protected internal int ContainerHeight;
 
     #endregion
     public CircleImageView()

@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="MauiPersianToolkit.Controls.EntryView"
+             xmlns:controls="clr-namespace:MauiPersianToolkit.Controls" x:DataType="controls:EntryView"
              x:Name="entryView">
     <Grid HorizontalOptions="Fill" ColumnDefinitions="Auto,100*,Auto" RowDefinitions="Auto,50" Padding="0,10" ColumnSpacing="0">
         <Label Text="{Binding Icon,Source={x:Reference entryView}}" FontSize="18" WidthRequest="48" Grid.Column="0" Grid.Row="1" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Fill" TextColor="{Binding PlaceHolderColor,Source={x:Reference entryView},Mode=OneWay}" HorizontalTextAlignment="Center" FontFamily="FontAwesome"/>

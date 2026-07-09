@@ -1,11 +1,8 @@
-﻿using MauiPersianToolkit.Enums;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using MauiPersianToolkit.Enums;
 using MauiPersianToolkit.Models;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using MauiPersianToolkit.Extensions;
-using CommunityToolkit.Maui.Core.Extensions;
 using MauiPersianToolkit.Services.Calendar;
+using System.Collections.ObjectModel;
 
 namespace MauiPersianToolkit.ViewModels;
 

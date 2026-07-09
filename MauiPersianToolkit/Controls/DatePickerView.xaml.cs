@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 using MauiPersianToolkit.Models;
 using MauiPersianToolkit.ViewModels;
+using System.Runtime.CompilerServices;
 
 namespace MauiPersianToolkit.Controls;
 
@@ -10,7 +11,24 @@ public partial class DatePickerView : Popup
     private DayOfMonth _selectedDate;
     private DatePickerViewModel _viewModel;
 
+    #region Properties
+
+    public static readonly BindableProperty CalendarOptionProperty = BindableProperty.Create(
+        nameof(CalendarOption), typeof(CalendarOptions), typeof(DatePicker),
+        new CalendarOptions(), BindingMode.TwoWay);
+    public CalendarOptions CalendarOption
+    {
+        get => (CalendarOptions)GetValue(CalendarOptionProperty);
+        set => SetValue(CalendarOptionProperty, value);
+    }
+    #endregion
+
     public event EventHandler<SelectedDateChangedEventArgs> SelectedDateChanged;
+
+    public DatePickerView()
+    {
+        InitializeComponent();
+    }
 
     public DatePickerView(CalendarOptions options)
     {
@@ -24,7 +42,7 @@ public partial class DatePickerView : Popup
         {
             btnAccept.Clicked += BtnAccept_Clicked;
             btnCancel.Clicked += BtnCancel_Clicked;
-            
+
             _viewModel = new DatePickerViewModel(options);
             this.BindingContext = _viewModel;
         }
@@ -35,7 +53,7 @@ public partial class DatePickerView : Popup
         }
     }
 
-    private void BtnDay_Clicked(object sender, EventArgs e)
+    private async void BtnDay_Clicked(object sender, EventArgs e)
     {
         if (((Button)sender).CommandParameter is not DayOfMonth selectedDayOfMonth || !selectedDayOfMonth.CanSelect)
             return;
@@ -51,21 +69,33 @@ public partial class DatePickerView : Popup
                 SelectedDate = _selectedDate,
                 SelectedDates = _viewModel.SelectedDays.ToList()
             });
-            this.Close();
+            await this.CloseAsync();
         }
     }
 
-    private void BtnAccept_Clicked(object sender, EventArgs e)
+    private async void BtnAccept_Clicked(object sender, EventArgs e)
     {
         var dates = _viewModel.SelectedDays.Where(x => x.IsSelected).ToList();
         _viewModel.Options.OnAccept?.Invoke(dates);
-        this.Close();
+        await this.CloseAsync();
     }
 
-    private void BtnCancel_Clicked(object sender, EventArgs e)
+    private async void BtnCancel_Clicked(object sender, EventArgs e)
     {
         _viewModel.Options.OnCancel?.Invoke();
-        this.Close();
+        await this.CloseAsync();
+    }
+
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+
+        switch (propertyName)
+        {
+            case nameof(CalendarOption):
+                InitializeView(CalendarOption);
+                break;
+        }
     }
 }
 
