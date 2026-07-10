@@ -37,7 +37,7 @@
         </RadioButton>
         <ContentView Grid.Column="2" Margin="10,0,0,0" Grid.Row="0" BindingContext="{Binding ShowItem.OriginalItem,Source={x:Reference treeViewNode}}" ControlTemplate="{Binding ItemTemplate,Source={x:Reference treeViewNode}}"/>
 
-        <Label Text="{Binding ShowItem.Title,Source={x:Reference treeViewNode}}" VerticalOptions="Center" TextColor="Black"
+        <Label Text="{Binding Title}" BindingContext="{Binding ShowItem,Source={x:Reference treeViewNode}}" VerticalOptions="Center" TextColor="Black"
                FontFamily="IranianSans" Margin="10,0,0,0" Grid.Column="2" Grid.Row="0" IsVisible="True" x:Name="defaultTemplate"/>
 
         <VerticalStackLayout x:Name="ChildItems" Grid.Row="1" Grid.Column="1" Spacing="5" Grid.ColumnSpan="2"/>

@@ -9,10 +9,14 @@ public class FetchPropertyValueConverter : IValueConverter
         if (value is null)
             return value;
 
-        if (value is object && parameter is Binding binding && binding.Source is IText lbl)
-            return value.GetType().GetProperty(lbl.Text).GetValue(value);
+        if (value is object && parameter is Binding binding && binding.Source is not null)
+        {
+            var bindingSource = ((Binding)parameter).Source.GetType();
+            var prop = bindingSource.GetProperty(((Binding)parameter).Path).GetValue(((Binding)parameter).Source);
+            return value.GetType().GetProperty(prop.ToString()).GetValue(value);
+        }
 
-        return null;
+        return value;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

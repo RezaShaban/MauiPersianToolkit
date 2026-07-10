@@ -71,9 +71,6 @@ public partial class TreeViewNode : ContentView
                 ChildItems.Children.Clear();
         }
 
-        if(propertyName == nameof(ItemTemplate))
-            defaultTemplate.IsVisible = ItemTemplate is null;
-
         base.OnPropertyChanged(propertyName);
     }
 

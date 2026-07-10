@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Maui.Extensions;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Views;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using static Microsoft.Maui.Controls.VisualStateManager;
 
@@ -326,13 +328,14 @@ public partial class PickerView : ContentView
                 FontFamily = "IranianSans",
                 Command = new Command(async () =>
                 {
+                    BindableLayout.SetItemsSource(hslSelecteItems, SelectedItems.Select(x => GetDisplayText(x)));
                     AcceptCommand?.Execute(SelectedItems);
                     await popupPage.CloseAsync();
                 })
             }, 0, 0);
         #endregion
 
-        try { this.mainPage.ShowPopup(popupPage); } catch { }
+        try { this.mainPage.ShowPopupAsync(popupPage, new PopupOptions { Shape = null, Shadow = null }); } catch { }
     }
 
     private void SetMainPage()
@@ -423,6 +426,8 @@ public partial class PickerView : ContentView
                     if (SelectionChangedCommand != null)
                         SelectionChangedCommand.Execute(SelectionChangedCommandParameter ?? SelectedItem);
 
+                    lblSelected.Text = GetDisplayText(SelectedItem);
+
                     try { await popupPage.CloseAsync(); } catch { }
                 }
             };
@@ -480,13 +485,38 @@ public partial class PickerView : ContentView
         return rowLayout;
     });
 
-    public void ShowDialog()
-    {
-        TapGestureRecognizer_Tapped();
-    }
+    public void ShowDialog() => TapGestureRecognizer_Tapped();
 
     #endregion
 
+    private PropertyInfo? _displayPropertyInfo;
+
+    private void UpdateDisplayPropertyInfo(object item)
+    {
+        if (item == null)
+        {
+            _displayPropertyInfo = null;
+            return;
+        }
+
+        _displayPropertyInfo =
+            item.GetType().GetProperty(DisplayProperty);
+    }
+
+    private string GetDisplayText(object item)
+    {
+        if (item == null)
+            return "";
+
+        if (string.IsNullOrWhiteSpace(DisplayProperty))
+            return item.ToString();
+
+        UpdateDisplayPropertyInfo(item);
+
+        return _displayPropertyInfo?
+            .GetValue(item)?
+            .ToString() ?? "";
+    }
 }
 
 public class PickerButton : Button
