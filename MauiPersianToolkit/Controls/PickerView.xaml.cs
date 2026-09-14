@@ -1,6 +1,6 @@
-﻿using CommunityToolkit.Maui;
-using CommunityToolkit.Maui.Extensions;
-using CommunityToolkit.Maui.Views;
+﻿using MauiPersianToolkit.Core;
+using MauiPersianToolkit.Extensions;
+using MauiPersianToolkit.Localization;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -10,7 +10,7 @@ using static Microsoft.Maui.Controls.VisualStateManager;
 namespace MauiPersianToolkit.Controls;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class PickerView : ContentView
+public partial class PickerView : PersianInputBase
 {
     #region Propertie's
 
@@ -35,14 +35,18 @@ public partial class PickerView : ContentView
         set { SetValue(TextProperty, value); }
     }
 
-    public static readonly BindableProperty CancelTextProperty = BindableProperty.Create(nameof(CancelText), typeof(string), typeof(PickerView), "انصراف", BindingMode.TwoWay);
+    public static readonly BindableProperty CancelTextProperty = BindableProperty.Create(
+        nameof(CancelText), typeof(string), typeof(PickerView), null, BindingMode.TwoWay,
+        defaultValueCreator: _ => PersianToolkitStrings.Cancel);
     public string CancelText
     {
         get { return (string)GetValue(CancelTextProperty); }
         set { SetValue(CancelTextProperty, value); }
     }
 
-    public static readonly BindableProperty AcceptTextProperty = BindableProperty.Create(nameof(AcceptText), typeof(string), typeof(PickerView), "تایید", BindingMode.TwoWay);
+    public static readonly BindableProperty AcceptTextProperty = BindableProperty.Create(
+        nameof(AcceptText), typeof(string), typeof(PickerView), null, BindingMode.TwoWay,
+        defaultValueCreator: _ => PersianToolkitStrings.Confirm);
     public string AcceptText
     {
         get { return (string)GetValue(AcceptTextProperty); }
@@ -56,60 +60,11 @@ public partial class PickerView : ContentView
         set { SetValue(SelectionModeProperty, value); }
     }
 
-    public static readonly BindableProperty PlaceHolderColorProperty = BindableProperty.Create(nameof(PlaceHolderColor), typeof(Color), typeof(PickerView), Colors.Gray, BindingMode.TwoWay);
-    public Color PlaceHolderColor
-    {
-        get { return (Color)GetValue(PlaceHolderColorProperty); }
-        set { SetValue(PlaceHolderColorProperty, value); }
-    }
-
-    public static readonly BindableProperty ActivePlaceHolderColorProperty = BindableProperty.Create(nameof(ActivePlaceHolderColor), typeof(Color), typeof(PickerView), Colors.Gray, BindingMode.TwoWay);
-    public Color ActivePlaceHolderColor
-    {
-        get { return (Color)GetValue(ActivePlaceHolderColorProperty); }
-        set { SetValue(ActivePlaceHolderColorProperty, value); }
-    }
-
-    public static readonly BindableProperty TextColorProperty = BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(PickerView), Colors.Black, BindingMode.TwoWay);
-    public Color TextColor
-    {
-        get { return (Color)GetValue(TextColorProperty); }
-        set { SetValue(TextColorProperty, value); }
-    }
-
-    public static readonly BindableProperty PlaceHolderProperty = BindableProperty.Create(nameof(PlaceHolder), typeof(string), typeof(PickerView), default(string), BindingMode.TwoWay);
-    public string PlaceHolder
-    {
-        get { return (string)GetValue(PlaceHolderProperty); }
-        set { SetValue(PlaceHolderProperty, value); }
-    }
-
     public static readonly BindableProperty FontFamilyProperty = BindableProperty.Create(nameof(FontFamily), typeof(string), typeof(PickerView), default(string), BindingMode.TwoWay);
     public string FontFamily
     {
         get { return (string)GetValue(FontFamilyProperty); }
         set { SetValue(FontFamilyProperty, value); }
-    }
-
-    public static readonly BindableProperty ErrorMessageProperty = BindableProperty.Create(nameof(ErrorMessage), typeof(string), typeof(PickerView), default(string), BindingMode.TwoWay);
-    public string ErrorMessage
-    {
-        get { return (string)GetValue(ErrorMessageProperty); }
-        set { SetValue(ErrorMessageProperty, value); }
-    }
-
-    public static readonly BindableProperty IsValidProperty = BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(PickerView), default(bool), BindingMode.TwoWay);
-    public bool IsValid
-    {
-        get { return (bool)GetValue(IsValidProperty); }
-        set { SetValue(IsValidProperty, value); }
-    }
-
-    public static readonly BindableProperty IconProperty = BindableProperty.Create(nameof(Icon), typeof(string), typeof(PickerView), default(string), BindingMode.TwoWay);
-    public string Icon
-    {
-        get { return (string)GetValue(IconProperty); }
-        set { SetValue(IconProperty, value); }
     }
 
     public static readonly BindableProperty SelectionChangedCommandProperty = BindableProperty.Create(nameof(SelectionChangedCommand), typeof(Command), typeof(PickerView), default(Command), BindingMode.TwoWay);
@@ -260,6 +215,9 @@ public partial class PickerView : ContentView
         OnOpenCommand?.Execute(null);
 
         SetMainPage();
+        if (mainPage is null)
+            return;
+
         var popupPage = this.popupPage;
 
         var ItemsList = this.GetListItems(popupPage);
@@ -288,10 +246,7 @@ public partial class PickerView : ContentView
 
         popupPage.Content = new VerticalStackLayout()
         {
-#if ANDROID
-            WidthRequest = (DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density),
-#endif
-            BackgroundColor = Colors.White,
+            BackgroundColor = ThemeColors.Surface,
             VerticalOptions = LayoutOptions.Fill,
             HorizontalOptions = LayoutOptions.Fill,
             Padding = new Thickness(15, 15, 15, 0),
@@ -340,13 +295,12 @@ public partial class PickerView : ContentView
 
     private void SetMainPage()
     {
-        if (mainPage is null)
-            mainPage = Application.Current.MainPage;
+        mainPage ??= Application.Current?.Windows.FirstOrDefault()?.Page;
     }
 
     private Grid ButtonLayout => new()
     {
-        BackgroundColor = Color.FromArgb("#f5f5f5"),
+        BackgroundColor = ThemeColors.Footer,
         HorizontalOptions = LayoutOptions.Fill,
         RowDefinitions = new RowDefinitionCollection()
         {
@@ -462,7 +416,7 @@ public partial class PickerView : ContentView
             VerticalOptions = LayoutOptions.Fill,
             FontSize = 14,
             IconFontSize = 16,
-            TextColor = Colors.Black,
+            TextColor = ThemeColors.OnSurface,
             FlowDirection = FlowDirection.RightToLeft,
             InputTransparent = true,
             HorizontalTextAlignment = TextAlignment.Start
@@ -524,12 +478,12 @@ public class PickerButton : Button
     public PickerButton()
     {
         FontSize = 24;
-        BackgroundColor = Colors.White;
+        BackgroundColor = ThemeColors.Surface;
         HorizontalOptions = LayoutOptions.End;
         WidthRequest = 32;
         HeightRequest = 32;
         Padding = 0;
-        TextColor = Color.FromArgb("#666");
+        TextColor = ThemeColors.Muted;
         FontFamily = "FontAwesome";
     }
 

@@ -4,7 +4,7 @@ using System.Windows.Input;
 namespace MauiPersianToolkit.Controls;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class EntryView : ContentView
+public partial class EntryView : PersianInputBase
 {
     #region Field's
     Color _color;
@@ -35,59 +35,17 @@ public partial class EntryView : ContentView
         get { return (FlowDirection)GetValue(EntryFlowDirectionProperty); }
         set { SetValue(EntryFlowDirectionProperty, value); }
     }
-    public static readonly BindableProperty PlaceHolderColorProperty = BindableProperty.Create(nameof(PlaceHolderColor), typeof(Color), typeof(EntryView), Colors.Gray, BindingMode.OneWay);
-    public Color PlaceHolderColor
-    {
-        get { return (Color)GetValue(PlaceHolderColorProperty); }
-        set { SetValue(PlaceHolderColorProperty, value); }
-    }
     public static readonly BindableProperty ErrorMessageColorProperty = BindableProperty.Create(nameof(ErrorMessageColor), typeof(Color), typeof(EntryView), Colors.OrangeRed, BindingMode.OneWay);
     public Color ErrorMessageColor
     {
         get { return (Color)GetValue(ErrorMessageColorProperty); }
         set { SetValue(ErrorMessageColorProperty, value); }
     }
-    public static readonly BindableProperty ActivePlaceHolderColorProperty = BindableProperty.Create(nameof(ActivePlaceHolderColor), typeof(Color), typeof(EntryView), Colors.Gray, BindingMode.OneWay);
-    public Color ActivePlaceHolderColor
-    {
-        get { return (Color)GetValue(ActivePlaceHolderColorProperty); }
-        set { SetValue(ActivePlaceHolderColorProperty, value); }
-    }
-    public static readonly BindableProperty TextColorProperty = BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(EntryView), Colors.Black, BindingMode.TwoWay);
-    public Color TextColor
-    {
-        get { return (Color)GetValue(TextColorProperty); }
-        set { SetValue(TextColorProperty, value); }
-    }
-    public static readonly BindableProperty PlaceHolderProperty = BindableProperty.Create(nameof(PlaceHolder), typeof(string), typeof(EntryView), default(string), BindingMode.TwoWay);
-    public string PlaceHolder
-    {
-        get { return (string)GetValue(PlaceHolderProperty); }
-        set { SetValue(PlaceHolderProperty, value); }
-    }
-    public static readonly BindableProperty ErrorMessageProperty = BindableProperty.Create(nameof(ErrorMessage), typeof(string), typeof(EntryView), default(string), BindingMode.TwoWay);
-    public string ErrorMessage
-    {
-        get { return (string)GetValue(ErrorMessageProperty); }
-        set { SetValue(ErrorMessageProperty, value); }
-    }
-    public static readonly BindableProperty IsValidProperty = BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(EntryView), default(bool), BindingMode.TwoWay);
-    public bool IsValid
-    {
-        get { return (bool)GetValue(IsValidProperty); }
-        set { SetValue(IsValidProperty, value); }
-    }
     public static readonly BindableProperty IsPasswordProperty = BindableProperty.Create(nameof(IsPassword), typeof(bool), typeof(EntryView), default(bool), BindingMode.TwoWay);
     public bool IsPassword
     {
         get { return (bool)GetValue(IsPasswordProperty); }
         set { SetValue(IsPasswordProperty, value); }
-    }
-    public static readonly BindableProperty IconProperty = BindableProperty.Create(nameof(Icon), typeof(string), typeof(EntryView), string.Empty, BindingMode.TwoWay);
-    public string Icon
-    {
-        get { return (string)GetValue(IconProperty); }
-        set { SetValue(IconProperty, value); }
     }
     public static readonly BindableProperty ReturnTypeProperty = BindableProperty.Create(nameof(ReturnType), typeof(ReturnType), typeof(EntryView), default(ReturnType), BindingMode.TwoWay);
     public ReturnType ReturnType

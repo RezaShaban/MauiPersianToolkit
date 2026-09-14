@@ -26,6 +26,8 @@ namespace PersianUISamples.ViewModels
         private Command showPromptCommand;
         private Command showCustomCommand;
         private Command registerInCommand;
+        private Command showToastCommand;
+        private Command showSnackbarCommand;
         private readonly IDialogService dialogService;
 
         public string PersianDate { get => persianDate; set => SetProperty(ref persianDate, value); }
@@ -47,6 +49,8 @@ namespace PersianUISamples.ViewModels
         public Command ShowPromptCommand { get { showPromptCommand ??= new Command(ShowPrompt); return showPromptCommand; } }
         public Command ShowCustomCommand { get { showCustomCommand ??= new Command(ShowCustom); return showCustomCommand; } }
         public Command RegisterInCommand { get { registerInCommand ??= new Command(RegisterIn); return registerInCommand; } }
+        public Command ShowToastCommand { get { showToastCommand ??= new Command(ShowToast); return showToastCommand; } }
+        public Command ShowSnackbarCommand { get { showSnackbarCommand ??= new Command(ShowSnackbar); return showSnackbarCommand; } }
         public MainViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
@@ -170,6 +174,25 @@ namespace PersianUISamples.ViewModels
             dialogService.Alert("لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد." +
                 "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد." +
                 "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.", "هشدار");
+        }
+
+        private void ShowToast(object obj)
+        {
+            dialogService.Toast(new ToastConfig()
+            {
+                Message = "این یک پیام توست است",
+            });
+        }
+
+        private void ShowSnackbar(object obj)
+        {
+            dialogService.Snackbar(new SnackbarConfig()
+            {
+                Message = "این یک پیام اسنک‌بار است",
+                AcceptText = "باشه",
+                Duration = TimeSpan.FromSeconds(10),
+                OnAction = new Action(() => { }),
+            });
         }
 
         private void ShowConfirm(object obj)

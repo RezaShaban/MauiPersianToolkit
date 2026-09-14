@@ -7,6 +7,7 @@ public partial class TreeViewNode : ContentView
     public event EventHandler<TreeViewItem> SelectedItemChanged;
     public TreeViewNode()
     {
+        PersianTheme.SeedControlResources(Resources);
         InitializeComponent();
     }
 

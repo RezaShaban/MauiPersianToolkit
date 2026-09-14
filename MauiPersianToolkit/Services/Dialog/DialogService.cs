@@ -1,44 +1,48 @@
-﻿using CommunityToolkit.Maui;
-using CommunityToolkit.Maui.Extensions;
+﻿using MauiPersianToolkit.Alerts;
+using MauiPersianToolkit.Core;
 using MauiPersianToolkit.Dialogs;
+using MauiPersianToolkit.Extensions;
+using MauiPersianToolkit.Hosting;
+using MauiPersianToolkit.Localization;
 using MauiPersianToolkit.Models;
 
 namespace MauiPersianToolkit.Services.Dialog;
 
 public class DialogService : IDialogService
 {
-    Page mainPage;
-
-    private void SetMainPage()
+    /// <summary>
+    /// Options shared by every dialog: the dialog pages draw their own card, so the popup
+    /// surface itself must stay unshaped and unshadowed.
+    /// </summary>
+    private static PopupOptions DialogOptions(bool canBeDismissedByTappingOutside) => new()
     {
-        mainPage ??= Application.Current.MainPage;
-    }
+        Shape = null,
+        Shadow = null,
+        CanBeDismissedByTappingOutsideOfPopup = canBeDismissedByTappingOutside
+    };
 
-    public void Alert(string message, string title = "", MessageIcon icon = MessageIcon.ACCEPT, string acceptText = "باشه")
+    /// <summary>
+    /// Page dialogs are presented over. Resolved lazily because the window is not available
+    /// while the service is being constructed.
+    /// </summary>
+    private static Page CurrentPage =>
+        Application.Current?.Windows.FirstOrDefault()?.Page
+        ?? throw new InvalidOperationException("The application has no page to show a dialog over.");
+
+    public void Alert(string message, string title = "", MessageIcon icon = MessageIcon.ACCEPT, string? acceptText = null)
     {
-        AlertConfig config = new AlertConfig()
+        AlertConfig config = new()
         {
             Icon = icon,
             Title = title,
             Message = message,
-            AcceptText = acceptText
+            AcceptText = acceptText ?? PersianToolkitOptions.Current.ResolveConfirmText()
         };
         Alert(config);
     }
 
-    public void Alert(AlertConfig config)
-    {
-        MainThread.BeginInvokeOnMainThread(async () =>
-        {
-            SetMainPage();
-            var alertPage = new AlertPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseWhenBackgroundIsClicked };
-            await mainPage.ShowPopupAsync(alertPage, new PopupOptions
-            {
-                Shape = null,
-                Shadow = null
-            });
-        });
-    }
+    public void Alert(AlertConfig config) =>
+        Present(() => new AlertPage(config), config.CloseWhenBackgroundIsClicked);
 
     public void ShowException(Exception ex)
     {
@@ -47,59 +51,38 @@ public class DialogService : IDialogService
             Message = ex.ToString(),
             AcceptIcon = MessageIcon.ACCEPT,
             Icon = MessageIcon.ERROR,
-            Title = "خطای سیستمی",
-            AcceptText = "باشه"
+            Title = PersianToolkitStrings.SystemErrorTitle,
+            AcceptText = PersianToolkitOptions.Current.ResolveConfirmText()
         });
     }
 
-    public void Toast(ToastConfig config)
-    {
-        CommunityToolkit.Maui.Alerts.Toast.Make(config.Message, config.Duration);
-    }
+    public void Confirm(ConfirmConfig config) =>
+        Present(() => new ConfirmPage(config), config.CloseWhenBackgroundIsClicked);
 
+    public void CustomDialog(CustomDialogConfig config) =>
+        Present(() => new CustomDialogPage(config), config.CloseWhenBackgroundIsClicked);
 
+    public void Prompt(PromptConfig config) =>
+        Present(() => new PromptPage(config), config.CloseAfterAccept);
 
-    public async void Confirm(ConfirmConfig config)
-    {
-        SetMainPage();
-        var confirmPage = new ConfirmPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseWhenBackgroundIsClicked };
-        await mainPage.ShowPopupAsync(confirmPage, new PopupOptions
-        {
-            Shape = null,
-            Shadow = null
-        });
-    }
+    public void Toast(ToastConfig config) =>
+        MainThread.BeginInvokeOnMainThread(() =>
+            _ = Alerts.Toast.Make(config.Message, config.Duration).Show());
 
-    public void CustomDialog(CustomDialogConfig config)
-    {
-        MainThread.BeginInvokeOnMainThread(async () =>
-        {
-            SetMainPage();
-            var customPage = new CustomDialogPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseWhenBackgroundIsClicked };
-            await mainPage.ShowPopupAsync(customPage, new PopupOptions
-            {
-                Shape = null,
-                Shadow = null
-            });
-        });
-    }
+    public void Snackbar(SnackbarConfig config) =>
+        MainThread.BeginInvokeOnMainThread(() =>
+            _ = Alerts.Snackbar.Make(
+                config.Message,
+                config.OnAction,
+                config.AcceptText,
+                config.Duration,
+                new SnackbarOptions { CornerRadius = new CornerRadius(7) }).Show());
 
-    public void Prompt(PromptConfig config)
-    {
-        MainThread.BeginInvokeOnMainThread(async () =>
-        {
-            SetMainPage();
-            var confirmPage = new PromptPage(config) { CanBeDismissedByTappingOutsideOfPopup = config.CloseAfterAccept };
-            await mainPage.ShowPopupAsync(confirmPage, new PopupOptions { Shape = null, Shadow = null });
-        });
-    }
-
-    public void Snackbar(SnackbarConfig config)
-    {
-        CommunityToolkit.Maui.Alerts.Snackbar.Make(config.Message, config.OnAction, config.AcceptText, config.Duration,
-            new CommunityToolkit.Maui.Core.SnackbarOptions()
-            {
-                CornerRadius = 7
-            });
-    }
+    /// <summary>
+    /// Builds and shows a dialog on the UI thread. The popup is constructed inside the
+    /// callback because its XAML touches display metrics that must be read there.
+    /// </summary>
+    private static void Present(Func<Controls.Popup> factory, bool canBeDismissedByTappingOutside) =>
+        MainThread.BeginInvokeOnMainThread(() =>
+            _ = CurrentPage.ShowPopupAsync(factory(), DialogOptions(canBeDismissedByTappingOutside)));
 }

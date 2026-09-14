@@ -6,7 +6,9 @@
         <Grid RowDefinitions="100*,64" x:Name="tabPages" RowSpacing="0" ColumnSpacing="0">
             <!--tab contents here-->
             
-            <Border Padding="0" Grid.Row="1" Grid.Column="0" BackgroundColor="White" Margin="0">
+            <Border Padding="0" Grid.Row="1" Grid.Column="0"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource PdtSurfaceLight}, Dark={StaticResource PdtSurfaceDark}}"
+                    Margin="0">
                 <Border.StrokeShape>
                     <RoundRectangle Fill="Transparent" CornerRadius="0" StrokeThickness="0" StrokeLineJoin="Round" Stroke="Transparent"/>
                 </Border.StrokeShape>

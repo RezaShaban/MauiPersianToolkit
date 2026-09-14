@@ -9,6 +9,7 @@ public partial class TreeView : ContentView
 {
     public TreeView()
     {
+        PersianTheme.SeedControlResources(Resources);
         InitializeComponent();
     }
 

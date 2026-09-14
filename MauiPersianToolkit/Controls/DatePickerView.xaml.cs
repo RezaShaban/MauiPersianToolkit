@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui.Views;
-using MauiPersianToolkit.Models;
+﻿using MauiPersianToolkit.Models;
 using MauiPersianToolkit.ViewModels;
 using System.Runtime.CompilerServices;
 
@@ -75,6 +74,9 @@ public partial class DatePickerView : Popup
 
     private async void BtnAccept_Clicked(object sender, EventArgs e)
     {
+        if (!_viewModel.CanAccept)
+            return;
+
         var dates = _viewModel.SelectedDays.Where(x => x.IsSelected).ToList();
         _viewModel.Options.OnAccept?.Invoke(dates);
         await this.CloseAsync();

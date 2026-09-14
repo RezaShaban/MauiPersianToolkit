@@ -54,6 +54,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
     #endregion
     public TabView()
     {
+        PersianTheme.SeedControlResources(Resources);
         InitializeComponent();
         IsGeneratedTabs = false;
         ItemsSource = new List<TabItemView>();
@@ -92,7 +93,7 @@ public partial class TabView : Microsoft.Maui.Controls.ContentView
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalOptions = LayoutOptions.Fill,
                     TextColor = UnSelectedTabColor,
-                    BackgroundColor = Colors.White,
+                    BackgroundColor = ThemeColors.Surface,
                     HeightRequest = 64
                 };
 

@@ -1,19 +1,20 @@
-﻿using CommunityToolkit.Maui;
-using CommunityToolkit.Maui.Extensions;
+﻿using MauiPersianToolkit.Core;
 using MauiPersianToolkit.Enums;
+using MauiPersianToolkit.Extensions;
 using MauiPersianToolkit.Models;
 using System.Runtime.CompilerServices;
 
 namespace MauiPersianToolkit.Controls;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class DatePicker : ContentView
+public partial class DatePicker : PersianInputBase
 {
     #region Fields
 
     private ContentPage _parentPage;
     private DatePickerView _pickerView;
-    private bool _isInitializing;
+    private Task _initTask;
+    private bool _isShowing;
 
     #endregion
 
@@ -79,66 +80,6 @@ public partial class DatePicker : ContentView
         set => SetValue(DisplayFormatProperty, value);
     }
 
-    public static readonly BindableProperty PlaceHolderColorProperty = BindableProperty.Create(
-        nameof(PlaceHolderColor), typeof(Color), typeof(DatePicker),
-        Colors.Gray, BindingMode.TwoWay);
-
-    public Color PlaceHolderColor
-    {
-        get => (Color)GetValue(PlaceHolderColorProperty);
-        set => SetValue(PlaceHolderColorProperty, value);
-    }
-
-    public static readonly BindableProperty ActivePlaceHolderColorProperty = BindableProperty.Create(
-        nameof(ActivePlaceHolderColor), typeof(Color), typeof(DatePicker),
-        Colors.Gray, BindingMode.TwoWay);
-
-    public Color ActivePlaceHolderColor
-    {
-        get => (Color)GetValue(ActivePlaceHolderColorProperty);
-        set => SetValue(ActivePlaceHolderColorProperty, value);
-    }
-
-    public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
-        nameof(TextColor), typeof(Color), typeof(DatePicker),
-        Colors.Black, BindingMode.TwoWay);
-
-    public Color TextColor
-    {
-        get => (Color)GetValue(TextColorProperty);
-        set => SetValue(TextColorProperty, value);
-    }
-
-    public static readonly BindableProperty PlaceHolderProperty = BindableProperty.Create(
-        nameof(PlaceHolder), typeof(string), typeof(DatePicker),
-        default(string), BindingMode.TwoWay);
-
-    public string PlaceHolder
-    {
-        get => (string)GetValue(PlaceHolderProperty);
-        set => SetValue(PlaceHolderProperty, value);
-    }
-
-    public static readonly BindableProperty ErrorMessageProperty = BindableProperty.Create(
-        nameof(ErrorMessage), typeof(string), typeof(DatePicker),
-        default(string), BindingMode.TwoWay);
-
-    public string ErrorMessage
-    {
-        get => (string)GetValue(ErrorMessageProperty);
-        set => SetValue(ErrorMessageProperty, value);
-    }
-
-    public static readonly BindableProperty IsValidProperty = BindableProperty.Create(
-        nameof(IsValid), typeof(bool), typeof(DatePicker),
-        false, BindingMode.TwoWay);
-
-    public bool IsValid
-    {
-        get => (bool)GetValue(IsValidProperty);
-        set => SetValue(IsValidProperty, value);
-    }
-
     public static readonly BindableProperty IsLoadingProperty = BindableProperty.Create(
         nameof(IsLoading), typeof(bool), typeof(DatePicker),
         false, BindingMode.TwoWay);
@@ -147,16 +88,6 @@ public partial class DatePicker : ContentView
     {
         get => (bool)GetValue(IsLoadingProperty);
         set => SetValue(IsLoadingProperty, value);
-    }
-
-    public static readonly BindableProperty IconProperty = BindableProperty.Create(
-        nameof(Icon), typeof(string), typeof(DatePicker),
-        default(string), BindingMode.TwoWay);
-
-    public string Icon
-    {
-        get => (string)GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
     }
 
     public static readonly BindableProperty OnChangeDateCommandProperty = BindableProperty.Create(
@@ -196,13 +127,24 @@ public partial class DatePicker : ContentView
         container.GestureRecognizers.Add(gestureRecognizer);
     }
 
-    private async Task InitializePickerViewAsync()
+    /// <summary>
+    /// Ensures a picker instance exists. Concurrent callers share the same in-flight task
+    /// so a second tap never proceeds with a null <see cref="_pickerView"/>.
+    /// </summary>
+    private Task EnsurePickerReadyAsync()
     {
-        if (_isInitializing)
-            return;
+        if (_pickerView != null)
+            return Task.CompletedTask;
 
-        _isInitializing = true;
+        if (_initTask is { IsCompleted: false })
+            return _initTask;
 
+        _initTask = CreatePickerViewAsync();
+        return _initTask;
+    }
+
+    private async Task CreatePickerViewAsync()
+    {
         try
         {
             IsLoading = true;
@@ -211,18 +153,25 @@ public partial class DatePicker : ContentView
             _pickerView = new DatePickerView(CalendarOption);
             AttachPickerViewEventHandlers();
         }
+        catch
+        {
+            _pickerView = null;
+            _initTask = null;
+            throw;
+        }
         finally
         {
             IsLoading = false;
-            _isInitializing = false;
         }
     }
 
     private void ConfigureCalendarOptions()
     {
-        CalendarOption.SelectedPersianDate = SelectedPersianDate ?? DateTime.Now.ToCalendarDate(CalendarOption.CalendarType);
+        CalendarOption.SelectedPersianDate = string.IsNullOrWhiteSpace(SelectedPersianDate)
+            ? DateTime.Now.ToCalendarDate(CalendarOption.CalendarType)
+            : SelectedPersianDate;
         CalendarOption.SelectedPersianDates = BadgeDates;
-        CalendarOption.AutoCloseAfterSelectDate = CalendarOption.SelectionMode != Enums.SelectionMode.Multiple 
+        CalendarOption.AutoCloseAfterSelectDate = CalendarOption.SelectionMode != Enums.SelectionMode.Multiple
             && CalendarOption.AutoCloseAfterSelectDate;
     }
 
@@ -273,14 +222,14 @@ public partial class DatePicker : ContentView
         switch (propertyName)
         {
             case nameof(IsEnabled):
-                PlaceHolderColor = IsEnabled ? PlaceHolderColor : Colors.Gray;
+                PlaceHolderColor = IsEnabled ? PlaceHolderColor : ThemeColors.Disabled;
                 break;
 
             case nameof(SelectedPersianDate):
                 if (!string.IsNullOrEmpty(SelectedPersianDate))
                 {
                     UpdateFormattedDate();
-                    _ = InitializePickerViewAsync();
+                    _ = EnsurePickerReadyAsync();
                 }
                 break;
         }
@@ -288,7 +237,7 @@ public partial class DatePicker : ContentView
 
     private void ucDatePicker_Loaded(object sender, EventArgs e)
     {
-        _ = InitializePickerViewAsync();
+        _ = EnsurePickerReadyAsync();
     }
 
     #endregion
@@ -351,19 +300,24 @@ public partial class DatePicker : ContentView
 
     private async void OnDatePickerTapped(object sender)
     {
-        if (_pickerView == null)
-        {
-            await InitializePickerViewAsync();
-        }
-
-        _parentPage ??= FindParentContentPage();
-
-        if (_parentPage == null)
+        // Ignore taps while opening or while the popup is already visible (prevents crash on double-tap).
+        if (_isShowing)
             return;
 
+        _isShowing = true;
         IsLoading = true;
+
         try
         {
+            await EnsurePickerReadyAsync();
+
+            if (_pickerView == null)
+                return;
+
+            _parentPage ??= FindParentContentPage();
+            if (_parentPage == null)
+                return;
+
             await _parentPage.ShowPopupAsync(_pickerView, new PopupOptions
             {
                 Shape = null,
@@ -373,6 +327,7 @@ public partial class DatePicker : ContentView
         finally
         {
             IsLoading = false;
+            _isShowing = false;
         }
     }
 

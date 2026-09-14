@@ -4,7 +4,7 @@ namespace MauiPersianToolkit.Services.Dialog;
 
 public interface IDialogService
 {
-    void Alert(string message, string title = "", MessageIcon icon = MessageIcon.ACCEPT, string acceptText = "باشه");
+    void Alert(string message, string title = "", MessageIcon icon = MessageIcon.ACCEPT, string? acceptText = null);
     void Alert(AlertConfig config);
     void Confirm(ConfirmConfig config);
     void ShowException(Exception ex);

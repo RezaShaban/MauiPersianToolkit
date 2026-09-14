@@ -1,4 +1,6 @@
-﻿using MauiPersianToolkit.Services.Dialog;
+﻿using MauiPersianToolkit;
+using MauiPersianToolkit.Services.Dialog;
+using PersianUISamples.ViewModels;
 
 namespace PersianUISamples
 {
@@ -7,9 +9,13 @@ namespace PersianUISamples
         public App()
         {
             InitializeComponent();
+
+            // Optional: also auto-runs on first toolkit control; applies Theme options early.
+            PersianTheme.EnsureApplicationStyles();
+
             try
             {
-                MainPage = new MainPage(new ViewModels.MainViewModel(new DialogService()));
+                MainPage = new MainPage(new MainViewModel(new DialogService()));
             }
             catch (Exception ex)
             {
