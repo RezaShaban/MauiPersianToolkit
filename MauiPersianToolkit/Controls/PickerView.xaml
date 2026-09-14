@@ -24,6 +24,7 @@
                FontFamily="IranianSans"/>
 
         <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                   x:Name="outline"
                    Stroke="{AppThemeBinding Light={StaticResource PdtOutlineLight}, Dark={StaticResource PdtOutlineDark}}"
                    StrokeThickness="1"
                    Fill="{AppThemeBinding Light={StaticResource PdtInputFillLight}, Dark={StaticResource PdtInputFillDark}}"

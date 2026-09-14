@@ -11,6 +11,10 @@ public class DatePickerViewModel : ObservableObject
     #region Fields
 
     private ICalendarService _calendarService;
+    private ObservableCollection<PuiTuple>? _cachedYears;
+    private ObservableCollection<PuiTuple>? _cachedMonths;
+    private CalendarType? _yearsCacheType;
+    private CalendarType? _monthsCacheType;
 
     #endregion
 
@@ -71,29 +75,53 @@ public class DatePickerViewModel : ObservableObject
 
     #region Commands
 
-    public Command NextMonthCommand => new(NextMonth);
-    public Command PrevMonthCommand => new(PrevMonth);
-    public Command NextYearCommand => new(NextYear);
-    public Command PrevYearCommand => new(PrevYear);
-    public Command SwitchModeCommand => new(SwitchMode);
-    public Command SelectMonthCommand => new(SelectMonth);
-    public Command SelectYearCommand => new(SelectYear);
-    public Command GotoTodayCommand => new(GotoToday);
-    public Command InitCalendarDaysCommand => new(InitCalendarDays);
-    public Command SelectDateCommand => new(SelectDate);
+    public Command NextMonthCommand { get; }
+    public Command PrevMonthCommand { get; }
+    public Command NextYearCommand { get; }
+    public Command PrevYearCommand { get; }
+    public Command SwitchModeCommand { get; }
+    public Command SelectMonthCommand { get; }
+    public Command SelectYearCommand { get; }
+    public Command GotoTodayCommand { get; }
+    public Command InitCalendarDaysCommand { get; }
+    public Command SelectDateCommand { get; }
 
     #endregion
 
     public DatePickerViewModel(CalendarOptions options)
     {
+        NextMonthCommand = new Command(NextMonth);
+        PrevMonthCommand = new Command(PrevMonth);
+        NextYearCommand = new Command(NextYear);
+        PrevYearCommand = new Command(PrevYear);
+        SwitchModeCommand = new Command(SwitchMode);
+        SelectMonthCommand = new Command(SelectMonth);
+        SelectYearCommand = new Command(SelectYear);
+        GotoTodayCommand = new Command(GotoToday);
+        InitCalendarDaysCommand = new Command(InitCalendarDays);
+        SelectDateCommand = new Command(SelectDate);
+
+        ApplyOptions(options, rebuildWeekHeaders: true);
+    }
+
+    /// <summary>
+    /// Rebinds options onto a warm view-model without reallocating commands or year lists
+    /// when the calendar type is unchanged.
+    /// </summary>
+    public void Refresh(CalendarOptions options) =>
+        ApplyOptions(options, rebuildWeekHeaders: true);
+
+    private void ApplyOptions(CalendarOptions options, bool rebuildWeekHeaders)
+    {
         Options = options;
         _calendarService = CalendarServiceFactory.GetService(options.CalendarType);
 
         SelectedDays = new ObservableCollection<DayOfMonth>(GetSelectedDates(options.SelectedPersianDates));
-        PersianMonths = new ObservableCollection<PuiTuple>();
         SelectDateMode = options.SelectDateMode;
 
-        DaysOfWeek ??= FillDaysOfWeek();
+        if (rebuildWeekHeaders || DaysOfWeek is null)
+            DaysOfWeek = FillDaysOfWeek();
+
         InitCalendarDays(_calendarService.ToGregorianDate(options.SelectedPersianDate));
     }
 
@@ -126,7 +154,7 @@ public class DatePickerViewModel : ObservableObject
 
         var monthBeginningStr = _calendarService.GetMonthBeginning(date);
         var monthEndingStr = _calendarService.GetMonthEnding(date);
-        
+
         var firstDayOfMonth = _calendarService.ToGregorianDate(monthBeginningStr);
         var endDayOfMonth = _calendarService.ToGregorianDate(monthEndingStr);
 
@@ -178,18 +206,28 @@ public class DatePickerViewModel : ObservableObject
 
     private ObservableCollection<PuiTuple> GetYears()
     {
+        if (_cachedYears is not null && _yearsCacheType == Options.CalendarType)
+            return _cachedYears;
+
         var currentYear = _calendarService.GetYear(DateTime.Now);
-        return Enumerable.Range(currentYear - 100, 150)
+        _cachedYears = Enumerable.Range(currentYear - 100, 150)
             .Select(year => new PuiTuple(year.ToString(), year.ToString()))
             .ToObservableCollection();
+        _yearsCacheType = Options.CalendarType;
+        return _cachedYears;
     }
 
     private ObservableCollection<PuiTuple> GetMonths()
     {
+        if (_cachedMonths is not null && _monthsCacheType == Options.CalendarType)
+            return _cachedMonths;
+
         var monthNames = _calendarService.GetAllMonthNames();
-        return Enumerable.Range(1, _calendarService.GetMonthsInYear())
+        _cachedMonths = Enumerable.Range(1, _calendarService.GetMonthsInYear())
             .Select((i, index) => new PuiTuple(i.ToString(), monthNames.ElementAtOrDefault(index) ?? i.ToString()))
             .ToObservableCollection();
+        _monthsCacheType = Options.CalendarType;
+        return _cachedMonths;
     }
 
     private void SelectDate(object obj)

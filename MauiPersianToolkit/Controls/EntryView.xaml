@@ -14,18 +14,20 @@
                TextColor="{Binding PlaceHolderColor,Source={x:Reference entryView},Mode=OneWay}"
                FontFamily="IranianSans" FontAttributes="Bold"/>
 
-        <!-- Bottom layer: full rounded outline. Must stay behind icon + entry. -->
         <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                   x:Name="outline"
                    Stroke="{AppThemeBinding Light={StaticResource PdtOutlineLight}, Dark={StaticResource PdtOutlineDark}}"
                    StrokeThickness="1"
                    Fill="{AppThemeBinding Light={StaticResource PdtInputFillLight}, Dark={StaticResource PdtInputFillDark}}"
                    RadiusX="5" RadiusY="5" InputTransparent="True"/>
 
-        <!-- Entry inset so its opaque platform chrome cannot paint over the stroke. -->
+        <!-- Optical TranslationY: IranianSans glyph box sits high in the em square. -->
         <Entry Grid.Row="1" Grid.Column="1"
-               HorizontalOptions="Fill" VerticalOptions="Center" VerticalTextAlignment="Center"
+               HorizontalOptions="Fill" VerticalOptions="Fill"
+               VerticalTextAlignment="Center"
                Text="{Binding Text,Source={x:Reference entryView}}"
-               Margin="6,4" FontSize="Small" x:Name="entry" HeightRequest="40"
+               Margin="8,0" FontSize="Small" x:Name="entry"
+               TranslationY="2"
                BackgroundColor="Transparent"
                ReturnType="{Binding ReturnType,Source={x:Reference entryView}}"
                FlowDirection="{Binding EntryFlowDirection,Source={x:Reference entryView}}"

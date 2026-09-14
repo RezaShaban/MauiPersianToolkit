@@ -44,6 +44,21 @@ public class DialogService : IDialogService
     public void Alert(AlertConfig config) =>
         Present(() => new AlertPage(config), config.CloseWhenBackgroundIsClicked);
 
+    public Task AlertAsync(string message, string title = "", MessageIcon icon = MessageIcon.ACCEPT, string? acceptText = null, CancellationToken cancellationToken = default)
+    {
+        AlertConfig config = new()
+        {
+            Icon = icon,
+            Title = title,
+            Message = message,
+            AcceptText = acceptText ?? PersianToolkitOptions.Current.ResolveConfirmText()
+        };
+        return AlertAsync(config, cancellationToken);
+    }
+
+    public Task AlertAsync(AlertConfig config, CancellationToken cancellationToken = default) =>
+        PresentAsync(() => new AlertPage(config), config.CloseWhenBackgroundIsClicked, cancellationToken);
+
     public void ShowException(Exception ex)
     {
         Alert(new AlertConfig()
@@ -59,11 +74,56 @@ public class DialogService : IDialogService
     public void Confirm(ConfirmConfig config) =>
         Present(() => new ConfirmPage(config), config.CloseWhenBackgroundIsClicked);
 
+    public async Task<bool> ConfirmAsync(ConfirmConfig config, CancellationToken cancellationToken = default)
+    {
+        bool? accepted = null;
+        var previous = config.OnAction;
+        config.OnAction = value =>
+        {
+            accepted = value;
+            previous?.Invoke(value);
+        };
+
+        await PresentAsync(() => new ConfirmPage(config), config.CloseWhenBackgroundIsClicked, cancellationToken)
+            .ConfigureAwait(false);
+        return accepted ?? false;
+    }
+
     public void CustomDialog(CustomDialogConfig config) =>
         Present(() => new CustomDialogPage(config), config.CloseWhenBackgroundIsClicked);
 
+    public async Task<bool> CustomDialogAsync(CustomDialogConfig config, CancellationToken cancellationToken = default)
+    {
+        bool? accepted = null;
+        var previous = config.OnAction;
+        config.OnAction = value =>
+        {
+            accepted = value;
+            previous?.Invoke(value);
+        };
+
+        await PresentAsync(() => new CustomDialogPage(config), config.CloseWhenBackgroundIsClicked, cancellationToken)
+            .ConfigureAwait(false);
+        return accepted ?? false;
+    }
+
     public void Prompt(PromptConfig config) =>
         Present(() => new PromptPage(config), config.CloseAfterAccept);
+
+    public async Task<PromptResult> PromptAsync(PromptConfig config, CancellationToken cancellationToken = default)
+    {
+        PromptResult? result = null;
+        var previous = config.OnAction;
+        config.OnAction = value =>
+        {
+            result = value;
+            previous?.Invoke(value);
+        };
+
+        await PresentAsync(() => new PromptPage(config), config.CloseAfterAccept, cancellationToken)
+            .ConfigureAwait(false);
+        return result ?? new PromptResult { IsOk = false, Value = null };
+    }
 
     public void Toast(ToastConfig config) =>
         MainThread.BeginInvokeOnMainThread(() =>
@@ -85,4 +145,29 @@ public class DialogService : IDialogService
     private static void Present(Func<Controls.Popup> factory, bool canBeDismissedByTappingOutside) =>
         MainThread.BeginInvokeOnMainThread(() =>
             _ = CurrentPage.ShowPopupAsync(factory(), DialogOptions(canBeDismissedByTappingOutside)));
+
+    private static Task PresentAsync(Func<Controls.Popup> factory, bool canBeDismissedByTappingOutside, CancellationToken cancellationToken)
+    {
+        var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            try
+            {
+                await CurrentPage.ShowPopupAsync(factory(), DialogOptions(canBeDismissedByTappingOutside), cancellationToken)
+                    .ConfigureAwait(false);
+                tcs.TrySetResult();
+            }
+            catch (OperationCanceledException)
+            {
+                tcs.TrySetCanceled(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                tcs.TrySetException(ex);
+            }
+        });
+
+        return tcs.Task;
+    }
 }

@@ -19,8 +19,8 @@
 
 ### 🎨 UI Controls
 - **Persian DatePicker**: Customizable date picker with multiple selection modes
-- **TreeView**: None, Single, and Multiple selection with hierarchy support
-- **TabView**: Customizable tabs with dynamic content
+- **TreeView**: None, Single, and Multiple selection with hierarchy support (virtualized `CollectionView` rows)
+- **TabView**: Bottom tabs with sliding indicator, content cross-fade, icon pulse, and lazy pages
 - **SlideButton**: Interactive slideable confirmation button
 - **Picker**: Single and Multiple selection with enhanced UI
 - **Entry & Editor**: Persian/RTL-friendly text inputs

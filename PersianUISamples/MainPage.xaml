@@ -21,7 +21,12 @@
             </Border.StrokeShape>
         </Border>
     </Grid>-->
-    <pui:TabView SelectedTabColor="{Binding CalendarOption.SelectDayColor}" UnSelectedTabColor="Gray" SelectedTab="0" AnimateCaptions="False">
+    <pui:TabView SelectedTabColor="{Binding CalendarOption.SelectDayColor}"
+                 IndicatorColor="{Binding CalendarOption.SelectDayColor}"
+                 UnSelectedTabColor="#9AA0A6"
+                 SelectedTab="0"
+                 AnimateCaptions="True"
+                 EnableAnimations="True">
         <pui:TabView.ItemsSource>
             <pui:TabItemView Title="تقویم" Icon="&#xf133;" Padding="15">
                 <pui:ContainerView Title="تقویم شمسی">
@@ -93,9 +98,17 @@ FontSize="17" FontFamily="IranianSans" TextColor="White"/>
                 </pui:ContainerView>
             </pui:TabItemView>
             <pui:TabItemView Title="TreeView" Icon="&#xf00c;" Padding="0">
-                <ScrollView Padding="15">
-                    <VerticalStackLayout>
-                        <pui:TreeView ItemTemplate="{StaticResource TreeNodeTemplate}" SelectedItems="{Binding SelectedItemsTree}" ItemsSource="{Binding TreeItems}" KeyProperty="Id" ParentChildProperty="ParentId" DisplayProperty="Title" SelectionMode="Multiple" ItemHeight="32"/>
+                <Grid Padding="15" RowDefinitions="*,Auto" RowSpacing="10">
+                    <pui:TreeView Grid.Row="0"
+                                  ItemTemplate="{StaticResource TreeNodeTemplate}"
+                                  SelectedItems="{Binding SelectedItemsTree}"
+                                  ItemsSource="{Binding TreeItems}"
+                                  KeyProperty="Id"
+                                  ParentChildProperty="ParentId"
+                                  DisplayProperty="Title"
+                                  SelectionMode="Multiple"
+                                  ItemHeight="32"/>
+                    <VerticalStackLayout Grid.Row="1" Spacing="8">
                         <HorizontalStackLayout BindableLayout.ItemsSource="{Binding SelectedItemsTree}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="vm:TreeViewModel">
@@ -103,9 +116,14 @@ FontSize="17" FontFamily="IranianSans" TextColor="White"/>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </HorizontalStackLayout>
-                        <pui:DatePickerView CalendarOption="{Binding CalendarOption}"/>
+                        <pui:Expander IsExpanded="False">
+                            <pui:Expander.Header>
+                                <Label Text="نمونه Expander" FontFamily="IranianSans" Padding="8"/>
+                            </pui:Expander.Header>
+                            <pui:DatePickerView CalendarOption="{Binding CalendarOption}"/>
+                        </pui:Expander>
                     </VerticalStackLayout>
-                </ScrollView>
+                </Grid>
             </pui:TabItemView>
             <pui:TabItemView Padding="15" Title="ناتیف ها" Icon="&#xf00d;">
                 <Grid ColumnDefinitions="33*,33*,33*" RowDefinitions="40,40,40" RowSpacing="10">

@@ -17,7 +17,7 @@ public partial class EntryView : PersianInputBase
         get { return (string)GetValue(TextProperty); }
         set { SetValue(TextProperty, value); }
     }
-    public static readonly BindableProperty AppendTextProperty = BindableProperty.Create(nameof(AppendTextProperty), typeof(string), typeof(EntryView), default(string), BindingMode.OneWay);
+    public static readonly BindableProperty AppendTextProperty = BindableProperty.Create(nameof(AppendText), typeof(string), typeof(EntryView), default(string), BindingMode.OneWay);
     public string AppendText
     {
         get { return (string)GetValue(AppendTextProperty); }
@@ -78,23 +78,18 @@ public partial class EntryView : PersianInputBase
     public EntryView()
     {
         InitializeComponent();
+        AttachInputChrome(outline, entry);
 
-        if (this._color == null)
-            this._color = this.PlaceHolderColor;
+        if (_color is null)
+            _color = PlaceHolderColor;
     }
 
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected override void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
-        if (propertyName == IsEnabledProperty.PropertyName)
-            PlaceHolderColor = this.IsEnabled ? PlaceHolderColor : Colors.Gray;
-
         if (propertyName == AppendTextProperty.PropertyName)
             append.Text = AppendText;
-
-        if (propertyName == IsValidProperty.PropertyName)
-            this.entry.Focus();
     }
 
     private void entry_TextChanged(object sender, TextChangedEventArgs e)

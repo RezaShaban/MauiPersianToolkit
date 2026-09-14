@@ -95,39 +95,54 @@ public static class AppBuilderExtensions
     /// </summary>
     private static void ApplyPlatformTweaks()
     {
-        Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("CustomEditor", (handler, view) =>
+        Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("PersianToolkit.Editor", (handler, view) =>
         {
 #if ANDROID
             handler.PlatformView.Bottom = 0;
-            Android.Graphics.Drawables.GradientDrawable gd = new Android.Graphics.Drawables.GradientDrawable();
+            var gd = new Android.Graphics.Drawables.GradientDrawable();
             gd.SetColor(global::Android.Graphics.Color.Transparent);
             handler.PlatformView.SetBackgroundDrawable(gd);
-
-            // Either transparent or the provided background color
-            var backgroundTint = Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
-            handler.PlatformView.BackgroundTintList = backgroundTint;
+            handler.PlatformView.BackgroundTintList =
+                Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+#elif IOS || MACCATALYST
+            handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;
+            handler.PlatformView.Layer.BorderWidth = 0;
+            handler.PlatformView.Layer.BorderColor = UIKit.UIColor.Clear.CGColor;
 #elif WINDOWS
             handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
             handler.PlatformView.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
 #endif
         });
 
-        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("CustomEntry", (handler, view) =>
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("PersianToolkit.Entry", (handler, view) =>
         {
 #if IOS || MACCATALYST
             handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
-            handler.PlatformView.EditingDidBegin += (s, e) =>
-                handler.PlatformView.PerformSelector(new ObjCRuntime.Selector("selectAll"), null, 0.0f);
+            handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;
+            handler.PlatformView.VerticalAlignment = UIKit.UIControlContentVerticalAlignment.Center;
 #elif ANDROID
-            handler.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
-            handler.PlatformView.SetSelectAllOnFocus(true);
+            var edit = handler.PlatformView;
+            edit.BackgroundTintList =
+                Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+            edit.SetSelectAllOnFocus(true);
+            // Keep font padding; IranianSans sits high in the em box — bias padding downward.
+            edit.SetIncludeFontPadding(true);
+            var density = edit.Resources?.DisplayMetrics?.Density ?? 1f;
+            var top = (int)(10 * density);
+            var bottom = (int)(2 * density);
+            edit.SetPadding(edit.PaddingLeft, top, edit.PaddingRight, bottom);
+            edit.Gravity = (edit.Gravity & Android.Views.GravityFlags.HorizontalGravityMask)
+                | Android.Views.GravityFlags.CenterVertical;
 #elif WINDOWS
             // WinUI TextBox draws its own underline/border that covers the toolkit outline.
             handler.PlatformView.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
             handler.PlatformView.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
             handler.PlatformView.Resources["TextControlBorderThemeThickness"] = new Microsoft.UI.Xaml.Thickness(0);
             handler.PlatformView.Resources["TextControlBorderThemeThicknessFocused"] = new Microsoft.UI.Xaml.Thickness(0);
-            handler.PlatformView.GotFocus += (s, e) => handler.PlatformView.SelectAll();
+            handler.PlatformView.VerticalContentAlignment = Microsoft.UI.Xaml.VerticalAlignment.Center;
+            // Slight top bias so IranianSans reads optically centered.
+            handler.PlatformView.Padding = new Microsoft.UI.Xaml.Thickness(0, 8, 0, 2);
+            handler.PlatformView.GotFocus += (_, _) => handler.PlatformView.SelectAll();
 #endif
         });
     }

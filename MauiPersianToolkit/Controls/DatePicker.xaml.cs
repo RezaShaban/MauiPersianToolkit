@@ -22,7 +22,7 @@ public partial class DatePicker : PersianInputBase
 
     public static readonly BindableProperty CalendarOptionProperty = BindableProperty.Create(
         nameof(CalendarOption), typeof(CalendarOptions), typeof(DatePicker),
-        new CalendarOptions(), BindingMode.TwoWay);
+        defaultValueCreator: static _ => new CalendarOptions());
 
     public CalendarOptions CalendarOption
     {
@@ -52,7 +52,7 @@ public partial class DatePicker : PersianInputBase
 
     public static readonly BindableProperty BadgeDatesProperty = BindableProperty.Create(
         nameof(BadgeDates), typeof(List<string>), typeof(DatePicker),
-        new List<string>(), BindingMode.TwoWay);
+        defaultValueCreator: static _ => new List<string>());
 
     public List<string> BadgeDates
     {
@@ -115,6 +115,7 @@ public partial class DatePicker : PersianInputBase
     public DatePicker()
     {
         InitializeComponent();
+        AttachInputChrome(outline);
         AttachGestureRecognizer();
     }
 
@@ -199,18 +200,8 @@ public partial class DatePicker : PersianInputBase
 
     private void OnPickerViewClosed(object sender, EventArgs e)
     {
-        DetachPickerViewEventHandlers();
-        _pickerView = null;
-    }
-
-    private void DetachPickerViewEventHandlers()
-    {
-        if (_pickerView == null)
-            return;
-
-        _pickerView.SelectedDateChanged -= OnPickerViewSelectedDateChanged;
-        _pickerView.Opened -= OnPickerViewOpened;
-        _pickerView.Closed -= OnPickerViewClosed;
+        // Keep the warm DatePickerView instance; only clear the showing guard.
+        _isShowing = false;
     }
 
     #region Event Handlers
@@ -222,7 +213,7 @@ public partial class DatePicker : PersianInputBase
         switch (propertyName)
         {
             case nameof(IsEnabled):
-                PlaceHolderColor = IsEnabled ? PlaceHolderColor : ThemeColors.Disabled;
+                UpdateVisualStateFromEnabled();
                 break;
 
             case nameof(SelectedPersianDate):
@@ -233,6 +224,13 @@ public partial class DatePicker : PersianInputBase
                 }
                 break;
         }
+    }
+
+    private void UpdateVisualStateFromEnabled()
+    {
+        // Chrome state is owned by PersianInputBase; keep placeholder readable when disabled.
+        if (!IsEnabled)
+            PlaceHolderColor = ThemeColors.Disabled;
     }
 
     private void ucDatePicker_Loaded(object sender, EventArgs e)
@@ -313,6 +311,9 @@ public partial class DatePicker : PersianInputBase
 
             if (_pickerView == null)
                 return;
+
+            ConfigureCalendarOptions();
+            _pickerView.Prepare(CalendarOption);
 
             _parentPage ??= FindParentContentPage();
             if (_parentPage == null)

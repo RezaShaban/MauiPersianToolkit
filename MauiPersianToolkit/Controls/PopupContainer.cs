@@ -10,6 +10,9 @@ namespace MauiPersianToolkit.Controls;
 /// <remarks>
 /// Keeping the backdrop as a sibling of the popup rather than as the container's own
 /// background means taps on the popup content never reach the dismiss handler.
+/// The popup is always wrapped in a host view so <see cref="PlaceSurface"/> can set
+/// VerticalOptions on the wrapper without overwriting the popup's own End/Start/Center
+/// (required for reused bottom sheets such as <c>PickerView</c>).
 /// </remarks>
 internal sealed class PopupContainer : Grid
 {
@@ -50,27 +53,30 @@ internal sealed class PopupContainer : Grid
     /// </summary>
     private void PlaceSurface(LayoutOptions horizontal, LayoutOptions vertical)
     {
-        _surface.HorizontalOptions = horizontal;
+        _surface.HorizontalOptions = horizontal.Alignment == LayoutAlignment.Fill
+            ? LayoutOptions.Fill
+            : horizontal;
 
         switch (vertical.Alignment)
         {
             case LayoutAlignment.End:
-                RowDefinitions = new RowDefinitionCollection
-                {
-                    new(GridLength.Star),
-                    new(GridLength.Auto)
-                };
-                _surface.VerticalOptions = LayoutOptions.Fill;
+                RowDefinitions =
+                [
+                    new RowDefinition(GridLength.Star),
+                    new RowDefinition(GridLength.Auto)
+                ];
+                // Hug content inside the bottom Auto row; do not mutate popup.VerticalOptions.
+                _surface.VerticalOptions = LayoutOptions.Start;
                 SetRow((BindableObject)_surface, 1);
                 break;
 
             case LayoutAlignment.Start:
-                RowDefinitions = new RowDefinitionCollection
-                {
-                    new(GridLength.Auto),
-                    new(GridLength.Star)
-                };
-                _surface.VerticalOptions = LayoutOptions.Fill;
+                RowDefinitions =
+                [
+                    new RowDefinition(GridLength.Auto),
+                    new RowDefinition(GridLength.Star)
+                ];
+                _surface.VerticalOptions = LayoutOptions.Start;
                 SetRow((BindableObject)_surface, 0);
                 break;
 
@@ -83,13 +89,21 @@ internal sealed class PopupContainer : Grid
     }
 
     /// <summary>
-    /// Wraps the popup in a <see cref="Border"/> only when the options actually ask for a
-    /// shape or a shadow, so callers passing neither get the popup's own visuals untouched.
+    /// Wraps the popup so placement options can be applied without clobbering
+    /// <see cref="Popup.VerticalOptions"/> on reused instances.
     /// </summary>
     private static View BuildSurface(Popup popup, PopupOptions options)
     {
         if (options.Shape is null && options.Shadow is null)
-            return popup;
+        {
+            return new ContentView
+            {
+                Content = popup,
+                Padding = 0,
+                BackgroundColor = Colors.Transparent,
+                HorizontalOptions = LayoutOptions.Fill
+            };
+        }
 
         return new Border
         {
@@ -98,7 +112,8 @@ internal sealed class PopupContainer : Grid
             StrokeThickness = 0,
             BackgroundColor = Colors.Transparent,
             StrokeShape = options.Shape,
-            Shadow = options.Shadow
+            Shadow = options.Shadow,
+            HorizontalOptions = LayoutOptions.Fill
         };
     }
 
@@ -117,6 +132,8 @@ internal sealed class PopupContainer : Grid
     {
         if (_surface is Border border)
             border.Content = null;
+        else if (_surface is ContentView host)
+            host.Content = null;
         else
             Children.Remove(popup);
 

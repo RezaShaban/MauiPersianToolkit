@@ -21,6 +21,7 @@ public static class ThemeColors
 
     public static Color Accept => Resolve(PersianThemeKeys.Accept, PersianThemeKeys.Accept, Color.FromArgb("#1F883D"), Color.FromArgb("#1F883D"));
     public static Color Cancel => Resolve(PersianThemeKeys.Cancel, PersianThemeKeys.Cancel, Color.FromArgb("#FF4500"), Color.FromArgb("#FF4500"));
+    public static Color Accent => Resolve(PersianThemeKeys.Accent, PersianThemeKeys.Accent, Color.FromArgb("#5B2BDF"), Color.FromArgb("#5B2BDF"));
 
     public static Color AlertBackground => Resolve(PersianThemeKeys.AlertBgLight, PersianThemeKeys.AlertBgDark, Color.FromArgb("#CC323232"), Color.FromArgb("#E8E8E8"));
     public static Color AlertForeground => Resolve(PersianThemeKeys.AlertFgLight, PersianThemeKeys.AlertFgDark, Colors.White, Color.FromArgb("#121212"));
