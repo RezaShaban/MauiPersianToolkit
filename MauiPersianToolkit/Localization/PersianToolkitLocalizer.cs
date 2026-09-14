@@ -150,7 +150,14 @@ public sealed class PersianToolkitLocalizer : IPersianToolkitLocalizer
             [PersianToolkitStringId.Ok] = "باشه",
             [PersianToolkitStringId.SystemErrorTitle] = "خطای سیستمی",
             [PersianToolkitStringId.SelectDate] = "انتخاب تاریخ",
+            [PersianToolkitStringId.SelectTime] = "انتخاب زمان",
             [PersianToolkitStringId.Today] = "امروز",
+            [PersianToolkitStringId.Now] = "الان",
+            [PersianToolkitStringId.Hour] = "ساعت",
+            [PersianToolkitStringId.Minute] = "دقیقه",
+            [PersianToolkitStringId.Second] = "ثانیه",
+            [PersianToolkitStringId.Am] = "ق.ظ",
+            [PersianToolkitStringId.Pm] = "ب.ظ",
         };
 
         public static IReadOnlyDictionary<string, string> English { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -161,7 +168,14 @@ public sealed class PersianToolkitLocalizer : IPersianToolkitLocalizer
             [PersianToolkitStringId.Ok] = "OK",
             [PersianToolkitStringId.SystemErrorTitle] = "System error",
             [PersianToolkitStringId.SelectDate] = "Select date",
+            [PersianToolkitStringId.SelectTime] = "Select time",
             [PersianToolkitStringId.Today] = "Today",
+            [PersianToolkitStringId.Now] = "Now",
+            [PersianToolkitStringId.Hour] = "Hour",
+            [PersianToolkitStringId.Minute] = "Minute",
+            [PersianToolkitStringId.Second] = "Second",
+            [PersianToolkitStringId.Am] = "AM",
+            [PersianToolkitStringId.Pm] = "PM",
         };
     }
 }

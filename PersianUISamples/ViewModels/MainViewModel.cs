@@ -29,8 +29,10 @@ namespace PersianUISamples.ViewModels
         private Command showToastCommand;
         private Command showSnackbarCommand;
         private readonly IDialogService dialogService;
+        private TimeSpan meetingTime = new(14, 30, 0);
 
         public string PersianDate { get => persianDate; set => SetProperty(ref persianDate, value); }
+        public TimeSpan MeetingTime { get => meetingTime; set => SetProperty(ref meetingTime, value); }
         public string PersianDateRange { get => persianDateRange; set => SetProperty(ref persianDateRange, value); }
         public string PersianDateMultiple { get => persianDateMultiple; set => SetProperty(ref persianDateMultiple, value); }
         public List<string> BadgeDates { get => badgeDates; set => SetProperty(ref badgeDates, value); }

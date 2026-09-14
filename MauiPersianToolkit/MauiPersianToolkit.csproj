@@ -33,12 +33,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Controls\TimePicker.xaml.cs" />
 	  <Compile Remove="ViewModels\PickerViewModel.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiXaml Remove="Controls\TimePicker.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>

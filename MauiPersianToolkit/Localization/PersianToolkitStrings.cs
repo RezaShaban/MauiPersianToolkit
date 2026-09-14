@@ -22,6 +22,13 @@ public static class PersianToolkitStrings
     public static string Ok => Current[PersianToolkitStringId.Ok];
     public static string SystemErrorTitle => Current[PersianToolkitStringId.SystemErrorTitle];
     public static string SelectDate => Current[PersianToolkitStringId.SelectDate];
+    public static string SelectTime => Current[PersianToolkitStringId.SelectTime];
+    public static string Now => Current[PersianToolkitStringId.Now];
+    public static string Hour => Current[PersianToolkitStringId.Hour];
+    public static string Minute => Current[PersianToolkitStringId.Minute];
+    public static string Second => Current[PersianToolkitStringId.Second];
+    public static string Am => Current[PersianToolkitStringId.Am];
+    public static string Pm => Current[PersianToolkitStringId.Pm];
     public static string Today => Current[PersianToolkitStringId.Today];
 
     /// <summary>

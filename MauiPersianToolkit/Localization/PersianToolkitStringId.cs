@@ -12,5 +12,12 @@ public static class PersianToolkitStringId
     public const string Ok = "Ok";
     public const string SystemErrorTitle = "SystemErrorTitle";
     public const string SelectDate = "SelectDate";
+    public const string SelectTime = "SelectTime";
     public const string Today = "Today";
+    public const string Now = "Now";
+    public const string Hour = "Hour";
+    public const string Minute = "Minute";
+    public const string Second = "Second";
+    public const string Am = "Am";
+    public const string Pm = "Pm";
 }
