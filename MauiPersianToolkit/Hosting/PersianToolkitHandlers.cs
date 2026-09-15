@@ -13,6 +13,7 @@ public static class PersianToolkitHandlers
     /// </summary>
     public static IMauiHandlersCollection AddPersianToolkitHandlers(this IMauiHandlersCollection handlers)
     {
+        handlers.AddHandler<PersianAutoSuggest, Handlers.PersianAutoSuggestHandler>();
         // Popup is deliberately absent. It is a ContentView, so it renders through the
         // built-in ContentViewHandler when placed in a page (DatePickerView is used that
         // way). Its PopupHandler is an ElementHandler rather than an IViewHandler and is

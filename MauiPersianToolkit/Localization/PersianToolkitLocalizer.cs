@@ -158,6 +158,8 @@ public sealed class PersianToolkitLocalizer : IPersianToolkitLocalizer
             [PersianToolkitStringId.Second] = "ثانیه",
             [PersianToolkitStringId.Am] = "ق.ظ",
             [PersianToolkitStringId.Pm] = "ب.ظ",
+            [PersianToolkitStringId.NoResults] = "نتیجه‌ای یافت نشد",
+            [PersianToolkitStringId.TypeToSearch] = "برای جستجو تایپ کنید",
         };
 
         public static IReadOnlyDictionary<string, string> English { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -176,6 +178,8 @@ public sealed class PersianToolkitLocalizer : IPersianToolkitLocalizer
             [PersianToolkitStringId.Second] = "Second",
             [PersianToolkitStringId.Am] = "AM",
             [PersianToolkitStringId.Pm] = "PM",
+            [PersianToolkitStringId.NoResults] = "No results",
+            [PersianToolkitStringId.TypeToSearch] = "Type to search",
         };
     }
 }

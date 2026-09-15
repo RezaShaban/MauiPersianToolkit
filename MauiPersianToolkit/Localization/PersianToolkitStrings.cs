@@ -30,6 +30,8 @@ public static class PersianToolkitStrings
     public static string Am => Current[PersianToolkitStringId.Am];
     public static string Pm => Current[PersianToolkitStringId.Pm];
     public static string Today => Current[PersianToolkitStringId.Today];
+    public static string NoResults => Current[PersianToolkitStringId.NoResults];
+    public static string TypeToSearch => Current[PersianToolkitStringId.TypeToSearch];
 
     /// <summary>
     /// Convenience alias for <see cref="Current"/>.<see cref="IPersianToolkitLocalizer.Get"/>.

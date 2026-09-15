@@ -64,7 +64,7 @@ public class WeekStartAndTodayTests
 
         Assert.Equal(mondayHeader, vm.DaysOfWeek[(int)(DayOfWeek.Monday - service.GetFirstDayOfWeek() + 7) % 7]);
 
-        var todayCell = vm.DaysOfMonth.Single(d => d.IsToday || d.GregorianDate.Date == Today.Date);
+        var todayCell = vm.DaysOfMonth.Single(d => d.GregorianDate.Date == Today.Date);
         var column = vm.DaysOfMonth.IndexOf(todayCell) % 7;
         var expectedColumn = ((int)DayOfWeek.Monday - (int)service.GetFirstDayOfWeek() + 7) % 7;
 

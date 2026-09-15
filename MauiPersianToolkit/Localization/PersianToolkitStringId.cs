@@ -20,4 +20,6 @@ public static class PersianToolkitStringId
     public const string Second = "Second";
     public const string Am = "Am";
     public const string Pm = "Pm";
+    public const string NoResults = "NoResults";
+    public const string TypeToSearch = "TypeToSearch";
 }
