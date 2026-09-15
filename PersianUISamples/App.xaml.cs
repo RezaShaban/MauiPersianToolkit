@@ -1,30 +1,19 @@
 ﻿using MauiPersianToolkit;
-using MauiPersianToolkit.Services.Dialog;
-using PersianUISamples.ViewModels;
+using PersianUISamples.Services;
 
-namespace PersianUISamples
+namespace PersianUISamples;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    public App(DemoSettingsService settings)
     {
-        public App()
-        {
-            InitializeComponent();
+        InitializeComponent();
+        PersianTheme.EnsureApplicationStyles();
+        settings.ApplyOnStartup();
+    }
 
-            // Optional: also auto-runs on first toolkit control; applies Theme options early.
-            PersianTheme.EnsureApplicationStyles();
-
-            try
-            {
-                MainPage = new MainPage(new MainViewModel(new DialogService()));
-            }
-            catch (Exception ex)
-            {
-                MainPage = new ContentPage()
-                {
-                    Background = Colors.White,
-                    Content = new Label() { Text = ex.ToString(), TextColor = Colors.Black },
-                };
-            }
-        }
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(new AppShell());
     }
 }

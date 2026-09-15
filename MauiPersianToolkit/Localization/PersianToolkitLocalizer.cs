@@ -25,13 +25,14 @@ public sealed class PersianToolkitLocalizer : IPersianToolkitLocalizer
     public string this[string id] => Get(id);
 
     /// <summary>
-    /// Creates a localizer preloaded with <c>fa</c> and <c>en</c>.
+    /// Creates a localizer preloaded with <c>fa</c>, <c>en</c>, and <c>ar</c>.
     /// </summary>
     public static PersianToolkitLocalizer CreateDefault()
     {
         var localizer = new PersianToolkitLocalizer();
         localizer.RegisterCatalog("fa", BuiltInCatalogs.Persian);
         localizer.RegisterCatalog("en", BuiltInCatalogs.English);
+        localizer.RegisterCatalog("ar", BuiltInCatalogs.Arabic);
         localizer.SetCulture("fa");
         return localizer;
     }
@@ -180,6 +181,26 @@ public sealed class PersianToolkitLocalizer : IPersianToolkitLocalizer
             [PersianToolkitStringId.Pm] = "PM",
             [PersianToolkitStringId.NoResults] = "No results",
             [PersianToolkitStringId.TypeToSearch] = "Type to search",
+        };
+
+        public static IReadOnlyDictionary<string, string> Arabic { get; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            [PersianToolkitStringId.Accept] = "حفظ",
+            [PersianToolkitStringId.Cancel] = "إلغاء",
+            [PersianToolkitStringId.Confirm] = "تأكيد",
+            [PersianToolkitStringId.Ok] = "حسناً",
+            [PersianToolkitStringId.SystemErrorTitle] = "خطأ في النظام",
+            [PersianToolkitStringId.SelectDate] = "اختر التاريخ",
+            [PersianToolkitStringId.SelectTime] = "اختر الوقت",
+            [PersianToolkitStringId.Today] = "اليوم",
+            [PersianToolkitStringId.Now] = "الآن",
+            [PersianToolkitStringId.Hour] = "ساعة",
+            [PersianToolkitStringId.Minute] = "دقيقة",
+            [PersianToolkitStringId.Second] = "ثانية",
+            [PersianToolkitStringId.Am] = "ص",
+            [PersianToolkitStringId.Pm] = "م",
+            [PersianToolkitStringId.NoResults] = "لا توجد نتائج",
+            [PersianToolkitStringId.TypeToSearch] = "اكتب للبحث",
         };
     }
 }

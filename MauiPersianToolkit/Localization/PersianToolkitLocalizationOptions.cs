@@ -7,7 +7,8 @@ public sealed class PersianToolkitLocalizationOptions
 {
     /// <summary>
     /// Initial UI culture for toolkit chrome strings. Defaults to <c>fa</c>.
-    /// Examples: <c>fa</c>, <c>fa-IR</c>, <c>en</c>, <c>en-US</c>.
+    /// Examples: <c>fa</c>, <c>fa-IR</c>, <c>en</c>, <c>en-US</c>, <c>ar</c>, <c>ar-SA</c>.
+    /// Built-in catalogs: Persian (<c>fa</c>), English (<c>en</c>), Arabic (<c>ar</c>).
     /// </summary>
     public string Culture { get; set; } = "fa";
 
@@ -18,7 +19,7 @@ public sealed class PersianToolkitLocalizationOptions
     public Dictionary<string, string> StringOverrides { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
-    /// Extra language catalogs keyed by culture name. Merged after built-in <c>fa</c>/<c>en</c>.
+    /// Extra language catalogs keyed by culture name. Merged after built-in <c>fa</c>/<c>en</c>/<c>ar</c>.
     /// </summary>
     public Dictionary<string, IReadOnlyDictionary<string, string>> AdditionalCatalogs { get; set; } =
         new(StringComparer.OrdinalIgnoreCase);

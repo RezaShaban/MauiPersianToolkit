@@ -5,16 +5,11 @@
              x:Class="PersianUISamples.App">
     <Application.Resources>
         <ResourceDictionary>
-            <!--<ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Toolkit theme tokens must load before DemoStyles (StaticResource Pdt*). -->
                 <persian:PersianStyles/>
-            </ResourceDictionary.MergedDictionaries>-->
-
-            <!-- Optional: override toolkit theme tokens (same keys as PersianThemeKeys).
-            <Color x:Key="PdtSurfaceDark">#0D1117</Color>
-            <Color x:Key="PdtAccent">#2DD4BF</Color>
-            -->
+                <ResourceDictionary Source="Resources/Styles/DemoStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
