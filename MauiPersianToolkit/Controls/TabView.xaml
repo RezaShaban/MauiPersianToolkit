@@ -17,9 +17,6 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="0"/>
             </Border.StrokeShape>
-            <Border.Shadow>
-                <Shadow Brush="#40000000" Offset="0,-2" Radius="8" Opacity="0.18"/>
-            </Border.Shadow>
 
             <Grid RowDefinitions="Auto,*" RowSpacing="0">
                 <BoxView Grid.Row="0" HeightRequest="1" HorizontalOptions="Fill"

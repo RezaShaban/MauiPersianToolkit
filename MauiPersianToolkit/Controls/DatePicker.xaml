@@ -5,7 +5,7 @@
              xmlns:controls="clr-namespace:MauiPersianToolkit.Controls"
              xmlns:mpt="http://schemas.mauipersiantoolkit.com/2026/toolkit"
              x:DataType="controls:DatePicker"
-             x:Name="ucDatePicker" Loaded="ucDatePicker_Loaded">
+             x:Name="ucDatePicker">
     <ContentView.Resources>
         <ResourceDictionary>
             <Style TargetType="Label">

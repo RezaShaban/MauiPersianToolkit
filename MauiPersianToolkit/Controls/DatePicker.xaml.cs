@@ -218,10 +218,7 @@ public partial class DatePicker : PersianInputBase
 
             case nameof(SelectedPersianDate):
                 if (!string.IsNullOrEmpty(SelectedPersianDate))
-                {
                     UpdateFormattedDate();
-                    _ = EnsurePickerReadyAsync();
-                }
                 break;
         }
     }
@@ -231,11 +228,6 @@ public partial class DatePicker : PersianInputBase
         // Chrome state is owned by PersianInputBase; keep placeholder readable when disabled.
         if (!IsEnabled)
             PlaceHolderColor = ThemeColors.Disabled;
-    }
-
-    private void ucDatePicker_Loaded(object sender, EventArgs e)
-    {
-        _ = EnsurePickerReadyAsync();
     }
 
     #endregion

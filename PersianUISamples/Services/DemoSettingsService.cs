@@ -91,6 +91,8 @@ public sealed class DemoSettingsService
             _ => AppTheme.Unspecified
         };
 
+        MauiPersianToolkit.ThemeColors.InvalidateCache();
+
         if (raise)
             Changed?.Invoke(this, EventArgs.Empty);
     }

@@ -1,4 +1,3 @@
-using MauiPersianToolkit;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace PersianUISamples.Controls;
@@ -18,7 +17,7 @@ public class DemoSection : ContentView
 
     public DemoSection()
     {
-        PersianTheme.SeedControlResources(Resources);
+        // Gallery chrome uses SetAppThemeColor — no per-card SeedControlResources.
 
         _titleLabel = new Label
         {
@@ -78,13 +77,6 @@ public class DemoSection : ContentView
             Padding = 16,
             Margin = new Thickness(0, 0, 0, 14),
             StrokeShape = new RoundRectangle { CornerRadius = 14 },
-            Shadow = new Shadow
-            {
-                Brush = Color.FromArgb("#30000000"),
-                Offset = new Point(0, 2),
-                Radius = 10,
-                Opacity = 0.12f
-            },
             Content = stack
         };
         card.SetAppTheme(

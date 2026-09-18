@@ -6,6 +6,10 @@ namespace MauiPersianToolkit;
 /// </summary>
 public static class ThemeColors
 {
+    private static readonly object CacheSync = new();
+    private static AppTheme _cachedTheme = (AppTheme)(-1);
+    private static readonly Dictionary<string, Color> Cache = new(StringComparer.Ordinal);
+
     public static bool IsDark =>
         Application.Current?.RequestedTheme == AppTheme.Dark;
 
@@ -26,14 +30,42 @@ public static class ThemeColors
     public static Color AlertBackground => Resolve(PersianThemeKeys.AlertBgLight, PersianThemeKeys.AlertBgDark, Color.FromArgb("#CC323232"), Color.FromArgb("#E8E8E8"));
     public static Color AlertForeground => Resolve(PersianThemeKeys.AlertFgLight, PersianThemeKeys.AlertFgDark, Colors.White, Color.FromArgb("#121212"));
 
+    /// <summary>Drops the resolved-color cache (theme option changes / host overrides).</summary>
+    public static void InvalidateCache()
+    {
+        lock (CacheSync)
+        {
+            Cache.Clear();
+            _cachedTheme = (AppTheme)(-1);
+        }
+    }
+
     private static Color Resolve(string lightKey, string darkKey, Color lightFallback, Color darkFallback)
     {
         PersianTheme.EnsureApplicationStyles();
 
-        var key = IsDark ? darkKey : lightKey;
-        if (Application.Current?.Resources.TryGetValue(key, out var value) == true && value is Color color)
-            return color;
+        var theme = Application.Current?.RequestedTheme ?? AppTheme.Unspecified;
+        var key = theme == AppTheme.Dark ? darkKey : lightKey;
 
-        return IsDark ? darkFallback : lightFallback;
+        lock (CacheSync)
+        {
+            if (_cachedTheme != theme)
+            {
+                Cache.Clear();
+                _cachedTheme = theme;
+            }
+
+            if (Cache.TryGetValue(key, out var cached))
+                return cached;
+
+            Color resolved;
+            if (Application.Current?.Resources.TryGetValue(key, out var value) == true && value is Color color)
+                resolved = color;
+            else
+                resolved = theme == AppTheme.Dark ? darkFallback : lightFallback;
+
+            Cache[key] = resolved;
+            return resolved;
+        }
     }
 }
