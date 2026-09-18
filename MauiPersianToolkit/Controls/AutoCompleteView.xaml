@@ -74,9 +74,6 @@
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="10"/>
             </Border.StrokeShape>
-            <Border.Shadow>
-                <Shadow Brush="#50000000" Offset="0,4" Radius="12" Opacity="0.2"/>
-            </Border.Shadow>
 
             <Grid>
                 <CollectionView x:Name="suggestionsList"

@@ -10,6 +10,7 @@ public static class PersianTheme
 {
     private static readonly object Sync = new();
     private static bool _optionsApplied;
+    private static (string Key, Color Value)[]? _seedSnapshot;
 
     /// <summary>
     /// Built-in palette used when the host has not overridden <c>Pdt*</c> keys.
@@ -62,6 +63,8 @@ public static class PersianTheme
             configure(options);
             options.Apply(app.Resources);
             _optionsApplied = true;
+            InvalidateSeedSnapshot();
+            ThemeColors.InvalidateCache();
         }
     }
 
@@ -80,6 +83,8 @@ public static class PersianTheme
             EnsureStylesCore(app.Resources);
             options.Apply(app.Resources);
             _optionsApplied = true;
+            InvalidateSeedSnapshot();
+            ThemeColors.InvalidateCache();
         }
     }
 
@@ -102,6 +107,7 @@ public static class PersianTheme
 
             PersianToolkitOptions.Current.Theme.Apply(app.Resources);
             _optionsApplied = true;
+            InvalidateSeedSnapshot();
         }
     }
 
@@ -111,33 +117,34 @@ public static class PersianTheme
     /// dictionaries are not always visible to nested <c>AppThemeBinding</c> lookups).
     /// Call from constructors before <c>InitializeComponent</c>.
     /// </summary>
+    /// <remarks>
+    /// Fast-path skips when the control was already seeded. Color values are copied from a
+    /// cached snapshot so each control does not re-query Application.Resources under lock.
+    /// </remarks>
     public static void SeedControlResources(ResourceDictionary resources)
     {
         ArgumentNullException.ThrowIfNull(resources);
 
+        // Already seeded (common when a control rebuilds chrome or inherits a dictionary).
+        if (resources.ContainsKey(PersianThemeKeys.Accent)
+            && resources.ContainsKey(PersianThemeKeys.OnSurfaceLight))
+            return;
+
         EnsureApplicationStyles();
 
-        lock (Sync)
+        var snapshot = Volatile.Read(ref _seedSnapshot);
+        if (snapshot is null)
         {
-            var appResources = Application.Current?.Resources;
-
-            foreach (var (key, fallback) in DefaultColors)
+            lock (Sync)
             {
-                // Flat local keys beat MergedDictionaries for StaticResource on this control.
-                if (resources.ContainsKey(key))
-                    continue;
-
-                if (appResources is not null
-                    && appResources.TryGetValue(key, out var value)
-                    && value is Color color)
-                {
-                    resources[key] = color;
-                }
-                else
-                {
-                    resources[key] = fallback;
-                }
+                snapshot = _seedSnapshot ??= BuildSeedSnapshot();
             }
+        }
+
+        foreach (var (key, color) in snapshot)
+        {
+            if (!resources.ContainsKey(key))
+                resources[key] = color;
         }
     }
 
@@ -169,4 +176,30 @@ public static class PersianTheme
 
         resources.MergedDictionaries.Add(new PersianStyles());
     }
+
+    private static (string Key, Color Value)[] BuildSeedSnapshot()
+    {
+        var appResources = Application.Current?.Resources;
+        var snapshot = new (string Key, Color Value)[DefaultColors.Length];
+
+        for (var i = 0; i < DefaultColors.Length; i++)
+        {
+            var (key, fallback) = DefaultColors[i];
+            if (appResources is not null
+                && appResources.TryGetValue(key, out var value)
+                && value is Color color)
+            {
+                snapshot[i] = (key, color);
+            }
+            else
+            {
+                snapshot[i] = (key, fallback);
+            }
+        }
+
+        return snapshot;
+    }
+
+    private static void InvalidateSeedSnapshot() =>
+        Volatile.Write(ref _seedSnapshot, null);
 }

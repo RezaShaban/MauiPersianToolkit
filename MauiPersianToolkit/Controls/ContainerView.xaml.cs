@@ -28,7 +28,7 @@ public partial class ContainerView : ContentView
         get { return (bool)GetValue(IsExpandedProperty); }
         set { SetValue(IsExpandedProperty, value); }
     }
-    public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow), typeof(bool), typeof(ContainerView), true, BindingMode.TwoWay);
+    public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow), typeof(bool), typeof(ContainerView), false, BindingMode.TwoWay);
     public bool HasShadow
     {
         get { return (bool)GetValue(HasShadowProperty); }

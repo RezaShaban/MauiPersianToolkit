@@ -151,9 +151,6 @@ public partial class TimePicker : PersianInputBase
         });
     }
 
-    private void OnLoaded(object? sender, EventArgs e) =>
-        _ = EnsureSheetReadyAsync();
-
     private Task EnsureSheetReadyAsync()
     {
         if (_sheet is not null)

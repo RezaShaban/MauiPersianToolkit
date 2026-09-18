@@ -13,7 +13,7 @@ public partial class TreeViewNode : ContentView
 
     public TreeViewNode()
     {
-        PersianTheme.SeedControlResources(Resources);
+        // Theme tokens come from Application / TreeView; avoid per-row SeedControlResources.
         InitializeComponent();
     }
 

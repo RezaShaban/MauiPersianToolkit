@@ -58,7 +58,17 @@
             </demo:DemoSection>
 
             <demo:DemoSection Title="{Binding DateViewTitle}" Hint="{Binding DateViewHint}">
-                <pui:DatePickerView CalendarOption="{Binding HijriSingle}" HeightRequest="360"/>
+                <VerticalStackLayout Spacing="8">
+                    <Button x:Name="loadCalendarButton"
+                            Text="{Binding LoadCalendarAction}"
+                            FontFamily="IranianSans"
+                            BackgroundColor="{StaticResource PdtAccent}"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="44"
+                            Clicked="OnLoadInlineCalendar"/>
+                    <ContentView x:Name="inlineCalendarHost"/>
+                </VerticalStackLayout>
             </demo:DemoSection>
         </VerticalStackLayout>
     </ScrollView>

@@ -132,6 +132,7 @@ public static class DemoStrings
     public static string Time12Placeholder => Get(Ids.Time12Placeholder);
     public static string DateViewTitle => Get(Ids.DateViewTitle);
     public static string DateViewHint => Get(Ids.DateViewHint);
+    public static string LoadCalendarAction => Get(Ids.LoadCalendarAction);
 
     // Layout
     public static string TabSectionHint => Get(Ids.TabSectionHint);
@@ -321,6 +322,7 @@ public static class DemoStrings
         public const string Time12Placeholder = "Time12Placeholder";
         public const string DateViewTitle = "DateViewTitle";
         public const string DateViewHint = "DateViewHint";
+        public const string LoadCalendarAction = "LoadCalendarAction";
 
         public const string TabSectionHint = "TabSectionHint";
         public const string Tab1 = "Tab1";
@@ -486,7 +488,8 @@ public static class DemoStrings
         [Ids.Time12Hint] = "Is24Hour=False · ShowSeconds · DisplayFormat",
         [Ids.Time12Placeholder] = "زمان با ثانیه",
         [Ids.DateViewTitle] = "DatePickerView (تقویم توکار)",
-        [Ids.DateViewHint] = "بدون پاپ‌آپ؛ مستقیم CalendarOption را ببندید",
+        [Ids.DateViewHint] = "بدون پاپ‌آپ؛ مستقیم CalendarOption را ببندید — برای پرفرمنس، تقویم با درخواست کاربر لود می‌شود",
+        [Ids.LoadCalendarAction] = "نمایش تقویم توکار",
 
         [Ids.TabSectionHint] = "SelectedTabColor · IndicatorColor · AnimateCaptions · EnableAnimations",
         [Ids.Tab1] = "اول", [Ids.Tab2] = "دوم", [Ids.Tab3] = "سوم",
@@ -622,7 +625,8 @@ public static class DemoStrings
         [Ids.Time12Hint] = "Is24Hour=False · ShowSeconds · DisplayFormat",
         [Ids.Time12Placeholder] = "Time with seconds",
         [Ids.DateViewTitle] = "DatePickerView (inline calendar)",
-        [Ids.DateViewHint] = "No popup; bind CalendarOption directly",
+        [Ids.DateViewHint] = "No popup; bind CalendarOption directly — loaded on demand for performance",
+        [Ids.LoadCalendarAction] = "Show inline calendar",
 
         [Ids.TabSectionHint] = "SelectedTabColor · IndicatorColor · AnimateCaptions · EnableAnimations",
         [Ids.Tab1] = "First", [Ids.Tab2] = "Second", [Ids.Tab3] = "Third",
@@ -758,7 +762,8 @@ public static class DemoStrings
         [Ids.Time12Hint] = "Is24Hour=False · ShowSeconds · DisplayFormat",
         [Ids.Time12Placeholder] = "الوقت مع الثواني",
         [Ids.DateViewTitle] = "DatePickerView (تقويم مضمّن)",
-        [Ids.DateViewHint] = "بدون نافذة منبثقة؛ اربط CalendarOption مباشرة",
+        [Ids.DateViewHint] = "بدون نافذة منبثقة؛ اربط CalendarOption مباشرة — يُحمَّل عند الطلب للأداء",
+        [Ids.LoadCalendarAction] = "عرض التقويم المضمّن",
 
         [Ids.TabSectionHint] = "SelectedTabColor · IndicatorColor · AnimateCaptions · EnableAnimations",
         [Ids.Tab1] = "الأول", [Ids.Tab2] = "الثاني", [Ids.Tab3] = "الثالث",

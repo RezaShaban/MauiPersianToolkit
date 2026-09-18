@@ -198,6 +198,7 @@ public class DateTimeGalleryViewModel : ObservableObject
     public string Time12Placeholder => DemoStrings.Time12Placeholder;
     public string DateViewTitle => DemoStrings.DateViewTitle;
     public string DateViewHint => DemoStrings.DateViewHint;
+    public string LoadCalendarAction => DemoStrings.LoadCalendarAction;
 
     public string SingleDate { get => _singleDate; set => SetProperty(ref _singleDate, value); }
     public string RangeDate { get => _rangeDate; set => SetProperty(ref _rangeDate, value); }

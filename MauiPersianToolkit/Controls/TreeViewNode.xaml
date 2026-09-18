@@ -13,7 +13,7 @@
 
         <Button Text="&#xf078;" FontFamily="FontAwesome" WidthRequest="32" HeightRequest="32"
                 BackgroundColor="Transparent" BorderWidth="0" Padding="1"
-                TextColor="{AppThemeBinding Light={StaticResource PdtOnSurfaceLight}, Dark={StaticResource PdtOnSurfaceDark}}"
+                TextColor="{AppThemeBinding Light=#121212, Dark=#F2F2F2}"
                 Clicked="Expand_Clicked" Grid.Column="0"
                 IsVisible="{Binding ShowItem.HasChildren, Source={x:Reference treeViewNode}}">
             <Button.Triggers>
@@ -54,7 +54,7 @@
 
         <Label Grid.Column="2" Margin="10,0,0,0" VerticalOptions="Center" FontFamily="IranianSans"
                Text="{Binding ShowItem.Title, Source={x:Reference treeViewNode}}"
-               TextColor="{AppThemeBinding Light={StaticResource PdtOnSurfaceLight}, Dark={StaticResource PdtOnSurfaceDark}}"
+               TextColor="{AppThemeBinding Light=#121212, Dark=#F2F2F2}"
                x:Name="defaultTemplate"/>
     </Grid>
 </ContentView>

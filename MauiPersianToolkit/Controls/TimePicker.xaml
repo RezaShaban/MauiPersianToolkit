@@ -4,8 +4,7 @@
              x:Class="MauiPersianToolkit.Controls.TimePicker"
              xmlns:controls="clr-namespace:MauiPersianToolkit.Controls"
              x:DataType="controls:TimePicker"
-             x:Name="ucTimePicker"
-             Loaded="OnLoaded">
+             x:Name="ucTimePicker">
     <ContentView.Resources>
         <ResourceDictionary>
             <Style TargetType="Label">
